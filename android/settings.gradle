@@ -1,0 +1,3 @@
+rootProject.name = 'hapulico_app'
+
+include ':app'
