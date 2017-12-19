@@ -1,20 +1,16 @@
-import Home from '../containers/Home';
+import UserInfo from '../containers/UserInfo';
 import SimpleFrom from '../containers/SimpleForm'
-import Expo from "expo";
 import {
     addNavigationHelpers,
     StackNavigator,
 } from 'react-navigation';
 
 const stackNavigatorConfiguration = {
-    initialRouteName: 'SimpleFrom',
-    cardStyle: {
-        paddingTop: Expo.Constants.statusBarHeight//just android
-    }
+    initialRouteName: 'UserInfo'
 }
 
 export const RootNavigationContainer = StackNavigator({
-    Home: { screen: Home },
+    UserInfo: { screen: UserInfo },
     SimpleFrom:{
         screen:SimpleFrom,
         navigationOptions: {

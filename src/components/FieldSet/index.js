@@ -4,7 +4,6 @@ import {
     Text
 } from 'native-base'
 import styles from './styles'
-import { style } from 'expo/src/Font';
 export default class extends Component {
     constructor(props) {
         super(props)

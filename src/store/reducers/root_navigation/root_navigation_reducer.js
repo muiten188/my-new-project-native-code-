@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import * as action_types from '../../constants/action_types';
 import { RootNavigationContainer } from '../../../routers/root_navigation_config';
-const mainAction = RootNavigationContainer.router.getActionForPathAndParams('SimpleFrom');
+const mainAction = RootNavigationContainer.router.getActionForPathAndParams('UserInfo');
 const initialNavState = RootNavigationContainer.router.getStateForAction(mainAction);
 // const initialNavState = RootNavigationContainer.router.getStateForAction(
 //     mainAction,

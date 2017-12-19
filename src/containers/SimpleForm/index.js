@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Expo from 'expo';
 import { View, KeyboardAvoidingView, StyleSheet, TextInput, Image, FlatList } from 'react-native';
 import {
   Container, Item, Input, Header, Body, Content,
@@ -11,7 +10,6 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Constants } from 'expo';
 import FieldsetLegend from '../../components/FieldSet'
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 const submit = values => {
@@ -317,7 +315,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
   },
   header: {
-    paddingTop: 20 + Constants.statusBarHeight,
+    paddingTop: 20,
     padding: 20,
     backgroundColor: '#336699',
   },

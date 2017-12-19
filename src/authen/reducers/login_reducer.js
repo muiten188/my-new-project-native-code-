@@ -1,5 +1,4 @@
 import * as types from '../../store/constants/action_types';
-import { debug } from 'util';
 const initState = {
     Logged: false
 };
