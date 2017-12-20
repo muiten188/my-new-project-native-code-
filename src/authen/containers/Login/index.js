@@ -78,7 +78,6 @@ class login extends Component {
   render() {
     const { loginAction,handleSubmit, submitting, setToast } = this.props;  
     const locale='vn';
-    debugger;
     return (
       <View style={{ flex: 1 }}>
         {/* background */}

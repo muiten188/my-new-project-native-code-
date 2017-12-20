@@ -43,7 +43,7 @@ class RootNavigation extends React.Component {
     render() {
         const { navigationAction, navigationReducer } = this.props;
         return (
-            <RootNavigationContainer navigation={addNavigationHelpers({ navigationAction, state: navigationReducer })}/>
+            <RootNavigationContainer navigation={addNavigationHelpers({ dispatch:navigationAction, state: navigationReducer })}/>
         );
     }
 }

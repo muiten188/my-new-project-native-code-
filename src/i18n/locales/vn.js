@@ -5,4 +5,16 @@ export default {
     login:"Đăng nhập",
     forgotPassword:"Quên mật khẩu?",
     userinfo:"Thông tin tài khoản",
+    birthday:"Ngày sinh",
+    mobile:"Số điện thoại",
+    email:"Email",
+    user:"Tên người dùng",
+    changePassword:'Đổi mật khẩu',
+    result:'Kết quả',
+    building:"Tòa nhà:",
+    floor:"Tầng",
+    apartmentNo:"Số phòng",
+    homeName:"Tên chủ hộ",
+    mobile:"Số điện thoại",
+    search:"Tìm kiếm"
   };

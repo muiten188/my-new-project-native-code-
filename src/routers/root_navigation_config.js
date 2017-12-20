@@ -1,20 +1,22 @@
-import UserInfo from '../containers/UserInfo';
-import SimpleFrom from '../containers/SimpleForm'
-import {
-    addNavigationHelpers,
-    StackNavigator,
-} from 'react-navigation';
+import UserInfo from "../containers/UserInfo";
+import Search from "../containers/Search";
+import SimpleFrom from "../containers/SimpleForm";
+import { addNavigationHelpers, StackNavigator } from "react-navigation";
 
 const stackNavigatorConfiguration = {
-    initialRouteName: 'UserInfo'
-}
+  initialRouteName: "UserInfo"
+};
 
-export const RootNavigationContainer = StackNavigator({
+export const RootNavigationContainer = StackNavigator(
+  {
     UserInfo: { screen: UserInfo },
-    SimpleFrom:{
-        screen:SimpleFrom,
-        navigationOptions: {
-            title:'Simple Form',
-        } 
-    }
-}, stackNavigatorConfiguration)
+    SimpleFrom: {
+      screen: SimpleFrom,
+      navigationOptions: {
+        title: "Simple Form"
+      }
+    },
+    Search: { screen: Search }
+  },
+  stackNavigatorConfiguration
+);

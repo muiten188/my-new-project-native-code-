@@ -5,19 +5,24 @@ import {
   View, CheckBox,
 } from 'native-base'
 
-// import Icon from '../Icon'
+import Icon from "react-native-vector-icons/FontAwesome";
 // import Switch from '../Switch'
 
 
 // import material from '../../../themes/material'
 import styles from './styles'
-// import DatePicker from '../../DatePicker'
+import DatePicker from '../../DatePicker'
 // import Dropdown from '../../Dropdown'
 // import Toggle from '../../Toggle'
 
 export const InputField = ({ input, label, meta: { touched, error, warning }, icon, addon, onPress, style, inputStyle, ...custom }) => (  
   <Item style={{...styles.item, ...style}} error={touched && !!error} onPress={onPress} >  
     {addon}
+    {icon && <Icon
+      style={styles.inputIcon}
+      name={icon}
+      size={25}
+    />}
     <Input   
       placeholder={label}    
       {...input}                   
@@ -25,10 +30,6 @@ export const InputField = ({ input, label, meta: { touched, error, warning }, ic
       style={{...styles.input, ...inputStyle}}     
     />    
     {touched && error  ? <Text>{error}</Text> : <Text />}
-    {icon && <Icon
-      style={styles.inputIcon}
-      name={icon}
-    />}
   </Item>
 )
 
@@ -62,21 +63,21 @@ export const InputField = ({ input, label, meta: { touched, error, warning }, ic
 //   />
 // )
 
-// export const DateField = ({ input, label, meta: { touched, error, warning }, style, inputStyle, iconStyle, format="MM/DD/YYYY", ...custom }) => (
-//   <DatePicker    
-//     date={input.value}
-//     mode="date"
-//     placeholder={label}    
-//     onDateChange={(date) => input.onChange(date)}
-//     customStyles={{
-//       dateTouch: {...styles.item, ...style},
-//       dateInput: {...styles.input, ...inputStyle},
-//       dateIcon: iconStyle,
-//     }}
-//     format={format}
-//     {...custom}    
-//   />
-// )
+export const DateField = ({ input, label, meta: { touched, error, warning }, style, inputStyle, iconStyle, format="MM/DD/YYYY", ...custom }) => (
+  <DatePicker    
+    date={input.value}
+    mode="date"
+    placeholder={label}    
+    onDateChange={(date) => input.onChange(date)}
+    customStyles={{
+      dateTouch: {...styles.item, ...style},
+      dateInput: {...styles.input, ...inputStyle},
+      dateIcon: iconStyle,
+    }}
+    format={format}
+    {...custom}    
+  />
+)
 
 // export const LockField = ({ input, label, meta: { touched, error, warning }, ...custom }) => (
 //   <Toggle    
