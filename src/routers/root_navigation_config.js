@@ -1,5 +1,7 @@
 import UserInfo from "../containers/UserInfo";
 import Search from "../containers/Search";
+import BillList from "../containers/BillList";
+
 import SimpleFrom from "../containers/SimpleForm";
 import { addNavigationHelpers, StackNavigator } from "react-navigation";
 
@@ -16,7 +18,8 @@ export const RootNavigationContainer = StackNavigator(
         title: "Simple Form"
       }
     },
-    Search: { screen: Search }
+    Search: { screen: Search },
+    BillList:{screen:BillList}
   },
   stackNavigatorConfiguration
 );

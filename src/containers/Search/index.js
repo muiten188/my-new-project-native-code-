@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { View, KeyboardAvoidingView, FlatList } from "react-native";
+import { bindActionCreators } from "redux";
+import {
+  View,
+  KeyboardAvoidingView,
+  FlatList,
+  TouchableOpacity
+} from "react-native";
 import {
   Container,
   Text,
@@ -24,7 +30,9 @@ import { InputField } from "../../components/Element/Form/index";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Field, reduxForm } from "redux-form";
 import { DateField } from "../../components/Element/Form";
-
+import ItemResult from "../../components/Item_result";
+import * as searchAction from "../../store/actions/containers/search_action";
+import Loading from "../../components/Loading";
 class search extends Component {
   static navigationOptions = {
     header: null
@@ -41,6 +49,11 @@ class search extends Component {
     I18n.currentLocale();
   }
 
+  componentDidMount() {
+    const { searchAction } = this.props;
+    searchAction.search();
+  }
+
   onSearchClick() {
     alert(1);
     // const { navigationAction } = this.props.navigation;
@@ -50,6 +63,7 @@ class search extends Component {
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
+    const { listResult } = this.props.searchReducer;
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -59,7 +73,12 @@ class search extends Component {
         >
           <Grid>
             <Col size={32} style={[styles.grid_col, styles.col_form]}>
-              <HeaderForm onBack={() => dispatch.pop()} />
+              <HeaderForm
+                onBack={() => dispatch.pop()}
+                headerTitle={I18n.t("searchInfo", {
+                  locale: locale ? locale : "vn"
+                })}
+              />
               <Content>
                 <Form style={styles.formContainer}>
                   <Grid>
@@ -144,11 +163,14 @@ class search extends Component {
                   locale: locale ? locale : "vn"
                 })}
               />
-              <Container>
+              <Container style={styles.listResult_container}>
+                <Loading />
                 <FlatList
-                  data={[{ key: "a" }, { key: "b" }]}
+                  style={styles.listResult}
+                  data={listResult ? listResult : []}
                   keyExtractor={this._keyExtractor}
-                  renderItem={this.renderFlatListItem}
+                  renderItem={this.renderFlatListItem.bind(this)}
+                  numColumns={2}
                 />
               </Container>
             </Col>
@@ -158,24 +180,36 @@ class search extends Component {
     );
   }
 
-  renderFlatListItem(item) {
-    console.log(item)
+  renderFlatListItem(dataItem) {
+    const item = dataItem.item;
+    const { dispatch } = this.props.navigation;
     return (
-      <View key={item.index}>
-          <Text key={"topicCat"+item.index}>{item.key}</Text>
-      </View>
+      <TouchableOpacity
+        key={item.index}
+        style={styles.item_container}
+        onPress={() => dispatch.push({ id: "BillList", userId: 1 })}
+      >
+        <ItemResult
+          key={item.index}
+          userName="Lê Như Quỳnh"
+          position="17T1 15 1503"
+          phone="01676 305 996"
+        />
+      </TouchableOpacity>
     );
   }
-  _keyExtractor = (item, index) => item.id;
+  _keyExtractor(item, index) {
+    return index;
+  }
 }
 function mapStateToProps(state, props) {
   return {
-    // navigationReducer: state.navigationReducer
+    searchReducer: state.searchReducer
   };
 }
 function mapToDispatch(dispatch) {
   return {
-    //navigationAction: bindActionCreators(navigationAction, dispatch)
+    searchAction: bindActionCreators(searchAction, dispatch)
   };
 }
 export default reduxForm({

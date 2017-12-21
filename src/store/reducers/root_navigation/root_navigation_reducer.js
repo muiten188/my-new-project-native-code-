@@ -38,6 +38,16 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
             state
           );
           break;
+        case "BillList":
+          nextState = RootNavigationContainer.router.getStateForAction(
+            NavigationActions.navigate({
+              routeName: action.route.id,
+              params: { userId: action.route.userId },
+              action: NavigationActions.navigate({ routeName: action.route.id })
+            }),
+            state
+          );
+          break;
         default:
           nextState = RootNavigationContainer.router.getStateForAction(
             NavigationActions.navigate({ routeName: action.route.id }),

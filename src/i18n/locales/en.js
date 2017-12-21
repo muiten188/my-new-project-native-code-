@@ -16,6 +16,18 @@ export default {
     apartmentNo:"Apartment No",
     homeName:"Tên chủ hộ",
     mobile:"Số điện thoại",
-    search:"Search"
+    search:"Search",
+    billList:"Danh sách hóa đơn",
+    searchInfo:"Thông tin tìm kiếm",
+    homeInfo:'Thông tin hộ gia đình',
+    homeOwner:"Chủ hộ: ",
+    remainMoney:"Số dư: ",
+    bill:"Hóa đơn: ",
+    status:"Trạng thái: ",
+    billElectric:"Hóa đơn điện: ",
+    billWater:"Hóa đơn nước: ",
+    billServices:"Hóa dịch vụ: ",
+    billTotal:"Tổng hóa đơn: ",
+    rentMonth:"Nợ tháng"
   };
   

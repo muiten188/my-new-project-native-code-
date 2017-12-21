@@ -24,7 +24,7 @@ export default {
     borderColor:'#d7d7d7'
   },
   col_content:{
-    backgroundColor:'#fff'
+    backgroundColor:'#ececec'
   },
   border:{
     borderWidth:0.5,
@@ -54,5 +54,24 @@ export default {
   fieldForm:{
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  listResult:{
+    paddingTop:40
+  },
+  listResult_container:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex:1,
+  },
+  itemList:{
+    width:'50%',
+    justifyContent: 'center',
+    paddingTop:100,
+    alignItems: 'center',
+  },
+  item_container:{
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
   }
 };

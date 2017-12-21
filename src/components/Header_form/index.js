@@ -37,7 +37,9 @@ export default class extends Component {
               <Icon style={styles.iconBack} name="arrow-back" />
             </Button>
           </Col>
-          <Col style={styles.itemHeaderBody} />
+          <Col style={styles.itemHeaderBody}>
+            <H3 style={styles.text}>{headerTitle}</H3>
+          </Col>
         </Grid>
       </Header>
     );

@@ -6,14 +6,14 @@ export default {
     borderColor:'#d7d7d7'
   },
   text: {
-    color: "#fff",
+    color: "#054f9a",
     textAlign: "center",
     fontSize: 17
   },
   itemHeaderBody: {
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 140
+    marginLeft:-25
   },
   itemHeader: {
     width: 150,
