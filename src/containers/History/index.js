@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { View, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import { View, KeyboardAvoidingView, TouchableOpacity,FlatList } from "react-native";
 import {
   Container,
   Text,
@@ -26,8 +26,9 @@ import { InputField } from "../../components/Element/Form/index";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Field, reduxForm } from "redux-form";
 import { DateField } from "../../components/Element/Form";
+import ItemHistory from "../../components/Item_history";
+import Loading from "../../components/Loading";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
-import Picker from "react-native-picker";
 class history extends Component {
   static navigationOptions = {
     header: null
@@ -57,32 +58,6 @@ class history extends Component {
     I18n.currentLocale();
   }
 
-  createDateData() {
-    let date = {};
-    for (let i = 1950; i < 2050; i++) {
-      let month = {};
-      for (let j = 1; j < 13; j++) {
-        let day = [];
-        if (j === 2) {
-          for (let k = 1; k < 29; k++) {
-            day.push(k + "日");
-          }
-        } else if (j in { 1: 1, 3: 1, 5: 1, 7: 1, 8: 1, 10: 1, 12: 1 }) {
-          for (let k = 1; k < 32; k++) {
-            day.push(k + "日");
-          }
-        } else {
-          for (let k = 1; k < 31; k++) {
-            day.push(k + "日");
-          }
-        }
-        month[j + "月"] = day;
-      }
-      date[i + "年"] = month;
-    }
-    return date;
-  }
-
   onSearchClick() {
     const { dispatch } = this.props.navigation;
     dispatch.push({ id: "Search" });
@@ -96,7 +71,45 @@ class history extends Component {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
     const state = this.state;
-    let data=this.createDateData();
+    const listResult  = [
+      { key: "a" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" },
+      { key: "b" },
+      { key: "b" },
+      { key: "b" },
+      { key: "f" }
+    ];
     return (
       <Container style={styles.container}>
         <Header
@@ -110,37 +123,43 @@ class history extends Component {
           showUser={true}
         />
         <View style={styles.container_info_outer}>
-          <TouchableOpacity
-            style={{ marginTop: 20 }}
-            onPress={this._onPressHandle.bind(this)}
-          >
-            <Text>点我</Text>
-          </TouchableOpacity>
-          {/* <Picker
-		style={{
-			height: 300
-		}}
-		showDuration={300}
-		showMask={true}
-		pickerData={}//picker`s value List
-		selectedValue={}//default to be selected value
-		onPickerDone={}//when confirm your choice
-	/> */}
-          {/* <Picker
-            ref={picker => (this.picker = picker)}
-            style={{ height: 320 }}
-            showDuration={300}
-            pickerData={ [1,2,3,4]}
-            selectedValue={["2015年", "12月", "12日"]}
-            onPickerDone={pickedValue => {
-              console.log(pickedValue);
-            }}
-          /> */}
+          {/* <Loading /> */}
+          <FlatList
+            style={styles.listResult}
+            data={listResult ? listResult : []}
+            keyExtractor={this._keyExtractor}
+            renderItem={this.renderFlatListItem.bind(this)}
+            numColumns={2}
+          />
         </View>
       </Container>
     );
   }
+
+  renderFlatListItem(dataItem) {
+    const item = dataItem.item;
+    const { dispatch } = this.props.navigation;
+    return (
+      <TouchableOpacity
+        key={item.index}
+        style={styles.item_container}
+        onPress={() => dispatch.push({ id: "BillList", userId: 1 })}
+      >
+        <ItemHistory
+          key={item.index}
+          userName="Lê Như Quỳnh"
+          position="17T1 15 1503"
+          phone="01676 305 996"
+        />
+      </TouchableOpacity>
+    );
+  }
+  _keyExtractor(item, index) {
+    return index;
+  }
+
 }
+
 function mapStateToProps(state, props) {
   return {
     // navigationReducer: state.navigationReducer

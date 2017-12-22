@@ -7,7 +7,7 @@ export default {
       itemList:{
         width:'50%',
         justifyContent: 'center',
-        paddingTop:40,
+        paddingTop:45,
         paddingBottom:30,
         alignItems: 'center',
       },
@@ -29,7 +29,7 @@ export default {
           width:75,
           height:75,
           borderRadius:50,
-          top:-5,
+          top:0,
           left:52,
           borderWidth:4,
           zIndex:9999,
