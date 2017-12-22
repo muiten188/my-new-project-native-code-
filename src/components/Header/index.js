@@ -21,13 +21,13 @@ export default class extends Component {
   };
   
   render() {
-    const { showButtonLeft, headerTitle, showUser, showSearch,onSearch } = this.props;
+    const { showButtonLeft, headerTitle, showUser, showSearch,onSearch,onBack } = this.props;
     return (
       <Header style={styles.header}>
         <Grid>
           {showButtonLeft == true ? (
             <Col style={styles.itemButtonHeader}>
-              <Button transparent>
+              <Button transparent onPress={onBack}>
                 <Icon name="arrow-back" />
               </Button>
             </Col>

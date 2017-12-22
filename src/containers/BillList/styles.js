@@ -61,7 +61,7 @@ export default {
     width:"100%",
   },
   listResult_container: {
-    alignItems: "center"
+    alignItems: "center",
   },
   itemList: {
     width: "50%",
@@ -93,5 +93,15 @@ export default {
   icon: {
     fontSize: 27,
     marginRight: 10
+  },
+  textRemainMoney:{
+    color:'#82b263',
+    fontSize:17,
+    fontWeight:'bold'
+  },
+  buttonViewHistory:{
+    marginTop:30,
+    marginLeft:30,
+    marginRight:30
   }
 };

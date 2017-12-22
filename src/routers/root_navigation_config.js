@@ -1,6 +1,8 @@
 import UserInfo from "../containers/UserInfo";
 import Search from "../containers/Search";
 import BillList from "../containers/BillList";
+import BillDetail from "../containers/BillDetail";
+import History from "../containers/History";
 
 import SimpleFrom from "../containers/SimpleForm";
 import { addNavigationHelpers, StackNavigator } from "react-navigation";
@@ -19,7 +21,9 @@ export const RootNavigationContainer = StackNavigator(
       }
     },
     Search: { screen: Search },
-    BillList:{screen:BillList}
+    BillList: { screen: BillList },
+    BillDetail: { screen: BillDetail },
+    History: { screen: History }
   },
   stackNavigatorConfiguration
 );

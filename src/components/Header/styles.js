@@ -11,7 +11,7 @@ export default {
     itemHeaderBody:{
         justifyContent: 'center', 
         alignItems: 'center',
-        marginLeft:140
+        marginLeft:120
     },
     itemHeader:{
         width:150,

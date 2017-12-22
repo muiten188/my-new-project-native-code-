@@ -116,9 +116,23 @@ class billList extends Component {
                           locale: locale ? locale : "vn"
                         })}
                       </Label>
-                      <Text>01676 305 996</Text>
+                      <Text style={styles.textRemainMoney}>
+                        300.000.000 VNĐ
+                      </Text>
                     </Item>
                   </View>
+                  <Button
+                    full
+                    style={styles.buttonViewHistory}
+                    onPress={() => dispatch.push({ id: "History" })}
+                  >
+                    <Text uppercase={false}>
+                      {" "}
+                      {I18n.t("viewHistory", {
+                        locale: locale ? locale : "vn"
+                      })}
+                    </Text>
+                  </Button>
                 </View>
               </Content>
             </Col>
@@ -136,7 +150,7 @@ class billList extends Component {
                   style={styles.listResult}
                   data={listResult ? listResult : []}
                   keyExtractor={this._keyExtractor}
-                  renderItem={this.renderFlatListItem}
+                  renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={1}
                 />
               </Container>
@@ -149,13 +163,14 @@ class billList extends Component {
 
   renderFlatListItem(dataItem) {
     const item = dataItem.item;
+    const { dispatch } = this.props.navigation;
     return (
       <TouchableOpacity
         key={item.index}
         style={styles.item_container}
-        onPress={() => alert(1)}
+        onPress={() => dispatch.push({ id: "BillDetail" })}
       >
-        <Bill/>
+        <Bill />
       </TouchableOpacity>
     );
   }

@@ -11,10 +11,11 @@ export default {
   },
   itemList: {
     width: "85%",
-    borderWidth: 0.5,
+    borderWidth: 1,
+    borderRadius:5,
     borderColor: "#cecece",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   billContent: {
     height: 200,
@@ -31,6 +32,7 @@ export default {
   },
   itemTotal: {
     paddingTop: 10,
+    paddingBottom:30,
     borderTopWidth: 4,
     borderColor: "#cecece",
     borderStyle: "dashed"
