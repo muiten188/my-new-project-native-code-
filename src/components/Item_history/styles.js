@@ -80,6 +80,6 @@ export default {
         borderBottomWidth: 0
     },
     itemCash: {
-        marginTop: 10
+        marginTop: 15
     }
 }

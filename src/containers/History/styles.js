@@ -35,6 +35,10 @@ export default {
     alignItems: "center",
   },
   listResult:{
-    paddingTop:40
+    paddingTop:40,
+  },
+  datePicker_Container:{
+    width:'100%',
+    height:70,
   }
 };

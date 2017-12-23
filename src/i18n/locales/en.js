@@ -45,6 +45,9 @@ export default {
     pay:"Thanh toán",
     inOf:"Trong đó",
     viewHistory:"Xem lịch sử giao dịch",
-    history:'Lịch sử giao dịch'
+    history:'Lịch sử giao dịch',
+    cash:'Tiền mặt',
+    credit:'Chuyển khoản',
+    content:'Nội dung'
   };
   

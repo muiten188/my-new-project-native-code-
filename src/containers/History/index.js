@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { View, KeyboardAvoidingView, TouchableOpacity,FlatList } from "react-native";
+import { View, KeyboardAvoidingView, TouchableOpacity, FlatList } from "react-native";
 import {
   Container,
   Text,
@@ -29,6 +29,7 @@ import { DateField } from "../../components/Element/Form";
 import ItemHistory from "../../components/Item_history";
 import Loading from "../../components/Loading";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
+import HistoryPicker from '../../components/Historypicker'
 class history extends Component {
   static navigationOptions = {
     header: null
@@ -71,7 +72,7 @@ class history extends Component {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
     const state = this.state;
-    const listResult  = [
+    const listResult = [
       { key: "a" },
       { key: "b" },
       { key: "b" },
@@ -124,6 +125,7 @@ class history extends Component {
         />
         <View style={styles.container_info_outer}>
           {/* <Loading /> */}
+          <HistoryPicker />
           <FlatList
             style={styles.listResult}
             data={listResult ? listResult : []}
@@ -146,10 +148,11 @@ class history extends Component {
         onPress={() => dispatch.push({ id: "BillList", userId: 1 })}
       >
         <ItemHistory
-          key={item.index}
-          userName="Lê Như Quỳnh"
-          position="17T1 15 1503"
-          phone="01676 305 996"
+          tranCode={"GD-2-171006-2017"}
+          date={"31/08/2017"}
+          isCash={false}
+          totalMoney={"1.500.000"}
+          content={"TTHD 8/2017"}
         />
       </TouchableOpacity>
     );

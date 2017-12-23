@@ -21,36 +21,51 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import styles from "./styles";
 import User from "../User";
+import I18n from "../../i18n/i18n";
 export default class extends Component {
   static navigationOptions = {
     header: null
   };
 
   render() {
-    const { key, userName, position, phone, avatarUrl } = this.props;
+    const { locale = "vn" } = this.props;
+    const { isCash, totalMoney, content, date, tranCode } = this.props;
     return (
-      <View key={key} style={styles.itemList}>
+      <View style={styles.itemList}>
         <View style={styles.header}>
           <Grid>
             <Col style={[styles.center, styles.left]}>
-              <Text>31/08/2017</Text>
+              <Text>{date}</Text>
             </Col>
             <Col style={[styles.center, styles.right]}>
-              <Text style={styles.tranCode}>GD-2-171006-2017</Text>
+              <Text style={styles.tranCode}>{tranCode}</Text>
             </Col>
           </Grid>
         </View>
         <View style={styles.item}>
-          <Item style={[styles.itemPostion,styles.borderBottomNone]}>
-            <Icon name="money" style={styles.icon} />
-            <Text>Tiền mặt</Text>
+          {isCash ?
+            <Item style={[styles.itemPostion, styles.borderBottomNone]}>
+              <Icon name="money" style={styles.icon} />
+              <Text>{I18n.t("cash", {
+                locale: locale ? locale : "vn"
+              })}</Text>
+            </Item>
+            :
+            <Item style={[styles.itemPostion, styles.borderBottomNone]}>
+              <Icon name="credit-card-alt" style={styles.icon} />
+              <Text>{I18n.t("credit", {
+                locale: locale ? locale : "vn"
+              })}</Text>
+            </Item>
+          }
+          <Item style={[styles.borderBottomNone, styles.itemCash]}>
+            <H1 style={[styles.pay_item, styles.totalPay]}>{totalMoney + " VNĐ"}</H1>
           </Item>
-          <Item style={[styles.borderBottomNone,styles.itemCash]}>
-            <H1 style={[styles.pay_item, styles.totalPay]}>1.500.000 VNĐ</H1>
-          </Item>
-          <Item style={[styles.itemPhone,styles.borderBottomNone]}>
-            <Label>Nội dung</Label>
-            <Text>TTHD 8/2017</Text>
+          <Item style={[styles.itemPhone, styles.borderBottomNone]}>
+            <Label>{I18n.t("content", {
+              locale: locale ? locale : "vn"
+            })}</Label>
+            <Text>{content}</Text>
           </Item>
         </View>
       </View>
