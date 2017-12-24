@@ -33,7 +33,8 @@ export default {
     },
     prev_next_text:{
         width:200,
-        fontSize:15
+        fontSize:15,
+        opacity:0.5
     },
     current_Text:{
         width:100,
