@@ -113,11 +113,11 @@ class login extends Component {
                 source={require("../../../resources/assets/us_flag.svg")}
               />
             ) : (
-              <Thumbnail
-                small
-                source={require("../../../resources/assets/vn_flag.svg")}
-              />
-            )}
+                <Thumbnail
+                  small
+                  source={require("../../../resources/assets/vn_flag.svg")}
+                />
+              )}
           </Col>
           <Col>
             <Picker
@@ -219,7 +219,11 @@ class login extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    loginReducer: state.loginReducer
+    loginReducer: state.loginReducer,
+    initialValues: {
+      username: "synt",
+      password: '123456a@'
+    }
   };
 }
 function mapToDispatch(dispatch) {
@@ -234,7 +238,16 @@ function mapToDispatch(dispatch) {
 // }), {...commonActions, ...authActions})
 // @reduxForm({ form: 'LoginForm', validate})
 
-export default reduxForm({
+// export default reduxForm({
+//   form: "LoginForm",
+//   validate,
+// })(connect(mapStateToProps, mapToDispatch)(login));
+login = reduxForm({
   form: "LoginForm",
-  validate
-})(connect(mapStateToProps, mapToDispatch)(login));
+  validate,
+})(login);
+login = connect(
+  mapStateToProps,
+  mapToDispatch
+)(login)
+export default login;

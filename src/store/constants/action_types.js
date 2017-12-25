@@ -14,4 +14,6 @@ export const DRAWERCLOSE = "DRAWERCLOSE";
 export const DEFAULT = 'DEFAULT';
 //list film actions
 export const LIST_RESULT = 'LIST_RESULT';
+//user info
+export const USER_INFO = 'USER_INFO';
 

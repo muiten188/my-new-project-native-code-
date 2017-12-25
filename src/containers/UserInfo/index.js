@@ -30,6 +30,7 @@ import { Field, reduxForm } from "redux-form";
 import { DateField } from "../../components/Element/Form";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
 import * as helper from "../../helper";
+import * as userInfoAction from "../../store/actions/containers/userInfo_action";
 
 class userInfo extends Component {
   static navigationOptions = {
@@ -57,22 +58,16 @@ class userInfo extends Component {
   componentDidMount() {
     this.getUser();
   }
+
   getUser() {
     try {
       const user = {};
+      const { userInfoAction } = this.props;
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
           alert(value);
           user = JSON.parse(value);
-          this.setState({
-            username: user.username,
-            fullName: user.fullName,
-            phoneNumber: user.phoneNumber,
-            birthDay: user.birthDay,
-            email: user.email,
-            avatar: user.avatar,
-            identification: user.identification
-          });
+          userInfoAction._getUser(user);
         })
         .done();
     } catch (error) {
@@ -80,15 +75,15 @@ class userInfo extends Component {
       // Error retrieving data
     }
   }
-
   onSearchClick() {
     const { dispatch } = this.props.navigation;
-    dispatch.push({ id: "Search" });
+    // dispatch.push({ id: "Search" });
   }
 
   render() {
     const locale = "vn";
     const { state } = this;
+    debugger;
     return (
       <Container style={styles.container}>
         <Header
@@ -121,10 +116,10 @@ class userInfo extends Component {
               </Button>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>{state.fullName}</H3>
+              <H3>{this.props.initialValues.fullName}</H3>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>{"CMTND: " + state.identification}</H3>
+              <H3>{"CMTND: " + this.props.initialValues.identification}</H3>
             </Item>
             <Form initialValues={{ email: "buidinhbach123@gmail.com" }}>
               <Field
@@ -138,7 +133,7 @@ class userInfo extends Component {
                 icon="calendar"
               />
               <Field
-                name="email"
+                name="phoneNumber"
                 disabled={!this.state.isEdit}
                 style={styles.infoField}
                 placeholder={I18n.t("mobile", {
@@ -190,18 +185,35 @@ class userInfo extends Component {
     );
   }
 }
+
+
 function mapStateToProps(state, props) {
+  debugger;
   return {
-    // initialValues: { email: "0001" }
-  };
+    initialValues: state.userInfoReducer.user
+  }
 }
 function mapToDispatch(dispatch) {
   return {
-    //navigationAction: bindActionCreators(navigationAction, dispatch),
+    userInfoAction: bindActionCreators(userInfoAction, dispatch),
   };
 }
-userInfo = connect(mapStateToProps, mapToDispatch)(userInfo);
+// userInfo = connect(state => ({
+//   initialValues: {
+//     name: "foobar"
+//   }
+// }), mapToDispatch)(userInfo);
 
-export default reduxForm({
-  form: "userInfo"
+// export default reduxForm({
+//   form: "userInfo"
+// })(userInfo);
+
+userInfo = reduxForm({
+  form: "userInfo",
+  enableReinitialize:true
 })(userInfo);
+userInfo = connect(
+  mapStateToProps,
+  mapToDispatch
+)(userInfo)
+export default userInfo;
