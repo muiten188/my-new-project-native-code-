@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { bindActionCreators } from 'redux';
-import { View, KeyboardAvoidingView } from "react-native";
+import { bindActionCreators } from "redux";
+import {
+  View,
+  KeyboardAvoidingView,
+  AsyncStorage,
+  TextInput
+} from "react-native";
 import {
   Container,
   Text,
@@ -10,7 +15,6 @@ import {
   Thumbnail,
   Form,
   Item,
-  Input,
   H1,
   H2,
   H3
@@ -25,6 +29,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Field, reduxForm } from "redux-form";
 import { DateField } from "../../components/Element/Form";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
+import * as helper from "../../helper";
 
 class userInfo extends Component {
   static navigationOptions = {
@@ -35,20 +40,55 @@ class userInfo extends Component {
     super(props);
 
     this.state = {
-      isEdit: false
+      isEdit: false,
+      username: '',
+      fullName: '',
+      phoneNumber: '',
+      birthDay: '',
+      email: '',
+      avatar: '',
+      identification: ''
     };
+
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
   }
+  componentDidMount() {
+    this.getUser();
+  }
+  getUser() {
+    try {
+      const user = {};
+      const hadUser = AsyncStorage.getItem("@user")
+        .then(value => {
+          alert(value);
+          user = JSON.parse(value);
+          this.setState({
+            username: user.username,
+            fullName: user.fullName,
+            phoneNumber: user.phoneNumber,
+            birthDay: user.birthDay,
+            email: user.email,
+            avatar: user.avatar,
+            identification: user.identification
+          });
+        })
+        .done();
+    } catch (error) {
+      alert(error);
+      // Error retrieving data
+    }
+  }
 
-  onSearchClick(){
+  onSearchClick() {
     const { dispatch } = this.props.navigation;
     dispatch.push({ id: "Search" });
   }
 
   render() {
     const locale = "vn";
+    const { state } = this;
     return (
       <Container style={styles.container}>
         <Header
@@ -81,12 +121,12 @@ class userInfo extends Component {
               </Button>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>Nguyễn Hoàng Diệu Linh</H3>
+              <H3>{state.fullName}</H3>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>CMTND: 013369666</H3>
+              <H3>{"CMTND: " + state.identification}</H3>
             </Item>
-            <Form>
+            <Form initialValues={{ email: "buidinhbach123@gmail.com" }}>
               <Field
                 name="birthday"
                 disabled={!this.state.isEdit}
@@ -98,12 +138,13 @@ class userInfo extends Component {
                 icon="calendar"
               />
               <Field
-                name="mobile"
+                name="email"
                 disabled={!this.state.isEdit}
                 style={styles.infoField}
                 placeholder={I18n.t("mobile", {
                   locale: locale ? locale : "vi"
                 })}
+                type="text"
                 component={InputField}
                 icon="volume-control-phone"
               />
@@ -127,7 +168,9 @@ class userInfo extends Component {
                 component={InputField}
                 icon="user-o"
               />
-              <Item style={[styles.borderBottomNone,styles.itemButton_changepw]}>
+              <Item
+                style={[styles.borderBottomNone, styles.itemButton_changepw]}
+              >
                 <Button
                   full
                   style={styles.button_changepassword}
@@ -149,7 +192,7 @@ class userInfo extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    // navigationReducer: state.navigationReducer
+    // initialValues: { email: "0001" }
   };
 }
 function mapToDispatch(dispatch) {
@@ -157,10 +200,7 @@ function mapToDispatch(dispatch) {
     //navigationAction: bindActionCreators(navigationAction, dispatch),
   };
 }
-userInfo = connect(
-  mapStateToProps,
-  mapToDispatch
-)(userInfo);
+userInfo = connect(mapStateToProps, mapToDispatch)(userInfo);
 
 export default reduxForm({
   form: "userInfo"

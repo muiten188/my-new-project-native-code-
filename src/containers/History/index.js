@@ -145,7 +145,7 @@ class history extends Component {
       <TouchableOpacity
         key={item.index}
         style={styles.item_container}
-        onPress={() => dispatch.push({ id: "BillList", userId: 1 })}
+        onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
       >
         <ItemHistory
           tranCode={"GD-2-171006-2017"}

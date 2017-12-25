@@ -48,5 +48,14 @@ export default {
     history:'Lịch sử giao dịch',
     cash:'Tiền mặt',
     credit:'Chuyển khoản',
-    content:'Nội dung'
+    content:'Nội dung',
+    time:"Thời gian: ",
+    tranCode:"Mã giao dịch: ",
+    supportStaff:'Nhân viên hỗ trợ: ',
+    rentFisrt:'Nợ đầu',
+    bill2:'Hóa đơn',
+    remain:"Số dư",
+    cash:'Tiền mặt',
+    credit:'Quẹt thẻ',
+    remain2:"Còn lại"
   };

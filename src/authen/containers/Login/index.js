@@ -1,5 +1,5 @@
-import React, { Component,AsyncStorage } from "react";
-import { TouchableOpacity, Image, View} from "react-native";
+import React, { Component } from "react";
+import { TouchableOpacity, Image, View, AsyncStorage } from "react-native";
 import {
   Container,
   Spinner,
@@ -25,25 +25,27 @@ import * as loginAction from "../../actions/login_action";
 import I18n from "../../../i18n/i18n";
 import { Field, reduxForm } from "redux-form";
 import { InputField } from "../../../components/Element/Form";
+import Loading from "../../../components/Loading";
 
+import * as helper from "../../../helper";
 
 const validate = values => {
   const error = {};
-  error.username = '';
-  error.password = '';
+  error.username = "";
+  error.password = "";
   var username = values.username;
   var password = values.password;
   if (values.username === undefined) {
-    username = '';
+    username = "";
   }
   if (values.password === undefined) {
-    password = '';
+    password = "";
   }
-  if (username.length==0 || username == '') {
-    error.username = 'empty';
+  if (username.length == 0 || username == "") {
+    error.username = "empty";
   }
-  if (password.length==0 || password == '') {
-    error.password = 'empty';
+  if (password.length == 0 || password == "") {
+    error.password = "empty";
   }
   return error;
 };
@@ -55,7 +57,7 @@ class login extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       languageSelect: "vn",
       selected1: "key1",
@@ -66,7 +68,6 @@ class login extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    
   }
 
   onValueChange(value) {
@@ -76,10 +77,28 @@ class login extends Component {
   }
 
   render() {
-    const { loginAction,handleSubmit, submitting, setToast } = this.props;  
-    const locale='vn';
+    const { loginAction, handleSubmit, submitting, loginReducer } = this.props;
+    const locale = "vn";
+    if (
+      loginReducer.Logged != null &&
+      loginReducer.Logged == false &&
+      loginReducer.Loging == false
+    ) {
+      alert("Đăng nhập thất bại");
+      loginReducer.Logged = null;
+    }
+    if (loginReducer.Logged == true) {
+      try {
+        AsyncStorage.clear();
+        AsyncStorage.setItem("@user", JSON.stringify(loginReducer.user));
+      } catch (error) {
+        console.log("save error");
+      }
+    }
+
     return (
       <View style={{ flex: 1 }}>
+        <Loading isShow={loginReducer.Loging} />
         {/* background */}
         <Image
           source={require("../../../resources/assets/splash.png")}
@@ -135,23 +154,17 @@ class login extends Component {
                       <Field
                         name="username"
                         placeholder={I18n.t("account", {
-                          locale: locale
-                            ? locale
-                            : "vi"
+                          locale: locale ? locale : "vi"
                         })}
                         component={InputField}
                       />
-                      
-                      
                     </Item>
                     <Item regular style={styles.item}>
                       <Icon active name="lock" />
                       <Field
                         name="password"
                         placeholder={I18n.t("password", {
-                          locale: locale
-                            ? locale
-                            : "vi"
+                          locale: locale ? locale : "vi"
                         })}
                         secureTextEntry={true}
                         component={InputField}
@@ -216,13 +229,12 @@ function mapToDispatch(dispatch) {
 }
 
 // export default connect(mapStateToProps, mapToDispatch)(login);
-// @connect(state=>({  
-//   loginRequest: commonSelectors.getRequest(state, 'login'),  
+// @connect(state=>({
+//   loginRequest: commonSelectors.getRequest(state, 'login'),
 // }), {...commonActions, ...authActions})
 // @reduxForm({ form: 'LoginForm', validate})
 
 export default reduxForm({
-  form: 'LoginForm',
+  form: "LoginForm",
   validate
-})(connect(mapStateToProps, mapToDispatch)(login))
-
+})(connect(mapStateToProps, mapToDispatch)(login));

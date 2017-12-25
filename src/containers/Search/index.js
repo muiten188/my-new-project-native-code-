@@ -64,6 +64,7 @@ class search extends Component {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
     const { listResult } = this.props.searchReducer;
+    const {searchAction,handleSubmit} =this.props;
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -98,7 +99,7 @@ class search extends Component {
                         </Row>
                         <Row style={[styles.border, styles.fieldForm]}>
                           <Field
-                            name="building"
+                            name="floor"
                             placeholder={I18n.t("floor", {
                               locale: locale ? locale : "vi"
                             })}
@@ -107,7 +108,7 @@ class search extends Component {
                         </Row>
                         <Row style={[styles.border, styles.fieldForm]}>
                           <Field
-                            name="building"
+                            name="apartment"
                             placeholder={I18n.t("apartmentNo", {
                               locale: locale ? locale : "vi"
                             })}
@@ -122,7 +123,7 @@ class search extends Component {
                       </Col>
                       <Col style={[styles.border, styles.fieldForm]}>
                         <Field
-                          name="building"
+                          name="ownerName"
                           placeholder={I18n.t("homeName", {
                             locale: locale ? locale : "vi"
                           })}
@@ -136,7 +137,7 @@ class search extends Component {
                       </Col>
                       <Col style={[styles.border, styles.fieldForm]}>
                         <Field
-                          name="building"
+                          name="ownerPhone"
                           placeholder={I18n.t("mobile", {
                             locale: locale ? locale : "vi"
                           })}
@@ -145,7 +146,7 @@ class search extends Component {
                       </Col>
                     </Row>
                   </Grid>
-                  <Button full style={{ marginLeft: 50, marginRight: 50 }}>
+                  <Button full onPress={handleSubmit(searchAction.search)} style={{ marginLeft: 50, marginRight: 50 }}>
                     <Text>
                       {I18n.t("search", {
                         locale: locale ? locale : "vi"
@@ -191,9 +192,9 @@ class search extends Component {
       >
         <ItemResult
           key={item.index}
-          userName="Lê Như Quỳnh"
-          position="17T1 15 1503"
-          phone="01676 305 996"
+          userName={item.ownerName}
+          position={item.apartmentName}
+          phone={item.ownerPhone}
         />
       </TouchableOpacity>
     );

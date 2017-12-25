@@ -1,1 +1,1 @@
-export const CRAWLER_HOST='172.17.2.120:8888';
+export const API_HOST='http://113.171.23.144/hapulico-api-tablet/';

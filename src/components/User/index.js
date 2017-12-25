@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,TouchableOpacity,UIManager,findNodeHandle} from 'react-native';
+import {View,TouchableOpacity,UIManager,findNodeHandle,AsyncStorage} from 'react-native';
 import {Button,Text} from 'native-base'
 import Icon from 'react-native-vector-icons/EvilIcons';
 
@@ -10,18 +10,62 @@ export default class extends React.Component {
     // show error here
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isEdit: false,
+      username: '',
+      fullName: '',
+      phoneNumber: '',
+      birthDay: '',
+      email: '',
+      avatar: '',
+      identification: ''
+    };
+  }
+
   handleMenuPress = () => {
     const { actions, onPress } = this.props;
 
     UIManager.showPopupMenu(
       findNodeHandle(this.refs.menu),
-      actions,
+      [this.state.fullName,...actions],
       this.handleShowPopupError,
       onPress,
     );
   };
 
+  componentDidMount() {
+    this.getUser();
+  }
+
+  getUser() {
+    try {
+      const user = {};
+      const hadUser = AsyncStorage.getItem("@user")
+        .then(value => {
+          alert(value);
+          user = JSON.parse(value);
+          this.setState({
+            username: user.username,
+            fullName: user.fullName,
+            phoneNumber: user.phoneNumber,
+            birthDay: user.birthDay,
+            email: user.email,
+            avatar: user.avatar,
+            identification: user.identification
+          });
+        })
+        .done();
+    } catch (error) {
+      alert(error);
+      // Error retrieving data
+    }
+  }
+
   render() {
+    const {state} =this;
     return (
       <View>
         { this.props.children }
@@ -32,7 +76,7 @@ export default class extends React.Component {
             color='white'
             ref="menu"
           />
-          <Text>User</Text>
+          <Text>{this.state.fullName}</Text>
         </Button>
       </View>
     );
