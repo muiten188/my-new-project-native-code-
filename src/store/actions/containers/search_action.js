@@ -4,16 +4,16 @@ import * as AppConfig from "../../../config/app_config";
 export function search(values) {
   let data = [];
   let dataPost = values || {};
-  // dispatch(_search());
   return dispatch => {
-    fetch(`${AppConfig.API_HOST}tablet/apartment`, {
-      method: "GET"
+    dispatch(_searching());
+    fetch(`${AppConfig.API_HOST}tablet/apartment?${getQueryString(dataPost)}`, {
+      method: "GET",
+      qs:dataPost
     })
       .then(function(response) {
         return response.json();
       })
       .then(function(responseJson) {
-        debugger;
         if (responseJson.data) {
           data = responseJson.data;
           dispatch(_search(data));
@@ -27,37 +27,28 @@ export function search(values) {
 function _search(data) {
   return {
     type: types.LIST_RESULT,
-    data: data
+    data: data,
+    isLoading:false
   };
 }
 
-export function getListFilm() {
-  return dispatch => {
-    let oListFilm;
-    fetch(
-      `http://${
-        AppConfig.CRAWLER_HOST
-      }/oFilmSite/getListFilm?url=https://phim14.net&name=phim14`,
-      {
-        method: "GET"
-      }
-    )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(responseJson) {
-        if (responseJson.IsSuccess) {
-          oListFilm = JSON.parse(responseJson.Data);
-          dispatch(listFilm(oListFilm));
-        } else {
-          //fail
-        }
-      });
+function _searching(){
+  return {
+    type: types.SEARCHING,
+    isLoading: true
   };
 }
-export function listFilm(oListFilm) {
-  return {
-    type: types.LIST_FILM,
-    oListFilm
-  };
+
+function getQueryString(params) {
+  return Object.keys(params)
+    .map(k => {
+      if (Array.isArray(params[k])) {
+        return params[k]
+          .map(val => `${encodeURIComponent(k)}[]=${encodeURIComponent(val)}`)
+          .join("&");
+      }
+
+      return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+    })
+    .join("&");
 }

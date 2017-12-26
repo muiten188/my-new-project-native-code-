@@ -38,7 +38,7 @@ export default class extends Component {
           {showUser == true ? (
             <Col style={styles.itemHeader}>
               <User
-                actions={["item1", "item2", "LogOut"]}
+                actions={["LogOut"]}
                 onPress={(e, i) => console.log(i)}
               />
             </Col>

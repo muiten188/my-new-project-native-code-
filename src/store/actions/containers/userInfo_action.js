@@ -13,7 +13,6 @@ export function getUser() {
         return response.json();
       })
       .then(function(responseJson) {
-        debugger;
         if (responseJson.data) {
           data = responseJson.data;
           dispatch(_search(data));

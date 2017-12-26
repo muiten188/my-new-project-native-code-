@@ -61,7 +61,6 @@ class SimpleForm extends Component {
     this.state = { email: "" }
   }
   renderInput({ input, label, type, meta: { touched, error, warning }, secureTextEntry }) {
-    debugger;
     var hasError = false;
     if (error !== undefined) {
       hasError = true;

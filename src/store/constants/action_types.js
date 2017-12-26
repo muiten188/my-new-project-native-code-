@@ -12,8 +12,13 @@ export const DRAWEROPEN = "DRAWEROPEN";
 export const DRAWERCLOSE = "DRAWERCLOSE";
 //
 export const DEFAULT = 'DEFAULT';
-//list film actions
+//search actions
 export const LIST_RESULT = 'LIST_RESULT';
+export const SEARCHING = 'SEARCHING';
+
 //user info
 export const USER_INFO = 'USER_INFO';
-
+//bill list
+export const BALANCE = 'BALANCE';
+export const BILL_LIST = 'BILL_LIST';
+export const BILL_LISTING = 'BILL_LISTING';

@@ -11,9 +11,7 @@ export function setAsyncStorage(key,value){
 
 export function getAsyncStorage(key,callback){
     try{
-        debugger;
        var s= AsyncStorage.getItem("@user").then((value) => {
-            debugger;
             this.setState({"myKey": value});
         }).done();
         AsyncStorage.getItem(key).then(callback).done();

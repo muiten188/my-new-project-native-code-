@@ -31,7 +31,7 @@ import { DateField } from "../../components/Element/Form";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
 import * as helper from "../../helper";
 import * as userInfoAction from "../../store/actions/containers/userInfo_action";
-
+import * as AppConfig from '../../config/app_config';
 class userInfo extends Component {
   static navigationOptions = {
     header: null
@@ -42,13 +42,13 @@ class userInfo extends Component {
 
     this.state = {
       isEdit: false,
-      username: '',
-      fullName: '',
-      phoneNumber: '',
-      birthDay: '',
-      email: '',
-      avatar: '',
-      identification: ''
+      username: "",
+      fullName: "",
+      phoneNumber: "",
+      birthDay: "",
+      email: "",
+      avatar: "",
+      identification: ""
     };
 
     I18n.defaultLocale = "vi";
@@ -65,7 +65,7 @@ class userInfo extends Component {
       const { userInfoAction } = this.props;
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
-          alert(value);
+          // alert(value);
           user = JSON.parse(value);
           userInfoAction._getUser(user);
         })
@@ -77,13 +77,17 @@ class userInfo extends Component {
   }
   onSearchClick() {
     const { dispatch } = this.props.navigation;
-    // dispatch.push({ id: "Search" });
+    dispatch.push({ id: "Search" });
   }
-
-  render() {
+/**
+ * 
+ * 
+ * @returns 
+ * @memberof userInfo
+ */
+render() {
     const locale = "vn";
     const { state } = this;
-    debugger;
     return (
       <Container style={styles.container}>
         <Header
@@ -102,10 +106,17 @@ class userInfo extends Component {
             <Item style={[styles.itemAvatar, styles.item_margin]}>
               <Thumbnail
                 style={styles.thumbnail_avatar}
-                source={{
-                  uri:
-                    "http://www.chupdep.com/wp-content/uploads/2015/08/xu_huong_hoc_anh_chan_dung_cua_gioi_tre__4.jpg"
-                }}
+                
+                source={
+                  this.props.user.avatar
+                    ? {
+                        uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
+                      }
+                    : {
+                        uri:
+                          "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg"
+                      }
+                }
               />
               <Button
                 style={styles.button_edit}
@@ -116,12 +127,12 @@ class userInfo extends Component {
               </Button>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>{this.props.initialValues.fullName}</H3>
+              <H3>{this.props.user.fullName}</H3>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>{"CMTND: " + this.props.initialValues.identification}</H3>
+              <H3>{"CMTND: " + this.props.user.identification}</H3>
             </Item>
-            <Form initialValues={{ email: "buidinhbach123@gmail.com" }}>
+            <Form >
               <Field
                 name="birthday"
                 disabled={!this.state.isEdit}
@@ -186,34 +197,21 @@ class userInfo extends Component {
   }
 }
 
-
 function mapStateToProps(state, props) {
-  debugger;
   return {
-    initialValues: state.userInfoReducer.user
-  }
+    initialValues: state.userInfoReducer.user,
+    user: state.userInfoReducer.user
+  };
 }
 function mapToDispatch(dispatch) {
   return {
-    userInfoAction: bindActionCreators(userInfoAction, dispatch),
+    userInfoAction: bindActionCreators(userInfoAction, dispatch)
   };
 }
-// userInfo = connect(state => ({
-//   initialValues: {
-//     name: "foobar"
-//   }
-// }), mapToDispatch)(userInfo);
-
-// export default reduxForm({
-//   form: "userInfo"
-// })(userInfo);
 
 userInfo = reduxForm({
   form: "userInfo",
-  enableReinitialize:true
+  enableReinitialize: true
 })(userInfo);
-userInfo = connect(
-  mapStateToProps,
-  mapToDispatch
-)(userInfo)
+userInfo = connect(mapStateToProps, mapToDispatch)(userInfo);
 export default userInfo;

@@ -27,15 +27,41 @@ export default class extends Component {
     header: null
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      total: 0
+    };
+    Number.prototype.format = function(n, x) {
+      var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
+      return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
+    };
+  }
+
+  componentDidMount() {
+    const { listInvoiceDetail } = this.props;
+    let total = this.state.total;
+    for (var i = 0; i < listInvoiceDetail.length; i++) {
+      total = total + listInvoiceDetail[i].invoiceDetailAmount;
+    }
+    this.setState({
+      total: total
+    });
+  }
+
   render() {
     const locale = "vn";
-    const { key, status = 1 } = this.props;
+    const { listInvoiceDetail, invoiceStatus, invoiceMonth } = this.props;
+    const { state } = this;
     return (
       <View style={styles.itemList}>
         <View
           style={[
             styles.header,
-            status == 1 ? styles.header_payed : styles.header_notPayed
+            invoiceStatus == "INCOMPLETE"
+              ? styles.header_payed
+              : styles.header_notPayed
           ]}
         >
           <Grid>
@@ -46,11 +72,11 @@ export default class extends Component {
                     locale: locale ? locale : "vn"
                   })}
                 </Label>
-                <Text>8/2017</Text>
+                <Text>{invoiceMonth}</Text>
               </Item>
             </Col>
             <Col style={styles.headerRight}>
-              <Item style={[styles.itemBorderNone,styles.flex_end]}>
+              <Item style={[styles.itemBorderNone, styles.flex_end]}>
                 <Label>
                   {I18n.t("status", {
                     locale: locale ? locale : "vn"
@@ -58,10 +84,14 @@ export default class extends Component {
                 </Label>
                 <Text
                   style={
-                    status == 1 ? styles.text_paymented : styles.text_notPayment
+                    invoiceStatus == "INCOMPLETE"
+                      ? styles.text_paymented
+                      : styles.text_notPayment
                   }
                 >
-                  {status == 1 ? "Chưa thanh toán" : "Đã thanh toán"}
+                  {invoiceStatus == "INCOMPLETE"
+                    ? "Chưa thanh toán"
+                    : "Đã thanh toán"}
                 </Text>
               </Item>
             </Col>
@@ -70,7 +100,7 @@ export default class extends Component {
         <View style={styles.billContent}>
           <Grid>
             {/* row nợ tháng */}
-            <Row style={[styles.item_marginTop, styles.itemRent]}>
+            {/* <Row style={[styles.item_marginTop, styles.itemRent]}>
               <Col>
                 <Item style={styles.itemBorderNone}>
                   <Label>
@@ -84,54 +114,18 @@ export default class extends Component {
               <Col>
                 <Text>200.000 VNĐ</Text>
               </Col>
-            </Row>
+            </Row> */}
             {/* row hóa đơn  */}
-            <Row>
-              <Col>
-                <Item style={styles.itemBorderNone}>
-                  <Icon name="plug" />
-                  <Label>
-                    {I18n.t("billElectric", {
-                      locale: locale ? locale : "vn"
-                    })}
-                  </Label>
-                </Item>
-              </Col>
-              <Col>
-                <Text>300.000 VNĐ</Text>
-              </Col>
-            </Row>
-            {/* row tông tiền hóa đơn */}
-            <Row>
-              <Col>
-                <Item style={styles.itemBorderNone}>
-                  <Icon name="tint" />
-                  <Label>
-                    {I18n.t("billWater", {
-                      locale: locale ? locale : "vn"
-                    })}
-                  </Label>
-                </Item>
-              </Col>
-              <Col>
-                <Text>300.000 VNĐ</Text>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Item style={styles.itemBorderNone}>
-                  <Icon name="building" />
-                  <Label>
-                    {I18n.t("billServices", {
-                      locale: locale ? locale : "vn"
-                    })}
-                  </Label>
-                </Item>
-              </Col>
-              <Col>
-                <Text>300.000 VNĐ</Text>
-              </Col>
-            </Row>
+            {listInvoiceDetail.map((item, index) => {
+              return (
+                <Row key={index} style={{ marginTop: 5, marginBottom: 5 }}>
+                  <Col>{this.buildRowBillDetail(item, locale)}</Col>
+                  <Col>
+                    <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>
+                  </Col>
+                </Row>
+              );
+            })}
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
               <Col>
@@ -142,12 +136,81 @@ export default class extends Component {
                 </H3>
               </Col>
               <Col>
-                <H3>300.000 VNĐ</H3>
+                <H3>{state.total.format() + " VNĐ"}</H3>
               </Col>
             </Row>
           </Grid>
         </View>
       </View>
     );
+  }
+
+  buildRowBillDetail(item, locale) {
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Icon name="building" />
+          <Label>
+            {I18n.t("buildingCost", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Icon name="plug" />
+          <Label>
+            {I18n.t("billElectric", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Icon name="tint" />
+          <Label>
+            {I18n.t("billWater", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Icon name="motorcycle" />
+          <Label>
+            {I18n.t("motobike", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Icon name="car" />
+          <Label>
+            {I18n.t("car", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Label>
+            {I18n.t("serviceOther", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    }
   }
 }

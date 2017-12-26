@@ -23,7 +23,10 @@ export default {
     width: 150,
     height: 150,
     borderRadius: 100,
-    marginLeft: 125
+    marginLeft: 125,
+    borderWidth:1,
+    borderColor:'#cecece',
+    // backgroundColor:'red'
   },
   button_edit: {
     position: "absolute",

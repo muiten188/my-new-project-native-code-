@@ -33,7 +33,7 @@ import { Field, reduxForm } from "redux-form";
 import { DateField } from "../../components/Element/Form";
 import Bill from "../../components/Bill";
 import ItemResult from "../../components/Item_result";
-import * as searchAction from "../../store/actions/containers/search_action";
+import * as billListAction from "../../store/actions/containers/billList_actions";
 import Loading from "../../components/Loading";
 class billList extends Component {
   static navigationOptions = {
@@ -52,8 +52,8 @@ class billList extends Component {
   }
 
   componentDidMount() {
-    const { searchAction } = this.props;
-    searchAction.search();
+    const { billListAction, navigation } = this.props;
+    billListAction.getBillList(navigation.state.params.apartment.apartmentId);
   }
 
   onSearchClick() {
@@ -64,8 +64,8 @@ class billList extends Component {
 
   render() {
     const locale = "vn";
-    const { dispatch } = this.props.navigation;
-    const { listResult } = this.props.searchReducer;
+    const { dispatch, state } = this.props.navigation;
+    const { listResult, isLoading, balance } = this.props.billListReducer;
     const { key, userName, position, phone, avatarUrl } = this.props;
     return (
       <Container style={styles.container}>
@@ -87,8 +87,8 @@ class billList extends Component {
                   <Thumbnail
                     style={styles.thumbnail_avatar}
                     source={{
-                      uri: avatarUrl
-                        ? avatarUrl
+                      uri: state.params.apartment.avatarUrl
+                        ? state.params.apartment.avatarUrl
                         : "https://baomoi-photo-3-td.zadn.vn/w700_r1m/17/07/15/170/22759925/1_42393.jpg"
                     }}
                   />
@@ -99,16 +99,16 @@ class billList extends Component {
                           locale: locale ? locale : "vn"
                         })}
                       </Label>
-                      <H3>Nguyễn Thành Nam</H3>
+                      <H3>{state.params.apartment.ownerName}</H3>
                     </Item>
 
                     <Item style={styles.item}>
                       <Icon name="map-marker" style={styles.icon} />
-                      <Text>17T1 15 1503</Text>
+                      <Text>{state.params.apartment.apartmentName}</Text>
                     </Item>
                     <Item style={styles.item}>
                       <Icon name="phone" style={styles.icon} />
-                      <Text>01676 305 996</Text>
+                      <Text>{state.params.apartment.ownerPhone}</Text>
                     </Item>
                     <Item style={styles.item}>
                       <Label inlineLabel>
@@ -117,7 +117,17 @@ class billList extends Component {
                         })}
                       </Label>
                       <Text style={styles.textRemainMoney}>
-                        300.000.000 VNĐ
+                        {balance + " VNĐ"}
+                      </Text>
+                    </Item>
+                    <Item style={styles.item}>
+                      <Label inlineLabel>
+                        {I18n.t("remainRent", {
+                          locale: locale ? locale : "vn"
+                        })}
+                      </Label>
+                      <Text style={styles.textRemainMoney}>
+                        {balance + " VNĐ"}
                       </Text>
                     </Item>
                   </View>
@@ -145,7 +155,7 @@ class billList extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading />
+                <Loading isShow={isLoading} />
                 <FlatList
                   style={styles.listResult}
                   data={listResult ? listResult : []}
@@ -168,9 +178,17 @@ class billList extends Component {
       <TouchableOpacity
         key={item.index}
         style={styles.item_container}
-        onPress={() => dispatch.push({ id: "BillDetail" })}
+        onPress={() => {
+          if (item.invoiceStatus == "INCOMPLETE") {
+            dispatch.push({ id: "BillDetail" });
+          }
+        }}
       >
-        <Bill />
+        <Bill
+          listInvoiceDetail={item.listInvoiceDetail}
+          invoiceStatus={item.invoiceStatus}
+          invoiceMonth={item.invoiceMonth}
+        />
       </TouchableOpacity>
     );
   }
@@ -180,14 +198,17 @@ class billList extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    searchReducer: state.searchReducer
+    billListReducer: state.billListReducer
   };
 }
 function mapToDispatch(dispatch) {
   return {
-    searchAction: bindActionCreators(searchAction, dispatch)
+    billListAction: bindActionCreators(billListAction, dispatch)
   };
 }
-export default reduxForm({
+billList = reduxForm({
   form: "billlist"
-})(connect(mapStateToProps, mapToDispatch)(billList));
+  // enableReinitialize: true
+})(billList);
+billList = connect(mapStateToProps, mapToDispatch)(billList);
+export default billList;

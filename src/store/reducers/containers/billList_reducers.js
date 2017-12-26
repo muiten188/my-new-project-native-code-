@@ -1,20 +1,26 @@
 import * as types from "../../constants/action_types";
 const initState = {
-  isLoading: false
+  isLoading: true,
+  balance:-1
 };
 
 export default function(state = initState, action = {}) {
   switch (action.type) {
-    case types.LIST_RESULT:
+    case types.BILL_LIST:
       return {
         ...state,
-        listResult:action.data,
-        isLoading:false
+        listResult: action.listResult,
+        isLoading: false
       };
-    case types.SEARCHING:
+    case types.BILL_LISTING:
       return {
         ...state,
-        isLoading:action.isLoading
+        isLoading: true
+      };
+    case types.BALANCE:
+      return {
+        ...state,
+        balance:action.balance
       };
     default:
       return state;

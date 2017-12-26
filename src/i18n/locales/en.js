@@ -57,6 +57,10 @@ export default {
     remain:"Số dư",
     cash:'Tiền mặt',
     credit:'Quẹt thẻ',
-    remain2:"Còn lại"
+    remain2:"Còn lại",
+    serviceOther:"Dịch vụ khác",
+    car:"Ô tô",
+    motobike:'Xe máy',
+    remainRent:'Dư nợ',
   };
   

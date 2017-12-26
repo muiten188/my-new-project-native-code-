@@ -45,7 +45,6 @@ export default class extends React.Component {
       const user = {};
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
-          alert(value);
           user = JSON.parse(value);
           this.setState({
             username: user.username,

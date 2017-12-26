@@ -5,6 +5,7 @@ import loginReducer from '../../authen/reducers/login_reducer';
 import navigationReducer from './root_navigation/root_navigation_reducer';
 import searchReducer from '../../store/reducers/containers/search_reducer'
 import userInfoReducer from '../../store/reducers/containers/userInfo_reducer';
+import billListReducer from '../../store/reducers/containers/billList_reducers';
 import {combineReducers} from 'redux';
 import { reducer as formReducer } from 'redux-form';
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
     loginReducer,
     searchReducer,
     userInfoReducer,
+    billListReducer,
     form: formReducer
 });

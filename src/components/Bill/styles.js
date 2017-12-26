@@ -1,7 +1,9 @@
 export default {
   header: {
     height: 60,
-    width: "100%"
+    width: "100%",
+    borderBottomWidth:0.5,
+    borderColor:'#cecece'
   },
   header_payed: {
     backgroundColor: "#fff2c5"
@@ -18,7 +20,7 @@ export default {
     alignItems: "center",
   },
   billContent: {
-    height: 200,
+    
     width: "100%",
     backgroundColor: "#fff",
     paddingLeft: 10,
@@ -31,9 +33,9 @@ export default {
     marginTop: 10
   },
   itemTotal: {
-    paddingTop: 10,
-    paddingBottom:30,
-    borderTopWidth: 4,
+    paddingTop: 15,
+    paddingBottom:15,
+    borderTopWidth: 2,
     borderColor: "#cecece",
     borderStyle: "dashed"
   },

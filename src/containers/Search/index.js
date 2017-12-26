@@ -51,7 +51,7 @@ class search extends Component {
 
   componentDidMount() {
     const { searchAction } = this.props;
-    searchAction.search();
+    // searchAction.search();
   }
 
   onSearchClick() {
@@ -63,7 +63,7 @@ class search extends Component {
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { listResult } = this.props.searchReducer;
+    const { listResult,isLoading } = this.props.searchReducer;
     const {searchAction,handleSubmit} =this.props;
     return (
       <Container style={styles.container}>
@@ -90,7 +90,7 @@ class search extends Component {
                       <Col style={styles.border}>
                         <Row style={[styles.border, styles.fieldForm]}>
                           <Field
-                            name="building"
+                            name="buildingCode"
                             placeholder={I18n.t("building", {
                               locale: locale ? locale : "vi"
                             })}
@@ -99,7 +99,7 @@ class search extends Component {
                         </Row>
                         <Row style={[styles.border, styles.fieldForm]}>
                           <Field
-                            name="floor"
+                            name="floorCode"
                             placeholder={I18n.t("floor", {
                               locale: locale ? locale : "vi"
                             })}
@@ -108,7 +108,7 @@ class search extends Component {
                         </Row>
                         <Row style={[styles.border, styles.fieldForm]}>
                           <Field
-                            name="apartment"
+                            name="aparmentName"
                             placeholder={I18n.t("apartmentNo", {
                               locale: locale ? locale : "vi"
                             })}
@@ -123,7 +123,7 @@ class search extends Component {
                       </Col>
                       <Col style={[styles.border, styles.fieldForm]}>
                         <Field
-                          name="ownerName"
+                          name="fullName"
                           placeholder={I18n.t("homeName", {
                             locale: locale ? locale : "vi"
                           })}
@@ -137,7 +137,7 @@ class search extends Component {
                       </Col>
                       <Col style={[styles.border, styles.fieldForm]}>
                         <Field
-                          name="ownerPhone"
+                          name="phoneNumber"
                           placeholder={I18n.t("mobile", {
                             locale: locale ? locale : "vi"
                           })}
@@ -146,7 +146,7 @@ class search extends Component {
                       </Col>
                     </Row>
                   </Grid>
-                  <Button full onPress={handleSubmit(searchAction.search)} style={{ marginLeft: 50, marginRight: 50 }}>
+                  <Button full disabled={isLoading} onPress={handleSubmit(searchAction.search)} style={{ marginLeft: 50, marginRight: 50 }}>
                     <Text>
                       {I18n.t("search", {
                         locale: locale ? locale : "vi"
@@ -165,7 +165,7 @@ class search extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading />
+                <Loading isShow={isLoading}/>
                 <FlatList
                   style={styles.listResult}
                   data={listResult ? listResult : []}
@@ -188,13 +188,14 @@ class search extends Component {
       <TouchableOpacity
         key={item.index}
         style={styles.item_container}
-        onPress={() => dispatch.push({ id: "BillList", userId: 1 })}
+        onPress={() => dispatch.push({ id: "BillList", apartment: item })}
       >
         <ItemResult
           key={item.index}
           userName={item.ownerName}
           position={item.apartmentName}
           phone={item.ownerPhone}
+          avatarUrl={item.avatarUrl}
         />
       </TouchableOpacity>
     );
@@ -213,6 +214,15 @@ function mapToDispatch(dispatch) {
     searchAction: bindActionCreators(searchAction, dispatch)
   };
 }
-export default reduxForm({
-  form: "search"
-})(connect(mapStateToProps, mapToDispatch)(search));
+// export default reduxForm({
+//   form: "search"
+// })(connect(mapStateToProps, mapToDispatch)(search));
+
+
+
+search = reduxForm({
+  form: "search",
+  // enableReinitialize: true
+})(search);
+search = connect(mapStateToProps, mapToDispatch)(search);
+export default search;
