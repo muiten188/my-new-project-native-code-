@@ -12,10 +12,10 @@ export function login(user) {
       },
       body: JSON.stringify(user)
     })
-      .then(function(response) {
+      .then(function (response) {
         return response.json();
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson.username) {
           user = responseJson;
           dispatch(_login(true, user));
@@ -34,17 +34,29 @@ export function _loging() {
 }
 
 export function _login(status, user) {
-  if(status){
+  if (status) {
     return {
       type: types.LOGIN_SUCCESS,
       user: user,
       Logged: status
     };
   }
-  else{
+  else {
     return {
       type: types.LOGIN_EROR,
       Logged: status
     };
   }
+}
+
+export function setUser(user) {
+  return dispatch => {
+    dispatch(_login(true, user));
+  }
+}
+
+export function logout() {
+  return {
+    type: types.LOGGED_OUT,
+  };
 }

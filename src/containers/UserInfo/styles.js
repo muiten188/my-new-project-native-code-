@@ -10,23 +10,22 @@ export default {
   },
   container_info_outer: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   container_info_inter: {
     width: 400,
     marginTop: -50,
     height: "100%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   thumbnail_avatar: {
-    width: 150,
-    height: 150,
+    width: 120,
+    height: 120,
     borderRadius: 100,
-    marginLeft: 125,
+    marginLeft: 145,
     borderWidth:1,
     borderColor:'#cecece',
-    // backgroundColor:'red'
   },
   button_edit: {
     position: "absolute",
@@ -53,6 +52,6 @@ export default {
     marginRight: 30
   },
   itemButton_changepw:{
-    marginTop:40
+    marginTop:20
   }
 };

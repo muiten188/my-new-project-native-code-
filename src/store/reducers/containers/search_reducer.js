@@ -1,6 +1,7 @@
 import * as types from "../../constants/action_types";
 const initState = {
-  isLoading: false
+  isLoading: false,
+  listResult:[]
 };
 
 export default function(state = initState, action = {}) {

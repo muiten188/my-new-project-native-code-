@@ -9,20 +9,21 @@ export default {
     justifyContent: "center",
     paddingTop: 35,
     paddingBottom: 30,
-    alignItems: "center"
+    alignItems: "center",
   },
   item: {
-    paddingTop: 25,
+    paddingTop: 15,
     width: 240,
-    minHeight: 150,
+    minHeight: 145,
     backgroundColor: "#fff",
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#b5b5b5",
     justifyContent: "center",
     alignItems: "flex-start",
-    paddingLeft: 30,
-    paddingRight: 20
+    paddingLeft: 20,
+    paddingRight: 20,
+    marginRight:5
   },
   thumbnail_avatar: {
     position: "absolute",
@@ -30,21 +31,20 @@ export default {
     height: 75,
     borderRadius: 50,
     top: 0,
-    left: 52,
     borderWidth: 4,
     zIndex: 9999,
-    borderColor: "#fff"
+    borderColor: "#fff",
   },
   itemPostion: {
-    marginTop: 5,
+    marginTop: 6,
     borderBottomWidth: 0
   },
   itemPhone: {
-    marginTop: 5
+    marginTop: 6
   },
   icon: {
     fontSize: 20,
-    marginRight: 4
+    marginRight: 6
   },
   name_center: {
     marginTop:5,

@@ -35,7 +35,7 @@ export default {
   itemTotal: {
     paddingTop: 15,
     paddingBottom:15,
-    borderTopWidth: 2,
+    borderTopWidth: 1,
     borderColor: "#cecece",
     borderStyle: "dashed"
   },

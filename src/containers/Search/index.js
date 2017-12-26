@@ -63,8 +63,8 @@ class search extends Component {
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { listResult,isLoading } = this.props.searchReducer;
-    const {searchAction,handleSubmit} =this.props;
+    const { listResult, isLoading } = this.props.searchReducer;
+    const { searchAction, handleSubmit } = this.props;
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -165,7 +165,7 @@ class search extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading isShow={isLoading}/>
+                <Loading isShow={isLoading} />
                 <FlatList
                   style={styles.listResult}
                   data={listResult ? listResult : []}
@@ -184,10 +184,11 @@ class search extends Component {
   renderFlatListItem(dataItem) {
     const item = dataItem.item;
     const { dispatch } = this.props.navigation;
+    const { listResult } = this.props.searchReducer;
     return (
       <TouchableOpacity
         key={item.index}
-        style={styles.item_container}
+        style={listResult && listResult.length >= 2 ? styles.item_container_half:styles.item_container_full}
         onPress={() => dispatch.push({ id: "BillList", apartment: item })}
       >
         <ItemResult

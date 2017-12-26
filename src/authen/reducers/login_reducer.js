@@ -4,13 +4,13 @@ const initState = {
   Loging: false
 };
 
-export default function(state = initState, action = {}) {
+export default function (state = initState, action = {}) {
   switch (action.type) {
     case types.LOGIN_SUCCESS:
       return {
         ...state,
         Logged: action.Logged,
-        user:action.user,
+        user: action.user,
         Loging: false,
         action
       };
@@ -25,6 +25,13 @@ export default function(state = initState, action = {}) {
       return {
         ...state,
         Loging: action.Loging,
+        action
+      };
+    case types.LOGGED_OUT:
+      return {
+        ...state,
+        Logged: null,
+        Loging: false,
         action
       };
     default:

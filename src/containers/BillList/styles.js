@@ -23,7 +23,7 @@ export default {
     borderColor: "#d7d7d7"
   },
   col_content: {
-    backgroundColor: "#ececec"
+    backgroundColor: "#cecece"
   },
   border: {
     borderWidth: 0.5,
@@ -57,7 +57,7 @@ export default {
     alignItems: "center"
   },
   listResult: {
-    paddingTop: 20,
+    paddingTop: 10,
     width:"100%",
   },
   listResult_container: {

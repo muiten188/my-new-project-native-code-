@@ -70,6 +70,22 @@ class login extends Component {
     I18n.currentLocale();
   }
 
+  componentDidMount() {
+    try {
+      const { loginAction} = this.props;
+      const hadUser = AsyncStorage.getItem("@user")
+        .then(value => {
+          // alert(value);
+          user = JSON.parse(value);
+          loginAction.setUser(user);
+        })
+        .done();
+    } catch (error) {
+      alert(error);
+      // Error retrieving data
+    }
+  }
+
   onValueChange(value) {
     this.setState({
       languageSelect: value
@@ -232,16 +248,7 @@ function mapToDispatch(dispatch) {
   };
 }
 
-// export default connect(mapStateToProps, mapToDispatch)(login);
-// @connect(state=>({
-//   loginRequest: commonSelectors.getRequest(state, 'login'),
-// }), {...commonActions, ...authActions})
-// @reduxForm({ form: 'LoginForm', validate})
 
-// export default reduxForm({
-//   form: "LoginForm",
-//   validate,
-// })(connect(mapStateToProps, mapToDispatch)(login));
 login = reduxForm({
   form: "LoginForm",
   validate,

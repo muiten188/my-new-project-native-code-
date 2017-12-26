@@ -123,7 +123,7 @@ render() {
                 onPress={() => this.setState({ isEdit: true })}
                 transparent
               >
-                <Icon size={27} name="edit" />
+                {/* <Icon size={27} name="edit" /> */}
               </Button>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>

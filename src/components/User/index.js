@@ -1,11 +1,13 @@
 import React from 'react';
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import {View,TouchableOpacity,UIManager,findNodeHandle,AsyncStorage} from 'react-native';
 import {Button,Text} from 'native-base'
 import Icon from 'react-native-vector-icons/EvilIcons';
-
+import * as loginAction from '../../authen/actions/login_action';
 const ICON_SIZE = 24;
 
-export default class extends React.Component {
+class user extends React.Component {
   handleShowPopupError = () => {
     // show error here
   };
@@ -26,13 +28,13 @@ export default class extends React.Component {
   }
 
   handleMenuPress = () => {
-    const { actions, onPress } = this.props;
+    const { actions, onPress,loginAction } = this.props;
 
     UIManager.showPopupMenu(
       findNodeHandle(this.refs.menu),
       [this.state.fullName,...actions],
       this.handleShowPopupError,
-      onPress,
+      loginAction.logout,
     );
   };
 
@@ -81,9 +83,20 @@ export default class extends React.Component {
     );
   }
 }
+function mapStateToProps(state, props) {
+  return {
+    //loginReducer: state.loginReducer,
+  };
+}
+function mapToDispatch(dispatch) {
+  return {
+    loginAction: bindActionCreators(loginAction, dispatch)
+  };
+}
 
-// PopupMenu.propTypes = {
-//   actions: React.PropTypes.array.isRequired,
-//   onPress: React.PropTypes.func.isRequired,
-//   children: React.PropTypes.object.isRequired,
-// };
+
+user = connect(
+  mapStateToProps,
+  mapToDispatch
+)(user)
+export default user;

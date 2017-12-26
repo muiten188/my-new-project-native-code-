@@ -99,23 +99,6 @@ export default class extends Component {
         </View>
         <View style={styles.billContent}>
           <Grid>
-            {/* row nợ tháng */}
-            {/* <Row style={[styles.item_marginTop, styles.itemRent]}>
-              <Col>
-                <Item style={styles.itemBorderNone}>
-                  <Label>
-                    {I18n.t("rentMonth", {
-                      locale: locale ? locale : "vn"
-                    })}
-                  </Label>
-                  <Text>7/2017</Text>
-                </Item>
-              </Col>
-              <Col>
-                <Text>200.000 VNĐ</Text>
-              </Col>
-            </Row> */}
-            {/* row hóa đơn  */}
             {listInvoiceDetail.map((item, index) => {
               return (
                 <Row key={index} style={{ marginTop: 5, marginBottom: 5 }}>

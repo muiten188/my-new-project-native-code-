@@ -56,7 +56,7 @@ export default {
     alignItems: 'center'
   },
   listResult:{
-    paddingTop:40
+    paddingTop:15,
   },
   listResult_container:{
     justifyContent: 'center',
@@ -69,8 +69,13 @@ export default {
     paddingTop:100,
     alignItems: 'center',
   },
-  item_container:{
+  item_container_half:{
     width: "50%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  item_container_full:{
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   }

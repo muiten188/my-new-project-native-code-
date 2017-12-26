@@ -1,31 +1,40 @@
 import { AsyncStorage } from "react-native";
 
-export function setAsyncStorage(key,value){
-    try{
+export function setAsyncStorage(key, value) {
+    try {
         AsyncStorage.setItem(key, value);
     }
-    catch(e){
+    catch (e) {
         alert('set error')
     }
 }
 
-export function getAsyncStorage(key,callback){
-    try{
-       var s= AsyncStorage.getItem("@user").then((value) => {
-            this.setState({"myKey": value});
-        }).done();
-        AsyncStorage.getItem(key).then(callback).done();
+export function getAsyncStorage(key, callback) {
+    try {
+        const hadUser = AsyncStorage.getItem(key)
+            .then(callback)
+            .done();
+    } catch (error) {
+        alert(error);
+        // Error retrieving data
     }
-    catch(e){
-        alert('get error')
-    }
-}   
+}
 
-export function clearAsyncStorage(){
-    try{
+export async function getUser() {
+    try {
+        const hadUser = await AsyncStorage.getItem("@user")
+        return hadUser
+    } catch (error) {
+        alert(error);
+        // Error retrieving data
+    }
+}
+
+export function clearAsyncStorage() {
+    try {
         AsyncStorage.clear();
     }
-    catch(e){
+    catch (e) {
         alert('clear error')
     }
 }   
