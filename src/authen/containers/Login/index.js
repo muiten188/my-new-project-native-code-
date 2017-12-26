@@ -77,7 +77,7 @@ class login extends Component {
         .then(value => {
           // alert(value);
           user = JSON.parse(value);
-          loginAction.setUser(user);
+          // loginAction.setUser(user);
         })
         .done();
     } catch (error) {
