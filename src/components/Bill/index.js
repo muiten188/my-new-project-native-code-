@@ -33,27 +33,43 @@ export default class extends Component {
     this.state = {
       total: 0
     };
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
   }
 
-  componentDidMount() {
-    const { listInvoiceDetail } = this.props;
-    let total = this.state.total;
-    for (var i = 0; i < listInvoiceDetail.length; i++) {
-      total = total + listInvoiceDetail[i].invoiceDetailAmount;
-    }
-    this.setState({
-      total: total
-    });
+  // componentDidMount() {
+  //   const { listInvoiceDetail } = this.props;
+  //   let total = 0;
+  //   for (var i = 0; i < listInvoiceDetail.length; i++) {
+  //     total = total + listInvoiceDetail[i].invoiceDetailAmount;
+  //   }
+  //   this.setState({
+  //     total: total
+  //   });
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    // const { listInvoiceDetail } = this.props;
+    // let total = 0;
+    // for (var i = 0; i < listInvoiceDetail.length; i++) {
+    //   total = total + listInvoiceDetail[i].invoiceDetailAmount;
+    // }
+    // this.setState({
+    //   total: total
+    // });
+
   }
 
   render() {
     const locale = "vn";
     const { listInvoiceDetail, invoiceStatus, invoiceMonth } = this.props;
     const { state } = this;
+    let total = 0;
+    for (var i = 0; i < listInvoiceDetail.length; i++) {
+      total = total + listInvoiceDetail[i].invoiceDetailAmount;
+    }
     return (
       <View style={styles.itemList}>
         <View
@@ -119,7 +135,7 @@ export default class extends Component {
                 </H3>
               </Col>
               <Col>
-                <H3>{state.total.format() + " VNĐ"}</H3>
+                <H3>{total.format() + " VNĐ"}</H3>
               </Col>
             </Row>
           </Grid>
