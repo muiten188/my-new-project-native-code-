@@ -3,7 +3,7 @@ import { NavigationActions } from "react-navigation";
 import * as action_types from "../../constants/action_types";
 import { RootNavigationContainer } from "../../../routers/root_navigation_config";
 const mainAction = RootNavigationContainer.router.getActionForPathAndParams(
-  "UserInfo"
+  "Search"
 );
 const initialNavState = RootNavigationContainer.router.getStateForAction(
   mainAction
@@ -52,7 +52,11 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
           nextState = RootNavigationContainer.router.getStateForAction(
             NavigationActions.navigate({
               routeName: action.route.id,
-              // params: { userId: action.route.userId },
+              params: {
+                bill: action.route.bill,
+                balance: action.route.balance,
+                totalDebit: action.route.totalDebit
+              },
               action: NavigationActions.navigate({ routeName: action.route.id })
             }),
             state

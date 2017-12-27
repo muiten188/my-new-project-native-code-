@@ -66,7 +66,7 @@ export default class extends Component {
         >
           <Grid>
             <Col style={styles.headerLeft}>
-              <Item style={[styles.itemBorderNone, styles.flex_start]}>
+              <Item disabled style={[styles.itemBorderNone, styles.flex_start]}>
                 <Label>
                   {I18n.t("bill", {
                     locale: locale ? locale : "vn"
@@ -76,7 +76,7 @@ export default class extends Component {
               </Item>
             </Col>
             <Col style={styles.headerRight}>
-              <Item style={[styles.itemBorderNone, styles.flex_end]}>
+              <Item disabled style={[styles.itemBorderNone, styles.flex_end]}>
                 <Label>
                   {I18n.t("status", {
                     locale: locale ? locale : "vn"
@@ -131,7 +131,7 @@ export default class extends Component {
   buildRowBillDetail(item, locale) {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
-        <Item style={styles.itemBorderNone}>
+        <Item disabled style={styles.itemBorderNone}>
           <Icon name="building" />
           <Label>
             {I18n.t("buildingCost", {
@@ -142,7 +142,7 @@ export default class extends Component {
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
-        <Item style={styles.itemBorderNone}>
+        <Item disabled style={styles.itemBorderNone}>
           <Icon name="plug" />
           <Label>
             {I18n.t("billElectric", {
@@ -153,7 +153,7 @@ export default class extends Component {
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
-        <Item style={styles.itemBorderNone}>
+        <Item disabled style={styles.itemBorderNone}>
           <Icon name="tint" />
           <Label>
             {I18n.t("billWater", {
@@ -164,7 +164,7 @@ export default class extends Component {
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
-        <Item style={styles.itemBorderNone}>
+        <Item disabled style={styles.itemBorderNone}>
           <Icon name="motorcycle" />
           <Label>
             {I18n.t("motobike", {
@@ -175,7 +175,7 @@ export default class extends Component {
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
-        <Item style={styles.itemBorderNone}>
+        <Item disabled style={styles.itemBorderNone}>
           <Icon name="car" />
           <Label>
             {I18n.t("car", {
@@ -186,7 +186,7 @@ export default class extends Component {
       );
     } else {
       return (
-        <Item style={styles.itemBorderNone}>
+        <Item disabled style={styles.itemBorderNone}>
           <Label>
             {I18n.t("serviceOther", {
               locale: locale ? locale : "vn"

@@ -19,7 +19,7 @@ export default class extends Component {
   }
 
   render() {
-    const { show, onClose } = this.props;
+    const { show, onClose,transactionCode } = this.props;
     return (
       <Modal
         isVisible={show}
@@ -33,7 +33,7 @@ export default class extends Component {
               style={styles.modalContent}
             >
               <H3 style={styles.item_content}>Mã giao dịch</H3>
-              <H1 style={[styles.item_content,styles.codeText]}>GD-2-171006-2017</H1>
+              <H1 style={[styles.item_content,styles.codeText]}>{transactionCode}</H1>
               <Text style={[styles.item_content,styles.textSize]}>
                 Thanh toán đã được thực hiện Cảm ơn sự hợp tác của quý khách
               </Text>

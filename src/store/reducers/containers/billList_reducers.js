@@ -1,7 +1,8 @@
 import * as types from "../../constants/action_types";
 const initState = {
   isLoading: true,
-  balance:-1
+  balance:200000,
+  totalDebit:0
 };
 
 export default function(state = initState, action = {}) {
@@ -20,7 +21,9 @@ export default function(state = initState, action = {}) {
     case types.BALANCE:
       return {
         ...state,
-        balance:action.balance
+        // balance:action.balance,
+        balance:action.balance==null?initState.balance:action.balance,
+        totalDebit:action.totalDebit==null?initState.totalDebit:action.totalDebit
       };
     default:
       return state;

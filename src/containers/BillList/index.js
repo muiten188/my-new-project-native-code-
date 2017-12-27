@@ -174,13 +174,19 @@ class billList extends Component {
   renderFlatListItem(dataItem) {
     const item = dataItem.item;
     const { dispatch } = this.props.navigation;
+    const { balance, totalDebit } = this.props.billListReducer;
     return (
       <TouchableOpacity
         key={item.index}
         style={styles.item_container}
         onPress={() => {
           if (item.invoiceStatus == "INCOMPLETE") {
-            dispatch.push({ id: "BillDetail" });
+            dispatch.push({
+              id: "BillDetail",
+              bill: item,
+              balance: balance,
+              totalDebit: totalDebit
+            });
           }
         }}
       >

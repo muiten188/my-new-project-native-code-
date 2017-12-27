@@ -29,6 +29,7 @@ import { DateField } from "../../components/Element/Form";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
 import ConfirmModal from "../../components/ConfirmModal";
 import PayModal from "../../components/PayModal";
+import * as billDetailAction from "../../store/actions/containers/billdetail_actions";
 
 class billDetail extends Component {
   static navigationOptions = {
@@ -51,50 +52,625 @@ class billDetail extends Component {
       bikeCreditPay: false,
       carCashPay: false,
       carCreditPay: false,
+      otherCashPay: false,
+      otherCreditPay: false,
       useRemainCashPay: false,
-      useRemainCreditPay: false
+      useRemainCreditPay: false,
+      totalPay: 0,
+      totalCashPay: 0,
+      totalCreditPay: 0,
+      payBalance: 0,
+      paymentItemList: []
     };
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
+    Number.prototype.format = function(n, x) {
+      var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
+      return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
+    };
   }
 
-  onSearchClick() {
-    const { dispatch } = this.props.navigation;
-    dispatch.push({ id: "Search" });
+  buildRowBillDetail(item, locale) {
+    const {
+      buildingEmpty,
+      electricEmpty,
+      waterEmpty,
+      bikeEmpty,
+      carEmpty
+    } = this.state;
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <Item style={styles.borderBottomNone}>
+          <Icon
+            name="building"
+            style={[styles.icon, buildingEmpty ? styles.label_row_empty : {}]}
+          />
+          <Label style={buildingEmpty ? styles.label_row_empty : {}}>
+            {I18n.t("buildingCost", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <Item style={styles.borderBottomNone}>
+          <Icon
+            name="plug"
+            style={[styles.icon, electricEmpty ? styles.label_row_empty : {}]}
+          />
+          <Label style={electricEmpty ? styles.label_row_empty : {}}>
+            {I18n.t("electricCost", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <Item style={styles.borderBottomNone}>
+          <Icon
+            name="tint"
+            style={[styles.icon, waterEmpty ? styles.label_row_empty : {}]}
+          />
+          <Label style={waterEmpty ? styles.label_row_empty : {}}>
+            {I18n.t("waterCost", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <Item style={styles.borderBottomNone}>
+          <Icon
+            name="motorcycle"
+            style={[styles.icon, bikeEmpty ? styles.label_row_empty : {}]}
+          />
+          <Label style={bikeEmpty ? styles.label_row_empty : {}}>
+            {I18n.t("bikeCost", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <Item style={styles.borderBottomNone}>
+          <Icon
+            name="car"
+            style={[styles.icon, carEmpty ? styles.label_row_empty : {}]}
+          />
+          <Label style={carEmpty ? styles.label_row_empty : {}}>
+            {I18n.t("carCost", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    } else {
+      return (
+        <Item style={styles.itemBorderNone}>
+          <Label>
+            {I18n.t("serviceOther", {
+              locale: locale ? locale : "vn"
+            })}
+          </Label>
+        </Item>
+      );
+    }
   }
 
+  buildRowBillDetailTotal(item, locale) {
+    const {
+      buildingEmpty,
+      electricEmpty,
+      waterEmpty,
+      bikeEmpty,
+      carEmpty
+    } = this.state;
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <Text style={buildingEmpty ? styles.label_row_empty : {}}>
+          {item.invoiceDetailAmount.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <Text style={electricEmpty ? styles.label_row_empty : {}}>
+          {item.invoiceDetailAmount.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <Text style={waterEmpty ? styles.label_row_empty : {}}>
+          {item.invoiceDetailAmount.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <Text style={bikeEmpty ? styles.label_row_empty : {}}>
+          {item.invoiceDetailAmount.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <Text style={carEmpty ? styles.label_row_empty : {}}>
+          {item.invoiceDetailAmount.format() + " VNĐ"}
+        </Text>
+      );
+    } else {
+      return <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>;
+    }
+  }
+  buildRowBillDetailCash(item, locale) {
+    const {
+      buildingEmpty,
+      electricEmpty,
+      waterEmpty,
+      bikeEmpty,
+      carEmpty,
+      otherEmpty
+    } = this.state;
+    const { state } = this;
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <CheckBox
+          color={buildingEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.buildingCashPay}
+          onPress={() =>
+            state.buildingCashPay == true
+              ? this.setState({
+                  buildingCashPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  buildingCashPay: true,
+                  buildingCreditPay: false,
+                  totalPay:
+                    state.buildingCreditPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.buildingCreditPay != true
+                      ? state.totalCreditPay
+                      : state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <CheckBox
+          color={electricEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.electricCashPay}
+          onPress={() =>
+            state.electricCashPay == true
+              ? this.setState({
+                  electricCashPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  electricCashPay: true,
+                  electricCreditPay: false,
+                  totalPay:
+                    state.electricCreditPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.electricCreditPay != true
+                      ? state.totalCreditPay
+                      : state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <CheckBox
+          color={waterEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.waterCashPay}
+          onPress={() =>
+            state.waterCashPay == true
+              ? this.setState({
+                  waterCashPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  waterCashPay: true,
+                  waterCreditPay: false,
+                  totalPay:
+                    state.waterCreditPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.waterCreditPay != true
+                      ? state.totalCreditPay
+                      : state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <CheckBox
+          color={bikeEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.bikeCashPay}
+          onPress={() =>
+            state.bikeCashPay == true
+              ? this.setState({
+                  bikeCashPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  bikeCashPay: true,
+                  bikeCreditPay: false,
+                  totalPay:
+                    state.bikeCreditPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.bikeCreditPay != true
+                      ? state.totalCreditPay
+                      : state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <CheckBox
+          color={carEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.carCashPay}
+          onPress={() =>
+            state.carCashPay == true
+              ? this.setState({
+                  carCashPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  carCashPay: true,
+                  carCreditPay: false,
+                  totalPay:
+                    state.carCreditPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.carCreditPay != true
+                      ? state.totalCreditPay
+                      : state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else {
+      return (
+        <CheckBox
+          color={otherEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.otherCashPay}
+          onPress={() =>
+            state.otherCashPay == true
+              ? this.setState({
+                  otherCashPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  otherCashPay: true,
+                  otherCreditPay: false,
+                  totalPay:
+                    state.otherCreditPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.otherCreditPay != true
+                      ? state.totalCreditPay
+                      : state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    }
+  }
+  buildRowBillDetailCredit(item, locale) {
+    const {
+      buildingEmpty,
+      electricEmpty,
+      waterEmpty,
+      bikeEmpty,
+      carEmpty,
+      otherEmpty
+    } = this.state;
+    const { state } = this;
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <CheckBox
+          color={buildingEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.buildingCreditPay}
+          onPress={() =>
+            state.buildingCreditPay == true
+              ? this.setState({
+                  buildingCreditPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  buildingCreditPay: true,
+                  buildingCashPay: false,
+                  totalPay:
+                    state.buildingCashPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCreditPay:
+                    state.totalCreditPay + item.invoiceDetailAmount,
+                  totalCashPay:
+                    state.buildingCashPay != true
+                      ? state.totalCashPay
+                      : state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <CheckBox
+          color={electricEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.electricCreditPay}
+          onPress={() =>
+            state.electricCreditPay == true
+              ? this.setState({
+                  electricCreditPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  electricCreditPay: true,
+                  electricCashPay: false,
+                  totalPay:
+                    state.electricCashPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCreditPay:
+                    state.totalCreditPay + item.invoiceDetailAmount,
+                  totalCashPay:
+                    state.electricCashPay != true
+                      ? state.totalCashPay
+                      : state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <CheckBox
+          color={waterEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.waterCreditPay}
+          onPress={() =>
+            state.waterCreditPay == true
+              ? this.setState({
+                  waterCreditPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  waterCreditPay: true,
+                  waterCashPay: false,
+                  totalPay:
+                    state.waterCashPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCreditPay:
+                    state.totalCreditPay + item.invoiceDetailAmount,
+                  totalCashPay:
+                    state.waterCashPay != true
+                      ? state.totalCashPay
+                      : state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <CheckBox
+          color={bikeEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.bikeCreditPay}
+          onPress={() =>
+            state.bikeCreditPay == true
+              ? this.setState({
+                  bikeCreditPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  bikeCreditPay: true,
+                  bikeCashPay: false,
+                  totalPay:
+                    state.bikeCashPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCreditPay:
+                    state.totalCreditPay + item.invoiceDetailAmount,
+                  totalCashPay:
+                    state.bikeCashPay != true
+                      ? state.totalCashPay
+                      : state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <CheckBox
+          color={carEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.carCreditPay}
+          onPress={() =>
+            state.carCreditPay == true
+              ? this.setState({
+                  carCreditPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  carCreditPay: true,
+                  carCashPay: false,
+                  totalPay:
+                    state.carCashPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCreditPay:
+                    state.totalCreditPay + item.invoiceDetailAmount,
+                  totalCashPay:
+                    state.carCashPay != true
+                      ? state.totalCashPay
+                      : state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    } else {
+      return (
+        <CheckBox
+          color={otherEmpty ? "#ff373a" : "#054f9a"}
+          checked={state.otherCreditPay}
+          onPress={() =>
+            state.otherCreditPay == true
+              ? this.setState({
+                  otherCreditPay: false,
+                  totalPay: state.totalPay - item.invoiceDetailAmount,
+                  totalCreditPay:
+                    state.totalCreditPay - item.invoiceDetailAmount,
+                  paymentItemList: state.paymentItemList.filter((i, index) => {
+                    return i != item;
+                  })
+                })
+              : this.setState({
+                  otherCreditPay: true,
+                  otherCashPay: false,
+                  totalPay:
+                    state.otherCashPay != true
+                      ? state.totalPay + item.invoiceDetailAmount
+                      : state.totalPay,
+                  totalCreditPay:
+                    state.totalCreditPay + item.invoiceDetailAmount,
+                  totalCashPay:
+                    state.otherCashPay != true
+                      ? state.totalCashPay
+                      : state.totalCashPay - item.invoiceDetailAmount,
+                  paymentItemList:
+                    state.paymentItemList.indexOf(item) == -1
+                      ? [...state.paymentItemList, item]
+                      : state.paymentItemList
+                })
+          }
+        />
+      );
+    }
+  }
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
+    const { bill, balance, totalDebit } = this.props.navigation.state.params;
+    const {billDetailAction} =this.props;
+    const {transactionCode}=this.props.billDetailReducer;
     const state = this.state;
     let rentEmpty = false;
-    let electricEmpty = false;
-    let waterEmpty = false;
-    let buildingEmpty = false;
-    let bikeEmpty = false;
-    let carEmpty = false;
     let remainUseEmpty = false;
     if (!state.rentCashPay && !state.rentCreditPay) {
       rentEmpty = true;
-    }
-    if (!state.electricCashPay && !state.electricCreditPay) {
-      electricEmpty = true;
-    }
-    if (!state.waterCashPay && !state.waterCreditPay) {
-      waterEmpty = true;
-    }
-    if (!state.buildingCashPay && !state.buildingCreditPay) {
-      buildingEmpty = true;
-    }
-    if (!state.bikeCashPay && !state.bikeCreditPay) {
-      bikeEmpty = true;
-    }
-    if (!state.carCashPay && !state.carCreditPay) {
-      carEmpty = true;
-    }
-    if (!state.useRemainCashPay && !state.useRemainCreditPay) {
-      remainUseEmpty = true;
     }
     return (
       <Container style={styles.container}>
@@ -116,13 +692,13 @@ class billDetail extends Component {
               <Row style={styles.row_Header}>
                 <Text />
               </Row>
-              <Row style={styles.rowRent}>
+              {/* <Row style={styles.rowRent}>
                 <H3 style={rentEmpty ? styles.label_row_empty : {}}>
                   {I18n.t("pay1stRent", {
                     locale: locale ? locale : "vn"
                   })}
                 </H3>
-              </Row>
+              </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
                   <Row style={styles.rowDetail_inner_title}>
@@ -130,93 +706,16 @@ class billDetail extends Component {
                       {I18n.t("billCostTitle", {
                         locale: locale ? locale : "vn"
                       })}{" "}
-                      {"T12"}
+                      {bill.invoiceMonth}
                     </H3>
                   </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Item style={styles.borderBottomNone}>
-                      <Icon
-                        name="plug"
-                        style={[
-                          styles.icon,
-                          electricEmpty ? styles.label_row_empty : {}
-                        ]}
-                      />
-                      <Label
-                        style={electricEmpty ? styles.label_row_empty : {}}
-                      >
-                        {I18n.t("electricCost", {
-                          locale: locale ? locale : "vn"
-                        })}
-                      </Label>
-                    </Item>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Item style={styles.borderBottomNone}>
-                      <Icon
-                        name="tint"
-                        style={[
-                          styles.icon,
-                          waterEmpty ? styles.label_row_empty : {}
-                        ]}
-                      />
-                      <Label style={waterEmpty ? styles.label_row_empty : {}}>
-                        {I18n.t("waterCost", {
-                          locale: locale ? locale : "vn"
-                        })}
-                      </Label>
-                    </Item>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Item style={styles.borderBottomNone}>
-                      <Icon
-                        name="building"
-                        style={[
-                          styles.icon,
-                          buildingEmpty ? styles.label_row_empty : {}
-                        ]}
-                      />
-                      <Label
-                        style={buildingEmpty ? styles.label_row_empty : {}}
-                      >
-                        {I18n.t("buildingCost", {
-                          locale: locale ? locale : "vn"
-                        })}
-                      </Label>
-                    </Item>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Item style={styles.borderBottomNone}>
-                      <Icon
-                        name="motorcycle"
-                        style={[
-                          styles.icon,
-                          bikeEmpty ? styles.label_row_empty : {}
-                        ]}
-                      />
-                      <Label style={bikeEmpty ? styles.label_row_empty : {}}>
-                        {I18n.t("bikeCost", {
-                          locale: locale ? locale : "vn"
-                        })}
-                      </Label>
-                    </Item>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Item style={styles.borderBottomNone}>
-                      <Icon
-                        name="car"
-                        style={[
-                          styles.icon,
-                          carEmpty ? styles.label_row_empty : {}
-                        ]}
-                      />
-                      <Label style={carEmpty ? styles.label_row_empty : {}}>
-                        {I18n.t("carCost", {
-                          locale: locale ? locale : "vn"
-                        })}
-                      </Label>
-                    </Item>
-                  </Row>
+                  {bill.listInvoiceDetail.map((item, index) => {
+                    return (
+                      <Row key={index} style={styles.rowDetail_inner}>
+                        {this.buildRowBillDetail(item, locale)}
+                      </Row>
+                    );
+                  })}
                 </Col>
               </Row>
               <Row style={styles.rowUse}>
@@ -236,44 +735,26 @@ class billDetail extends Component {
                   })}
                 </H2>
               </Row>
-              <Row style={styles.rowRent}>
+              {/* <Row style={styles.rowRent}>
                 <Text style={rentEmpty ? styles.label_row_empty : {}}>
-                  350.000.000.000 VNĐ
+                  {totalDebit.format() + " VNĐ"}
                 </Text>
-              </Row>
+              </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
                   <Row style={styles.rowDetail_inner_title} />
-                  <Row style={styles.rowDetail_inner}>
-                    <Text style={electricEmpty ? styles.label_row_empty : {}}>
-                      500.000 VNĐ
-                    </Text>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Text style={waterEmpty ? styles.label_row_empty : {}}>
-                      350.000 VNĐ
-                    </Text>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Text style={buildingEmpty ? styles.label_row_empty : {}}>
-                      500.000 VNĐ
-                    </Text>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Text style={bikeEmpty ? styles.label_row_empty : {}}>
-                      100.000 VNĐ
-                    </Text>
-                  </Row>
-                  <Row style={styles.rowDetail_inner}>
-                    <Text style={carEmpty ? styles.label_row_empty : {}}>
-                      1.100.000 VNĐ
-                    </Text>
-                  </Row>
+                  {bill.listInvoiceDetail.map((item, index) => {
+                    return (
+                      <Row key={index} style={styles.rowDetail_inner}>
+                        {this.buildRowBillDetailTotal(item, locale)}
+                      </Row>
+                    );
+                  })}
                 </Col>
               </Row>
               <Row style={styles.rowUse}>
                 <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
-                  100.000 VNĐ
+                  {balance.format() + " VNĐ"}
                 </Text>
               </Row>
               <Row style={styles.lastRow} />
@@ -286,75 +767,30 @@ class billDetail extends Component {
                   })}
                 </H2>
               </Row>
-              <Row style={styles.rowRent_checkBox}>
+              {/* <Row style={styles.rowRent_checkBox}>
                 <CheckBox
                   color={rentEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.rentCashPay}
                   onPress={() =>
                     state.rentCashPay == true
                       ? this.setState({ rentCashPay: false })
-                      : this.setState({ rentCashPay: true })
+                      : this.setState({
+                          rentCashPay: true,
+                          rentCreditPay: false
+                        })
                   }
                 />
-              </Row>
+              </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
                   <Row style={styles.rowDetail_inner_title} />
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={electricEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.electricCashPay}
-                      onPress={() =>
-                        state.electricCashPay == true
-                          ? this.setState({ electricCashPay: false })
-                          : this.setState({ electricCashPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={waterEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.waterCashPay}
-                      onPress={() =>
-                        state.waterCashPay == true
-                          ? this.setState({ waterCashPay: false })
-                          : this.setState({ waterCashPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={buildingEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.buildingCashPay}
-                      onPress={() =>
-                        state.buildingCashPay == true
-                          ? this.setState({ buildingCashPay: false })
-                          : this.setState({ buildingCashPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={bikeEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.bikeCashPay}
-                      onPress={() =>
-                        state.bikeCashPay == true
-                          ? this.setState({ bikeCashPay: false })
-                          : this.setState({ bikeCashPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={carEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.carCashPay}
-                      onPress={() =>
-                        state.carCashPay == true
-                          ? this.setState({ carCashPay: false })
-                          : this.setState({ carCashPay: true })
-                      }
-                    />
-                  </Row>
+                  {bill.listInvoiceDetail.map((item, index) => {
+                    return (
+                      <Row key={index} style={styles.rowDetail_inner_checkBox}>
+                        {this.buildRowBillDetailCash(item, locale)}
+                      </Row>
+                    );
+                  })}
                 </Col>
               </Row>
               <Row style={styles.rowUse_checkbox}>
@@ -363,8 +799,16 @@ class billDetail extends Component {
                   checked={state.useRemainCashPay}
                   onPress={() =>
                     state.useRemainCashPay == true
-                      ? this.setState({ useRemainCashPay: false })
-                      : this.setState({ useRemainCashPay: true })
+                      ? this.setState({
+                          useRemainCashPay: false,
+                          totalPay: state.totalPay + balance,
+                          payBalance: 0
+                        })
+                      : this.setState({
+                          useRemainCashPay: true,
+                          totalPay: state.totalPay - balance,
+                          payBalance: balance
+                        })
                   }
                 />
               </Row>
@@ -378,79 +822,34 @@ class billDetail extends Component {
                   })}
                 </H2>
               </Row>
-              <Row style={styles.rowRent_checkBox}>
+              {/* <Row style={styles.rowRent_checkBox}>
                 <CheckBox
                   color={rentEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.rentCreditPay}
                   onPress={() =>
                     state.rentCreditPay == true
                       ? this.setState({ rentCreditPay: false })
-                      : this.setState({ rentCreditPay: true })
+                      : this.setState({
+                          rentCreditPay: true,
+                          rentCashPay: false
+                        })
                   }
                 />
-              </Row>
+              </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
                   <Row style={styles.rowDetail_inner_title} />
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={electricEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.electricCreditPay}
-                      onPress={() =>
-                        state.electricCreditPay == true
-                          ? this.setState({ electricCreditPay: false })
-                          : this.setState({ electricCreditPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={waterEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.waterCreditPay}
-                      onPress={() =>
-                        state.waterCreditPay == true
-                          ? this.setState({ waterCreditPay: false })
-                          : this.setState({ waterCreditPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={buildingEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.buildingCreditPay}
-                      onPress={() =>
-                        state.buildingCreditPay == true
-                          ? this.setState({ buildingCreditPay: false })
-                          : this.setState({ buildingCreditPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={bikeEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.bikeCreditPay}
-                      onPress={() =>
-                        state.bikeCreditPay == true
-                          ? this.setState({ bikeCreditPay: false })
-                          : this.setState({ bikeCreditPay: true })
-                      }
-                    />
-                  </Row>
-                  <Row style={styles.rowDetail_inner_checkBox}>
-                    <CheckBox
-                      color={carEmpty ? "#ff373a" : "#054f9a"}
-                      checked={state.carCreditPay}
-                      onPress={() =>
-                        state.carCreditPay == true
-                          ? this.setState({ carCreditPay: false })
-                          : this.setState({ carCreditPay: true })
-                      }
-                    />
-                  </Row>
+                  {bill.listInvoiceDetail.map((item, index) => {
+                    return (
+                      <Row key={index} style={styles.rowDetail_inner_checkBox}>
+                        {this.buildRowBillDetailCredit(item, locale)}
+                      </Row>
+                    );
+                  })}
                 </Col>
               </Row>
               <Row style={styles.rowUse_checkbox}>
-                <CheckBox
+                {/* <CheckBox
                   color={remainUseEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.useRemainCreditPay}
                   onPress={() =>
@@ -458,7 +857,7 @@ class billDetail extends Component {
                       ? this.setState({ useRemainCreditPay: false })
                       : this.setState({ useRemainCreditPay: true })
                   }
-                />
+                /> */}
               </Row>
               <Row style={styles.lastRow} />
             </Col>
@@ -473,7 +872,9 @@ class billDetail extends Component {
               <Row style={[styles.border, styles.center]}>
                 <View style={[{ flex: 1 }, styles.center]}>
                   <H1 style={[styles.pay_item, styles.totalPay]}>
-                    1.500.000.000 VNĐ
+                    {state.totalPay <= 0
+                      ? "0 VNĐ"
+                      : state.totalPay.format() + " VNĐ"}
                   </H1>
                   <Text style={styles.pay_item}>
                     {I18n.t("inOf", {
@@ -482,11 +883,16 @@ class billDetail extends Component {
                   </Text>
                   <Item style={[styles.pay_item, styles.borderBottomNone]}>
                     <Icon name="plug" style={styles.icon} />
-                    <Text>750.000 VNĐ</Text>
+                    <Text>
+                      {state.totalCashPay.format() + " VNĐ"}{" "}
+                      {state.payBalance > 0
+                        ? " - " + state.payBalance.format() + " VNĐ"
+                        : ""}
+                    </Text>
                   </Item>
                   <Item style={[styles.pay_item, styles.borderBottomNone]}>
                     <Icon name="credit-card-alt" style={styles.icon} />
-                    <Text>750.000 VNĐ</Text>
+                    <Text>{state.totalCreditPay.format() + " VNĐ"}</Text>
                   </Item>
                   <Button
                     full
@@ -506,12 +912,16 @@ class billDetail extends Component {
         </View>
         <PayModal
           show={this.state.isModalVisible}
+          transactionCode={transactionCode}
           onClose={() => this.setState({ isModalVisible: false })}
         />
         <ConfirmModal
           show={this.state.isModalConfirm}
           onClose={() => this.setState({ isModalConfirm: false })}
-          onProcess={()=>this.setState({ isModalVisible: true,isModalConfirm:false })}
+          onProcess={() => {
+            this.setState({ isModalVisible: true, isModalConfirm: false });
+            billDetailAction.billPay(state.paymentItemList,bill,balance)
+          }}
         />
       </Container>
     );
@@ -519,12 +929,13 @@ class billDetail extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    // navigationReducer: state.navigationReducer
+    billDetailReducer: state.billDetailReducer
   };
 }
 function mapToDispatch(dispatch) {
+  debugger;
   return {
-    //navigationAction: bindActionCreators(navigationAction, dispatch),
+    billDetailAction: bindActionCreators(billDetailAction, dispatch)
   };
 }
 billDetail = connect(mapStateToProps, mapToDispatch)(billDetail);

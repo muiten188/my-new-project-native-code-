@@ -1,7 +1,7 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
 
-function getBalance(apartmentId,dispatch) {
+function getBalance(apartmentId, dispatch) {
   let apartmentIdParam = apartmentId || -1;
   fetch(
     `${
@@ -16,8 +16,9 @@ function getBalance(apartmentId,dispatch) {
     })
     .then(function(responseJson) {
       let balance = responseJson.accountBalance;
-      if (balance!==undefined) {
-        dispatch(_balance(balance));
+      let totalDebit = responseJson.totalDebit;
+      if (balance !== undefined) {
+        dispatch(_balance(balance, totalDebit));
       } else {
         //fail
       }
@@ -28,7 +29,7 @@ export function getBillList(apartmentId) {
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     dispatch(_billListing());
-    getBalance(apartmentIdParam,dispatch);
+    getBalance(apartmentIdParam, dispatch);
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
         aparmentId: apartmentIdParam
@@ -51,10 +52,11 @@ export function getBillList(apartmentId) {
   };
 }
 
-function _balance(balance) {
+function _balance(balance, totalDebit) {
   return {
     type: types.BALANCE,
-    balance: balance
+    balance: balance,
+    totalDebit: totalDebit
   };
 }
 

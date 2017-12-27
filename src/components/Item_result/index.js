@@ -39,14 +39,14 @@ export default class extends Component {
           }}
         />
         <View style={styles.item}>
-          <Item style={[styles.name_center, styles.borderBottomNone]}>
+          <Item disabled style={[styles.name_center, styles.borderBottomNone]}>
             <H3>{userName}</H3>
           </Item>
-          <Item style={[styles.itemPostion, styles.borderBottomNone]}>
+          <Item disabled style={[styles.itemPostion, styles.borderBottomNone]}>
             <Icon name="map-marker" style={styles.icon} />
             <Text>{position}</Text>
           </Item>
-          <Item style={[styles.itemPhone, styles.borderBottomNone]}>
+          <Item disabled style={[styles.itemPhone, styles.borderBottomNone]}>
             <Icon name="phone" style={styles.icon} />
             <Text>{phone}</Text>
           </Item>

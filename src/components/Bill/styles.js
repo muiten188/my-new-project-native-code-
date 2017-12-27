@@ -27,7 +27,7 @@ export default {
     paddingRight: 10
   },
   itemBorderNone: {
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   item_marginTop: {
     marginTop: 10

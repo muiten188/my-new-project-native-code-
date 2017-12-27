@@ -88,8 +88,8 @@ export default {
     justifyContent: "center"
   },
   lastRow: {
-    height: 150,
     borderWidth: 0,
+    maxHeight:160,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -98,9 +98,10 @@ export default {
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderBottomWidth: 2,
+    paddingTop:15,
     borderColor: "#d8d8d8",
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   rowDetail_inner_title: {
     height: 30,
@@ -109,15 +110,15 @@ export default {
     justifyContent: "center"
   },
   rowDetail_inner: {
-    height: 48,
+    height: 55,
     alignItems: "center",
     justifyContent: "center"
   },
   rowDetail_inner_checkBox: {
-    height: 48,
+    height: 55,
     alignItems: "center",
     justifyContent: "center",
-    paddingRight: 20
+    paddingRight: 20,
   },
   borderBottomNone: {
     borderBottomWidth: 0
