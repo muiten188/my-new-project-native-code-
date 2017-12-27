@@ -133,6 +133,7 @@ class billList extends Component {
                   </View>
                   <Button
                     full
+                    disabled
                     style={styles.buttonViewHistory}
                     onPress={() => dispatch.push({ id: "History" })}
                   >
