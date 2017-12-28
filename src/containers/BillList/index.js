@@ -91,7 +91,11 @@ class billList extends Component {
                     source={{
                       uri: state.params.apartment.avatarUrl
                         ? state.params.apartment.avatarUrl
-                        : "https://baomoi-photo-3-td.zadn.vn/w700_r1m/17/07/15/170/22759925/1_42393.jpg"
+                        : "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg"
+                    }}
+                    ref={(thumbnail) => { this.thumbnail = thumbnail; }}
+                    onError={(e) => {
+                      this.thumbnail.setNativeProps({ src: [{ uri: "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg" }] })
                     }}
                   />
                   <View>
@@ -136,7 +140,7 @@ class billList extends Component {
                   <Button
                     full
                     style={styles.buttonViewHistory}
-                    onPress={() => dispatch.push({ id: "History",apartment:navigation.state.params.apartment })}
+                    onPress={() => dispatch.push({ id: "History", apartment: navigation.state.params.apartment })}
                   >
                     <Text uppercase={false}>
                       {" "}

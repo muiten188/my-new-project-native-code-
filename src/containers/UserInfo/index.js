@@ -117,13 +117,17 @@ class userInfo extends Component {
                 source={
                   this.props.user.avatar
                     ? {
-                        uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
-                      }
+                      uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
+                    }
                     : {
-                        uri:
-                          "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg"
-                      }
+                      uri:
+                        "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg"
+                    }
                 }
+                ref={(thumbnail) => { this.thumbnail = thumbnail; }}
+                onError={(e) => {
+                  this.thumbnail.setNativeProps({ src: [{ uri: "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg" }] })
+                }}
               />
               <Button
                 style={styles.button_edit}
