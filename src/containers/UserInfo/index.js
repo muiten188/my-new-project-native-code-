@@ -31,7 +31,7 @@ import { DateField } from "../../components/Element/Form";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
 import * as helper from "../../helper";
 import * as userInfoAction from "../../store/actions/containers/userInfo_action";
-import * as AppConfig from '../../config/app_config';
+import * as AppConfig from "../../config/app_config";
 class userInfo extends Component {
   static navigationOptions = {
     header: null
@@ -67,7 +67,9 @@ class userInfo extends Component {
         .then(value => {
           // alert(value);
           user = JSON.parse(value);
-          userInfoAction._getUser(user);
+          if (user) {
+            userInfoAction._getUser(user);
+          }
         })
         .done();
     } catch (error) {
@@ -79,13 +81,13 @@ class userInfo extends Component {
     const { dispatch } = this.props.navigation;
     dispatch.push({ id: "Search" });
   }
-/**
- * 
- * 
- * @returns 
- * @memberof userInfo
- */
-render() {
+  /**
+   *
+   *
+   * @returns
+   * @memberof userInfo
+   */
+  render() {
     const locale = "vn";
     const { state } = this;
     return (
@@ -103,10 +105,15 @@ render() {
           keyboardVerticalOffset={-100}
         >
           <View style={styles.container_info_inter}>
-            <Item style={[styles.itemAvatar, styles.item_margin]}>
+            <Item
+              style={[
+                styles.itemAvatar,
+                styles.item_margin,
+                styles.borderBottomNone
+              ]}
+            >
               <Thumbnail
                 style={styles.thumbnail_avatar}
-                
                 source={
                   this.props.user.avatar
                     ? {
@@ -132,7 +139,7 @@ render() {
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
               <H3>{"CMTND: " + this.props.user.identification}</H3>
             </Item>
-            <Form >
+            <Form>
               <Field
                 name="birthday"
                 disabled={!this.state.isEdit}

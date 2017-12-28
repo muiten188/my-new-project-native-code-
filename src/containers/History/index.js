@@ -44,7 +44,6 @@ class history extends Component {
 
   constructor(props) {
     super(props);
-    debugger;
     let currentMonth = currentDate.getMonth()+1;
     let currentYear = currentDate.getFullYear();
     this.state = { currentTime: currentMonth + "/" + currentYear };
@@ -113,7 +112,7 @@ class history extends Component {
       <TouchableOpacity
         key={item.index}
         style={styles.item_container}
-        onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
+        // onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
       >
         <ItemHistory
           tranCode={item.paymentCode}
@@ -132,7 +131,8 @@ class history extends Component {
 
 function mapStateToProps(state, props) {
   return {
-    historyReducer: state.historyReducer
+    historyReducer: state.historyReducer,
+    loginReducer: state.loginReducer
   };
 }
 function mapToDispatch(dispatch) {

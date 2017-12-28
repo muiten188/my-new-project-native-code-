@@ -20,10 +20,10 @@ export default {
     alignItems: "center",
   },
   thumbnail_avatar: {
-    width: 120,
-    height: 120,
+    width: 105,
+    height: 105,
     borderRadius: 100,
-    marginLeft: 145,
+    marginLeft: 150,
     borderWidth:1,
     borderColor:'#cecece',
   },
@@ -34,11 +34,11 @@ export default {
   },
   infoField: {
     width: 300,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     borderColor: "#d6d5d5"
   },
   item_margin: {
-    marginBottom: 10
+    marginBottom: 20
   },
   itemAvatar: {
     borderBottomWidth: 0,
@@ -49,7 +49,9 @@ export default {
   },
   button_changepassword: {
     marginLeft: 70,
-    marginRight: 30
+    marginRight: 30,
+    backgroundColor:'#054f9a',
+    borderRadius:5
   },
   itemButton_changepw:{
     marginTop:20

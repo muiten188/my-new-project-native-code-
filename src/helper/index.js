@@ -38,3 +38,10 @@ export function clearAsyncStorage() {
         alert('clear error')
     }
 }   
+
+export function buildHeader(user) {
+    return {
+        JSESSIONID:user.jSessionId
+    }
+}   
+

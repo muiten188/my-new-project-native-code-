@@ -65,6 +65,7 @@ class search extends Component {
     const { dispatch } = this.props.navigation;
     const { listResult, isLoading } = this.props.searchReducer;
     const { searchAction, handleSubmit } = this.props;
+    const { user } = this.props.loginReducer;
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -75,7 +76,7 @@ class search extends Component {
           <Grid>
             <Col size={32} style={[styles.grid_col, styles.col_form]}>
               <HeaderForm
-                onBack={() => dispatch.push({ id: "UserInfo"})}
+                onBack={() => dispatch.push({ id: "UserInfo" })}
                 headerTitle={I18n.t("searchInfo", {
                   locale: locale ? locale : "vn"
                 })}
@@ -146,7 +147,12 @@ class search extends Component {
                       </Col>
                     </Row>
                   </Grid>
-                  <Button full disabled={isLoading} onPress={handleSubmit(searchAction.search)} style={{ marginLeft: 50, marginRight: 50 }}>
+                  <Button
+                    full
+                    disabled={isLoading}
+                    onPress={handleSubmit(searchAction.search,user)}
+                    style={styles.buttomSearch}
+                  >
                     <Text>
                       {I18n.t("search", {
                         locale: locale ? locale : "vi"
@@ -188,7 +194,11 @@ class search extends Component {
     return (
       <TouchableOpacity
         key={item.index}
-        style={listResult && listResult.length >= 2 ? styles.item_container_half:styles.item_container_full}
+        style={
+          listResult && listResult.length >= 2
+            ? styles.item_container_half
+            : styles.item_container_full
+        }
         onPress={() => dispatch.push({ id: "BillList", apartment: item })}
       >
         <ItemResult
@@ -207,7 +217,8 @@ class search extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    searchReducer: state.searchReducer
+    searchReducer: state.searchReducer,
+    loginReducer: state.loginReducer
   };
 }
 function mapToDispatch(dispatch) {
@@ -219,10 +230,8 @@ function mapToDispatch(dispatch) {
 //   form: "search"
 // })(connect(mapStateToProps, mapToDispatch)(search));
 
-
-
 search = reduxForm({
-  form: "search",
+  form: "search"
   // enableReinitialize: true
 })(search);
 search = connect(mapStateToProps, mapToDispatch)(search);

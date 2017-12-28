@@ -101,7 +101,9 @@ export default {
   },
   buttonViewHistory:{
     marginTop:30,
-    marginLeft:30,
-    marginRight:30
+    marginLeft: 30,
+    marginRight: 30,
+    backgroundColor:'#054f9a',
+    borderRadius:5
   }
 };

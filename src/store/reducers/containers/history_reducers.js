@@ -9,7 +9,7 @@ export default function(state = initState, action = {}) {
     case types.HISTORYING:
       return {
         ...state,
-        isLoading: false
+        isLoading: true
       };
     case types.HISTORY:
       return {

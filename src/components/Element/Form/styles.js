@@ -10,10 +10,11 @@ export default {
     borderBottomWidth: 0,
   },
   input: {    
-    height:40      
+    height:40,     
   },
   inputIcon: {
-    paddingRight:0,
+    paddingRight:6,
+    fontSize:22
   },
   checkboxContainer: {
     flexDirection: 'row',

@@ -72,12 +72,14 @@ class login extends Component {
 
   componentDidMount() {
     try {
-      const { loginAction} = this.props;
+      const { loginAction } = this.props;
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
-          // alert(value);
+          //alert(value);
           user = JSON.parse(value);
-          // loginAction.setUser(user);
+          if (user) {
+            loginAction.setUser(user);
+          }
         })
         .done();
     } catch (error) {
@@ -129,11 +131,11 @@ class login extends Component {
                 source={require("../../../resources/assets/us_flag.svg")}
               />
             ) : (
-                <Thumbnail
-                  small
-                  source={require("../../../resources/assets/vn_flag.svg")}
-                />
-              )}
+              <Thumbnail
+                small
+                source={require("../../../resources/assets/vn_flag.svg")}
+              />
+            )}
           </Col>
           <Col>
             <Picker
@@ -143,7 +145,7 @@ class login extends Component {
               onValueChange={this.onValueChange.bind(this)}
             >
               <Item label="Tiếng việt" value="vn" />
-              <Item label="English" value="en" />
+              {/* <Item label="English" value="en" /> */}
             </Picker>
           </Col>
         </Grid>
@@ -166,8 +168,9 @@ class login extends Component {
                   </View>
                   <Form style={styles.form}>
                     <Item regular style={styles.item}>
-                      <Icon active name="person" />
+                      {/* <Icon active name="person" /> */}
                       <Field
+                        icon="user-circle-o"
                         name="username"
                         placeholder={I18n.t("account", {
                           locale: locale ? locale : "vi"
@@ -176,8 +179,9 @@ class login extends Component {
                       />
                     </Item>
                     <Item regular style={styles.item}>
-                      <Icon active name="lock" />
+                      {/* <Icon active name="lock" /> */}
                       <Field
+                        icon="key"
                         name="password"
                         placeholder={I18n.t("password", {
                           locale: locale ? locale : "vi"
@@ -238,7 +242,7 @@ function mapStateToProps(state, props) {
     loginReducer: state.loginReducer,
     initialValues: {
       username: "synt",
-      password: '123456a@'
+      password: "123456a@"
     }
   };
 }
@@ -248,13 +252,9 @@ function mapToDispatch(dispatch) {
   };
 }
 
-
 login = reduxForm({
   form: "LoginForm",
-  validate,
+  validate
 })(login);
-login = connect(
-  mapStateToProps,
-  mapToDispatch
-)(login)
+login = connect(mapStateToProps, mapToDispatch)(login);
 export default login;

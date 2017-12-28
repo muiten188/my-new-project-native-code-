@@ -44,24 +44,24 @@ export default class extends Component {
         </View>
         <View style={styles.item}>
           {isCash ?
-            <Item style={[styles.itemPostion, styles.borderBottomNone]}>
+            <Item disabled style={[styles.itemPostion, styles.borderBottomNone]}>
               <Icon name="money" style={styles.icon} />
               <Text>{I18n.t("cash", {
                 locale: locale ? locale : "vn"
               })}</Text>
             </Item>
             :
-            <Item style={[styles.itemPostion, styles.borderBottomNone]}>
+            <Item disabled style={[styles.itemPostion, styles.borderBottomNone]}>
               <Icon name="credit-card-alt" style={styles.icon} />
               <Text>{I18n.t("credit", {
                 locale: locale ? locale : "vn"
               })}</Text>
             </Item>
           }
-          <Item style={[styles.borderBottomNone, styles.itemCash]}>
+          <Item disabled style={[styles.borderBottomNone, styles.itemCash]}>
             <H1 style={[styles.pay_item, styles.totalPay]}>{totalMoney + " VNĐ"}</H1>
           </Item>
-          <Item style={[styles.itemPhone, styles.borderBottomNone]}>
+          <Item disabled style={[styles.itemPhone, styles.borderBottomNone]}>
             <Label>{I18n.t("content", {
               locale: locale ? locale : "vn"
             })}</Label>

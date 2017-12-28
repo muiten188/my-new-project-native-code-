@@ -1,10 +1,16 @@
-import React from 'react';
+import React from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import {View,TouchableOpacity,UIManager,findNodeHandle,AsyncStorage} from 'react-native';
-import {Button,Text} from 'native-base'
-import Icon from 'react-native-vector-icons/EvilIcons';
-import * as loginAction from '../../authen/actions/login_action';
+import {
+  View,
+  TouchableOpacity,
+  UIManager,
+  findNodeHandle,
+  AsyncStorage
+} from "react-native";
+import { Button, Text } from "native-base";
+import Icon from "react-native-vector-icons/EvilIcons";
+import * as loginAction from "../../authen/actions/login_action";
 const ICON_SIZE = 24;
 
 class user extends React.Component {
@@ -17,24 +23,31 @@ class user extends React.Component {
 
     this.state = {
       isEdit: false,
-      username: '',
-      fullName: '',
-      phoneNumber: '',
-      birthDay: '',
-      email: '',
-      avatar: '',
-      identification: ''
+      username: "",
+      fullName: "",
+      phoneNumber: "",
+      birthDay: "",
+      email: "",
+      avatar: "",
+      identification: ""
     };
   }
 
+  _onPress(e, i) {
+    const { loginAction } = this.props;
+    if (i == 1) {
+      loginAction.logout();
+    }
+  }
+
   handleMenuPress = () => {
-    const { actions, onPress,loginAction } = this.props;
+    const { actions } = this.props;
 
     UIManager.showPopupMenu(
       findNodeHandle(this.refs.menu),
-      [this.state.fullName,...actions],
+      [this.state.fullName, ...actions],
       this.handleShowPopupError,
-      loginAction.logout,
+      this._onPress.bind(this)
     );
   };
 
@@ -48,15 +61,17 @@ class user extends React.Component {
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
           user = JSON.parse(value);
-          this.setState({
-            username: user.username,
-            fullName: user.fullName,
-            phoneNumber: user.phoneNumber,
-            birthDay: user.birthDay,
-            email: user.email,
-            avatar: user.avatar,
-            identification: user.identification
-          });
+          if (user) {
+            this.setState({
+              username: user.username,
+              fullName: user.fullName,
+              phoneNumber: user.phoneNumber,
+              birthDay: user.birthDay,
+              email: user.email,
+              avatar: user.avatar,
+              identification: user.identification
+            });
+          }
         })
         .done();
     } catch (error) {
@@ -66,17 +81,21 @@ class user extends React.Component {
   }
 
   render() {
-    const {state} =this;
+    const { state } = this;
     return (
       <View>
-        { this.props.children }
-        <Button transparent onPress={this.handleMenuPress} style={{alignSelf:'center',backgroundColor:'transparent',paddingLeft:15,paddingRight:15}}>
-          <Icon
-            name="user"
-            size={ICON_SIZE}
-            color='white'
-            ref="menu"
-          />
+        {this.props.children}
+        <Button
+          transparent
+          onPress={this.handleMenuPress}
+          style={{
+            alignSelf: "center",
+            backgroundColor: "transparent",
+            paddingLeft: 15,
+            paddingRight: 15
+          }}
+        >
+          <Icon name="user" size={ICON_SIZE} color="white" ref="menu" />
           <Text>{this.state.fullName}</Text>
         </Button>
       </View>
@@ -94,9 +113,5 @@ function mapToDispatch(dispatch) {
   };
 }
 
-
-user = connect(
-  mapStateToProps,
-  mapToDispatch
-)(user)
+user = connect(mapStateToProps, mapToDispatch)(user);
 export default user;

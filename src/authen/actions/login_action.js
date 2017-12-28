@@ -19,8 +19,6 @@ export function login(user) {
         if (responseJson.username) {
           user = responseJson;
           dispatch(_login(true, user));
-        } else {
-          dispatch(_login(false));
         }
       });
   };

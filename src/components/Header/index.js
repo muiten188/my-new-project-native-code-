@@ -39,14 +39,13 @@ export default class extends Component {
             <Col style={styles.itemHeader}>
               <User
                 actions={["Đăng xuất"]}
-                onPress={(e, i) => console.log(i)}
               />
             </Col>
           ) : null}
           {showSearch == true ? (
             <Col style={styles.itemHeader}>
               <Button transparent style={styles.buttonSearch} onPress={onSearch}>
-                <Text style={styles.text} uppercase={false}>tim kiếm</Text>
+                <Text style={styles.text} uppercase={false}>Tìm kiếm</Text>
                 <Icon name="search" />
               </Button>
             </Col>

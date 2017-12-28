@@ -1,12 +1,13 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-
-export function search(values) {
+import {buildHeader} from '../../../helper';
+export function search(values,user) {
   let data = [];
   let dataPost = values || {};
   return dispatch => {
     dispatch(_searching());
     fetch(`${AppConfig.API_HOST}tablet/apartment?${getQueryString(dataPost)}`, {
+      headers: buildHeader(user),
       method: "GET",
       qs:dataPost
     })

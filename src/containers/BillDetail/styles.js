@@ -89,7 +89,7 @@ export default {
   },
   lastRow: {
     borderWidth: 0,
-    maxHeight:90,
+    maxHeight: 90,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -98,10 +98,10 @@ export default {
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
-    paddingTop:15,
+    paddingTop: 15,
     borderColor: "#d8d8d8",
     alignItems: "flex-start",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   rowDetail_inner_title: {
     height: 30,
@@ -118,7 +118,7 @@ export default {
     height: 55,
     alignItems: "center",
     justifyContent: "center",
-    paddingRight: 20,
+    paddingRight: 20
   },
   borderBottomNone: {
     borderBottomWidth: 0
@@ -137,10 +137,16 @@ export default {
   label_row_empty: {
     color: "#ff373a"
   },
-  checkboxCol:{
-    width:30
+  checkboxCol: {
+    width: 30
   },
-  primary:{
+  primary: {
     color: "#5b71ff"
+  },
+  buttomPay: {
+    marginLeft: 20,
+    marginRight: 20,
+    borderRadius: 4,
+    backgroundColor: "#054f9a"
   }
 };

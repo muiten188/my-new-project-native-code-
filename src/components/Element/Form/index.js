@@ -31,12 +31,13 @@ export function InputField({
       {addon}
       {icon && <Icon style={styles.inputIcon} name={icon} size={25} />}
       <Input
+        size={70}
         placeholder={label}
         {...input}
         {...custom}
         style={{ ...styles.input, ...inputStyle }}
       />
-      {touched && error ? <Text>{error}</Text> : <Text />}
+      {touched && error ? <Text style={{ width: 10 }}>{error}</Text> : <Text />}
     </Item>
   );
 }
@@ -89,7 +90,7 @@ export const DateField = ({
     customStyles={{
       dateTouch: { ...styles.item, ...style },
       dateInput: { ...styles.input, ...inputStyle },
-      dateIcon: iconStyle
+      dateIcon: { ...styles.inputIcon,...iconStyle}
     }}
     format={format}
     {...custom}

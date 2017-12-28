@@ -1054,7 +1054,7 @@ class billDetail extends Component {
                   </Item>
                   <Button
                     full
-                    style={{ marginLeft: 20, marginRight: 20, borderRadius: 3 }}
+                    style={styles.buttomPay}
                     onPress={() => this.setState({ isModalConfirm: true })}
                   >
                     <Text uppercase={false}>
