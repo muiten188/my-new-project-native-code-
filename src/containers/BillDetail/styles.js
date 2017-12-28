@@ -21,8 +21,8 @@ export default {
     alignItems: "center"
   },
   border: {
-    borderWidth: 1,
-    borderBottomWidth: 1.5,
+    borderWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderColor: "#d8d8d8"
   },
   center: {
@@ -34,23 +34,23 @@ export default {
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
-    borderBottomWidth: 2,
+    borderBottomWidth: 0.5,
     borderColor: "#d8d8d8",
     alignItems: "center",
     justifyContent: "center"
   },
   titleCol: {
-    width: 280
+    width: 220
   },
   totalCol: {
-    width: 250
+    width: 220
   },
   rowRent: {
     height: 70,
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
-    borderBottomWidth: 2,
+    borderBottomWidth: 0.5,
     borderColor: "#d8d8d8",
     alignItems: "center",
     justifyContent: "center"
@@ -61,7 +61,7 @@ export default {
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
-    borderBottomWidth: 2,
+    borderBottomWidth: 0.5,
     borderColor: "#d8d8d8",
     alignItems: "center",
     justifyContent: "center"
@@ -71,7 +71,7 @@ export default {
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderTopWidth: 0.5,
-    borderBottomWidth: 2,
+    borderBottomWidth: 0.5,
     borderColor: "#d8d8d8",
     alignItems: "center",
     justifyContent: "center"
@@ -82,14 +82,14 @@ export default {
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderTopWidth: 0.5,
-    borderBottomWidth: 2,
+    borderBottomWidth: 0.5,
     borderColor: "#d8d8d8",
     alignItems: "center",
     justifyContent: "center"
   },
   lastRow: {
     borderWidth: 0,
-    maxHeight:160,
+    maxHeight:90,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -97,7 +97,7 @@ export default {
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
-    borderBottomWidth: 2,
+    borderBottomWidth: 0.5,
     paddingTop:15,
     borderColor: "#d8d8d8",
     alignItems: "flex-start",
@@ -137,4 +137,10 @@ export default {
   label_row_empty: {
     color: "#ff373a"
   },
+  checkboxCol:{
+    width:30
+  },
+  primary:{
+    color: "#5b71ff"
+  }
 };

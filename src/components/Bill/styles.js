@@ -67,5 +67,8 @@ export default {
   },
   flex_end: {
     justifyContent: "flex-end"
+  },
+  primary:{
+    color: "#5b71ff"
   }
 };

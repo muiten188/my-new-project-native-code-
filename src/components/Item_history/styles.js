@@ -7,16 +7,17 @@ export default {
     itemList: {
         width: '65%',
         justifyContent: 'center',
-        paddingBottom: 10,
         alignItems: 'center',
         borderRadius: 3,
         borderWidth: 1,
         borderColor: '#b5b5b5',
         justifyContent: 'center',
-        marginBottom: 10
+        marginTop:8,
+        marginBottom:8
     },
     item: {
-        paddingTop: 25,
+        marginTop: 10,
+        marginBottom: 10,
         width: "100%",
         minHeight: 130,
         backgroundColor: '#fff',

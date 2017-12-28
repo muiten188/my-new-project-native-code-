@@ -155,14 +155,14 @@ class login extends Component {
                 <View>
                   {/* <Thumbnail square large source={require("../../../resources/assets/splash.png")} /> */}
                   <View style={styles.app_icon}>
-                    <Thumbnail
+                    {/* <Thumbnail
                       square
                       large
                       source={{
                         uri:
                           "https://3.bp.blogspot.com/-9FS5zPnrtrQ/WdjintM17tI/AAAAAAAAHuc/qnzExAUr9O036AxE35tky5Bm-1BmB-qYgCLcBGAs/s320/y-nghia-icon-facebook-zalo.png"
                       }}
-                    />
+                    /> */}
                   </View>
                   <Form style={styles.form}>
                     <Item regular style={styles.item}>

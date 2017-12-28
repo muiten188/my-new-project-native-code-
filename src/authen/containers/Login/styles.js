@@ -60,7 +60,7 @@ export default {
     position: "absolute",
     top: 8,
     right: 8,
-    width: 150
+    width: 200
   },
   col_language: {
     paddingTop: 8,

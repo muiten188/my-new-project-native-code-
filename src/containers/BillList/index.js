@@ -4,7 +4,8 @@ import {
   View,
   KeyboardAvoidingView,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from "react-native";
 import {
   Container,
@@ -67,6 +68,7 @@ class billList extends Component {
     const { dispatch, state } = this.props.navigation;
     const { listResult, isLoading, balance } = this.props.billListReducer;
     const { key, userName, position, phone, avatarUrl } = this.props;
+    const { billListAction, navigation } = this.props;
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -133,9 +135,8 @@ class billList extends Component {
                   </View>
                   <Button
                     full
-                    disabled
                     style={styles.buttonViewHistory}
-                    onPress={() => dispatch.push({ id: "History" })}
+                    onPress={() => dispatch.push({ id: "History",apartment:navigation.state.params.apartment })}
                   >
                     <Text uppercase={false}>
                       {" "}
@@ -158,6 +159,17 @@ class billList extends Component {
               <Container style={styles.listResult_container}>
                 <Loading isShow={isLoading} />
                 <FlatList
+                  refreshControl={
+                    <RefreshControl
+                      colors={["#9Bd35A", "#689F38"]}
+                      refreshing={isLoading}
+                      onRefresh={() =>
+                        billListAction.getBillList(
+                          navigation.state.params.apartment.apartmentId
+                        )
+                      }
+                    />
+                  }
                   style={styles.listResult}
                   data={listResult ? listResult : []}
                   keyExtractor={this._keyExtractor}

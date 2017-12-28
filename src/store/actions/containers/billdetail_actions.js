@@ -10,6 +10,7 @@ export function billPay(paymentItemList, bill, balance) {
   dataPost.invoiceId = bill.invoiceId;
   
   for (var i = 0; i < paymentItemList.length; i++) {
+    paymentItem={}
     paymentItem.invoiceDetailId = paymentItemList[i].invoiceDetailId;
     paymentItem.paymentAmount = paymentItemList[i].invoiceDetailAmount;
     paymentItem.paymentMethod=paymentItemList[i].paymentMethod;

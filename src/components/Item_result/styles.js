@@ -30,7 +30,7 @@ export default {
     width: 75,
     height: 75,
     borderRadius: 50,
-    top: 0,
+    top: -3,
     borderWidth: 4,
     zIndex: 9999,
     borderColor: "#fff",

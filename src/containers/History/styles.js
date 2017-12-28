@@ -11,11 +11,10 @@ export default {
   container_info_outer: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
+    flex: 1
   },
   container_info_inter: {
     width: 400,
-    marginTop: -50,
     height: "100%",
     justifyContent: "center",
     alignItems: "center"
@@ -23,22 +22,24 @@ export default {
   border: {
     borderWidth: 1,
     borderBottomWidth: 1.5,
+    marginTop:-50,
     borderColor: "#d8d8d8"
   },
   center: {
     alignItems: "center",
     justifyContent: "center"
   },
-  item_container:{
+  item_container: {
     width: "50%",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
-  listResult:{
-    paddingTop:40,
+  listResult: {
+    height: 100,
+    paddingTop: 0
   },
-  datePicker_Container:{
-    width:'100%',
-    height:70,
+  datePicker_Container: {
+    width: "100%",
+    height: 70
   }
 };

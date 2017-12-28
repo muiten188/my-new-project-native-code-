@@ -66,7 +66,7 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
           nextState = RootNavigationContainer.router.getStateForAction(
             NavigationActions.navigate({
               routeName: action.route.id,
-              // params: { userId: action.route.userId },
+              params: {  apartment: action.route.apartment },
               action: NavigationActions.navigate({ routeName: action.route.id })
             }),
             state

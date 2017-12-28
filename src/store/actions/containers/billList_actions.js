@@ -52,6 +52,10 @@ export function getBillList(apartmentId) {
   };
 }
 
+export function refresh(apartmentId){
+  getBillList(apartmentId)
+}
+
 function _balance(balance, totalDebit) {
   return {
     type: types.BALANCE,

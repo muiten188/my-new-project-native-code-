@@ -33,7 +33,7 @@ export default class extends Component {
     this.state = {
       total: 0
     };
-    Number.prototype.format = function (n, x) {
+    Number.prototype.format = function(n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -59,7 +59,6 @@ export default class extends Component {
     // this.setState({
     //   total: total
     // });
-
   }
 
   render() {
@@ -67,8 +66,16 @@ export default class extends Component {
     const { listInvoiceDetail, invoiceStatus, invoiceMonth } = this.props;
     const { state } = this;
     let total = 0;
+    let totalPaid = 0;
     for (var i = 0; i < listInvoiceDetail.length; i++) {
-      total = total + listInvoiceDetail[i].invoiceDetailAmount;
+      total =
+        total + (listInvoiceDetail[i].invoiceDetailAmount == null
+          ? 0
+          : listInvoiceDetail[i].invoiceDetailAmount)
+      totalPaid =
+        totalPaid + (listInvoiceDetail[i].invoiceDetailPaid == null
+          ? 0
+          : listInvoiceDetail[i].invoiceDetailPaid);
     }
     return (
       <View style={styles.itemList}>
@@ -122,8 +129,13 @@ export default class extends Component {
                   <Col style={styles.center}>
                     <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>
                   </Col>
-                  <Col style={{width:160}}>
-                    <Text style={{color:'#5b71ff'}} >{item.invoiceDetailPaid!=null&&item.invoiceDetailPaid>0?item.invoiceDetailPaid.format() + " VNĐ":""}</Text>
+                  <Col style={{ width: 160 }}>
+                    <Text style={styles.primary}>
+                      {item.invoiceDetailPaid != null &&
+                      item.invoiceDetailPaid > 0
+                        ? item.invoiceDetailPaid.format() + " VNĐ"
+                        : ""}
+                    </Text>
                   </Col>
                 </Row>
               );
@@ -137,10 +149,12 @@ export default class extends Component {
                   })}
                 </H3>
               </Col>
-              <Col>
+              <Col style={styles.center}>
                 <H3>{total.format() + " VNĐ"}</H3>
               </Col>
-              <Col style={{width:160}}/>
+              <Col style={{ width: 160}}>
+                <H3 style={styles.primary}>{totalPaid.format() + " VNĐ"}</H3>
+              </Col>
             </Row>
           </Grid>
         </View>

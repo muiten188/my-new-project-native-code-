@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { View, KeyboardAvoidingView, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  FlatList
+} from "react-native";
 import {
   Container,
   Text,
@@ -29,7 +34,9 @@ import { DateField } from "../../components/Element/Form";
 import ItemHistory from "../../components/Item_history";
 import Loading from "../../components/Loading";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
-import HistoryPicker from '../../components/Historypicker'
+import HistoryPicker from "../../components/Historypicker";
+import * as historyAction from "../../store/actions/containers/history_action";
+const currentDate = new Date();
 class history extends Component {
   static navigationOptions = {
     header: null
@@ -37,31 +44,30 @@ class history extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      rentCashPay: false,
-      rentCreditPay: false,
-      electricCashPay: false,
-      electricCreditPay: false,
-      waterCashPay: false,
-      waterCreditPay: false,
-      buildingCashPay: false,
-      buildingCreditPay: false,
-      bikeCashPay: false,
-      bikeCreditPay: false,
-      carCashPay: false,
-      carCreditPay: false,
-      useRemainCashPay: false,
-      useRemainCreditPay: false
-    };
+    debugger;
+    let currentMonth = currentDate.getMonth()+1;
+    let currentYear = currentDate.getFullYear();
+    this.state = { currentTime: currentMonth + "/" + currentYear };
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
+    Number.prototype.format = function(n, x) {
+      var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
+      return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
+    };
   }
 
-  onSearchClick() {
-    const { dispatch } = this.props.navigation;
-    dispatch.push({ id: "Search" });
+  componentDidMount() {
+    const { historyAction, navigation } = this.props;
+    const {state}=this;
+    historyAction.getHistory(navigation.state.params.apartment.apartmentId,state.currentTime);
+  }
+
+  HistoryPickerChange(month, year) {
+    const { historyAction, navigation } = this.props;
+    let currentTime = month + "/" + year;
+    this.setState({ currentTime: currentTime });
+    historyAction.getHistory(navigation.state.params.apartment.apartmentId,currentTime);
   }
 
   _onPressHandle() {
@@ -72,45 +78,7 @@ class history extends Component {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
     const state = this.state;
-    const listResult = [
-      { key: "a" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" },
-      { key: "b" },
-      { key: "b" },
-      { key: "b" },
-      { key: "f" }
-    ];
+    const { listResult,isLoading } = this.props.historyReducer;
     return (
       <Container style={styles.container}>
         <Header
@@ -124,8 +92,8 @@ class history extends Component {
           showUser={true}
         />
         <View style={styles.container_info_outer}>
-          {/* <Loading /> */}
-          <HistoryPicker />
+          <Loading isShow={isLoading}/>
+          <HistoryPicker onChange={this.HistoryPickerChange.bind(this)} />
           <FlatList
             style={styles.listResult}
             data={listResult ? listResult : []}
@@ -148,11 +116,11 @@ class history extends Component {
         onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
       >
         <ItemHistory
-          tranCode={"GD-2-171006-2017"}
-          date={"31/08/2017"}
-          isCash={false}
-          totalMoney={"1.500.000"}
-          content={"TTHD 8/2017"}
+          tranCode={item.paymentCode}
+          date={item.paymentDate}
+          isCash={item.paymentMethod == "CASH"}
+          totalMoney={item.paymentAmount.format() + " VNĐ"}
+          content={"TTHD " + item.invoiceMonth}
         />
       </TouchableOpacity>
     );
@@ -160,17 +128,16 @@ class history extends Component {
   _keyExtractor(item, index) {
     return index;
   }
-
 }
 
 function mapStateToProps(state, props) {
   return {
-    // navigationReducer: state.navigationReducer
+    historyReducer: state.historyReducer
   };
 }
 function mapToDispatch(dispatch) {
   return {
-    //navigationAction: bindActionCreators(navigationAction, dispatch),
+    historyAction: bindActionCreators(historyAction, dispatch)
   };
 }
 history = connect(mapStateToProps, mapToDispatch)(history);

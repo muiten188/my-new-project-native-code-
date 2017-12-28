@@ -7,6 +7,8 @@ import searchReducer from '../../store/reducers/containers/search_reducer'
 import userInfoReducer from '../../store/reducers/containers/userInfo_reducer';
 import billListReducer from '../../store/reducers/containers/billList_reducers';
 import billDetailReducer from '../../store/reducers/containers/billDetail_reducers';
+import historyReducer from '../../store/reducers/containers/history_reducers';
+
 import {combineReducers} from 'redux';
 import { reducer as formReducer } from 'redux-form';
 export default combineReducers({
@@ -17,5 +19,6 @@ export default combineReducers({
     userInfoReducer,
     billListReducer,
     billDetailReducer,
+    historyReducer,
     form: formReducer
 });

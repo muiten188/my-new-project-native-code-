@@ -25,3 +25,6 @@ export const BILL_LISTING = "BILL_LISTING";
 //bill detail
 export const BILL_PAY = "BILL_PAY";
 export const BILL_PAYING = "BILL_PAYING";
+//history
+export const HISTORYING = "HISTORYING";
+export const HISTORY = "HISTORY";

@@ -62,5 +62,6 @@ export default {
     car:"Ô tô",
     motobike:'Xe máy',
     remainRent:'Dư nợ',
+    payed:'Đã thanh toán'
   };
   
