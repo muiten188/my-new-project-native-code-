@@ -2,8 +2,8 @@ export default {
   header: {
     height: 60,
     width: "100%",
-    borderBottomWidth:0.5,
-    borderColor:'#cecece'
+    borderBottomWidth: 0.5,
+    borderColor: "#cecece"
   },
   header_payed: {
     backgroundColor: "#fff2c5"
@@ -14,27 +14,30 @@ export default {
   itemList: {
     width: "85%",
     borderWidth: 1,
-    borderRadius:5,
+    borderRadius: 5,
     borderColor: "#cecece",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
+  },
+  center: {
+    justifyContent: "center",
+    alignItems: "center"
   },
   billContent: {
-    
     width: "100%",
     backgroundColor: "#fff",
     paddingLeft: 10,
     paddingRight: 10
   },
   itemBorderNone: {
-    borderBottomWidth: 0,
+    borderBottomWidth: 0
   },
   item_marginTop: {
     marginTop: 10
   },
   itemTotal: {
     paddingTop: 15,
-    paddingBottom:15,
+    paddingBottom: 15,
     borderTopWidth: 1,
     borderColor: "#cecece",
     borderStyle: "dashed"
@@ -55,14 +58,14 @@ export default {
     justifyContent: "center",
     paddingLeft: 10
   },
-  headerRight:{
+  headerRight: {
     justifyContent: "center",
     paddingRight: 10
   },
-  flex_start:{
+  flex_start: {
     justifyContent: "flex-start"
   },
-  flex_end:{
+  flex_end: {
     justifyContent: "flex-end"
   }
 };

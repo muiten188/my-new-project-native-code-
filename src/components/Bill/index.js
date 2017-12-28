@@ -103,8 +103,11 @@ export default class extends Component {
               return (
                 <Row key={index} style={{ marginTop: 5, marginBottom: 5 }}>
                   <Col>{this.buildRowBillDetail(item, locale)}</Col>
-                  <Col>
+                  <Col style={styles.center}>
                     <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>
+                  </Col>
+                  <Col style={{width:160}}>
+                    <Text style={{color:'#5b71ff'}} >{item.invoiceDetailPaid!=null&&item.invoiceDetailPaid>0?item.invoiceDetailPaid.format() + " VNĐ":""}</Text>
                   </Col>
                 </Row>
               );
@@ -118,9 +121,10 @@ export default class extends Component {
                   })}
                 </H3>
               </Col>
-              <Col>
+              <Col style={styles.center}>
                 <H3>{state.total.format() + " VNĐ"}</H3>
               </Col>
+              <Col style={{width:160}}/>
             </Row>
           </Grid>
         </View>
