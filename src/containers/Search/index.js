@@ -75,7 +75,7 @@ class search extends Component {
           <Grid>
             <Col size={32} style={[styles.grid_col, styles.col_form]}>
               <HeaderForm
-                onBack={() => dispatch.pop()}
+                onBack={() => dispatch.push({ id: "UserInfo"})}
                 headerTitle={I18n.t("searchInfo", {
                   locale: locale ? locale : "vn"
                 })}

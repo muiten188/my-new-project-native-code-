@@ -8,9 +8,11 @@ export function billPay(paymentItemList, bill, balance) {
   dataPost.accountBalance = balance;
   dataPost.apartmentId = bill.apartmentId;
   dataPost.invoiceId = bill.invoiceId;
+  
   for (var i = 0; i < paymentItemList.length; i++) {
     paymentItem.invoiceDetailId = paymentItemList[i].invoiceDetailId;
     paymentItem.paymentAmount = paymentItemList[i].invoiceDetailAmount;
+    paymentItem.paymentMethod=paymentItemList[i].paymentMethod;
     _paymentItemList.push(paymentItem);
   }
   dataPost.paymentItemList = _paymentItemList;
