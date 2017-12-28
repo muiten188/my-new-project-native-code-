@@ -36,6 +36,8 @@ import Bill from "../../components/Bill";
 import ItemResult from "../../components/Item_result";
 import * as billListAction from "../../store/actions/containers/billList_actions";
 import Loading from "../../components/Loading";
+const resolveAssetSource = require('resolveAssetSource');
+const userAvar = require("../../resources/assets/user.jpg")
 class billList extends Component {
   static navigationOptions = {
     header: null
@@ -88,14 +90,15 @@ class billList extends Component {
                 <View style={styles.formContainer}>
                   <Thumbnail
                     style={styles.thumbnail_avatar}
-                    source={{
+                    source={state.params.apartment.avatarUrl ? {
                       uri: state.params.apartment.avatarUrl
-                        ? state.params.apartment.avatarUrl
-                        : "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg"
-                    }}
+                    } : userAvar}
                     ref={(thumbnail) => { this.thumbnail = thumbnail; }}
+                    // onError={(e) => {
+                    //   this.thumbnail.setNativeProps({ src: [{ uri: "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg" }] })
+                    // }}
                     onError={(e) => {
-                      this.thumbnail.setNativeProps({ src: [{ uri: "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg" }] })
+                      this.thumbnail.setNativeProps({ src: [resolveAssetSource(userAvar)] })
                     }}
                   />
                   <View>

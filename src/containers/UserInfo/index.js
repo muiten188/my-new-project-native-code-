@@ -32,6 +32,8 @@ import * as navigationAction from "../../store/actions/root_navigation/root_navi
 import * as helper from "../../helper";
 import * as userInfoAction from "../../store/actions/containers/userInfo_action";
 import * as AppConfig from "../../config/app_config";
+const resolveAssetSource = require('resolveAssetSource');
+const userAvar = require("../../resources/assets/user.jpg")
 class userInfo extends Component {
   static navigationOptions = {
     header: null
@@ -114,19 +116,13 @@ class userInfo extends Component {
             >
               <Thumbnail
                 style={styles.thumbnail_avatar}
-                source={
-                  this.props.user.avatar
-                    ? {
-                      uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
-                    }
-                    : {
-                      uri:
-                        "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg"
-                    }
-                }
+                source={this.props.user.avatar ? {
+                  uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
+                } : userAvar}
+
                 ref={(thumbnail) => { this.thumbnail = thumbnail; }}
                 onError={(e) => {
-                  this.thumbnail.setNativeProps({ src: [{ uri: "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg" }] })
+                  this.thumbnail.setNativeProps({ src: [resolveAssetSource(userAvar)] })
                 }}
               />
               <Button
