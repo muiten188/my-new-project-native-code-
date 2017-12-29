@@ -45,7 +45,7 @@ export default class extends Component {
         />
         <View style={styles.item}>
           <Item disabled style={[styles.name_center, styles.borderBottomNone]}>
-            <H3>{userName}</H3>
+            <H3 style={styles.textPadding}>{userName}</H3>
           </Item>
           <Item disabled style={[styles.itemPostion, styles.borderBottomNone]}>
             <Icon name="map-marker" style={styles.icon} />

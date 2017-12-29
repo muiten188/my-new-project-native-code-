@@ -148,5 +148,8 @@ export default {
     marginRight: 20,
     borderRadius: 4,
     backgroundColor: "#054f9a"
+  },
+  textPadding: {
+    paddingBottom: 7
   }
 };

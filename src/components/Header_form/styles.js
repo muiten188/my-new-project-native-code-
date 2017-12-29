@@ -2,8 +2,8 @@ export default {
   header: {
     width: "100%",
     backgroundColor: "#fff",
-    borderRightWidth:1.5,
-    borderColor:'#d7d7d7'
+    borderRightWidth: 1.5,
+    borderColor: "#d7d7d7"
   },
   text: {
     color: "#054f9a",
@@ -13,7 +13,7 @@ export default {
   itemHeaderBody: {
     justifyContent: "center",
     alignItems: "center",
-    marginLeft:-25
+    marginLeft: -25
   },
   itemHeader: {
     width: 150,
@@ -28,6 +28,9 @@ export default {
   buttonSearch: {},
   iconBack: {
     color: "#054f9a",
-    fontSize:25
+    fontSize: 25
+  },
+  textPadding: {
+    paddingBottom: 7
   }
 };

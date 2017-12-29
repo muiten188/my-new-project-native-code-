@@ -108,10 +108,13 @@ class history extends Component {
   renderFlatListItem(dataItem) {
     const item = dataItem.item;
     const { dispatch } = this.props.navigation;
+    const { listResult } = this.props.historyReducer;
     return (
       <TouchableOpacity
         key={item.index}
-        style={styles.item_container}
+        style={listResult && listResult.length >= 2
+          ? styles.item_container_half
+          : styles.item_container_full}
         // onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
       >
         <ItemHistory

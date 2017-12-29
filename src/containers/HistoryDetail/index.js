@@ -157,7 +157,9 @@ class historyDetail extends Component {
                       locale: locale ? locale : "vn"
                     })}
                   </Label>
-                  <H3 style={styles.tranCode}>GD-2-171006-2017</H3>
+                  <H3 style={[styles.tranCode, styles.textPadding]}>
+                    GD-2-171006-2017
+                  </H3>
                 </Item>
                 <Item style={[styles.borderBottomNone, styles.item_header]}>
                   <Label>
@@ -183,7 +185,7 @@ class historyDetail extends Component {
                   <Text />
                 </Row>
                 <Row style={styles.rowRent}>
-                  <H3>
+                  <H3 style={styles.textPadding}>
                     {I18n.t("rentFisrt", {
                       locale: locale ? locale : "vn"
                     })}
@@ -256,7 +258,7 @@ class historyDetail extends Component {
               </Col>
               <Col>
                 <Row style={styles.row_Header}>
-                  <H2>
+                  <H2 style={styles.textPadding}>
                     {I18n.t("bill2", {
                       locale: locale ? locale : "vn"
                     })}
@@ -267,7 +269,6 @@ class historyDetail extends Component {
                 </Row>
                 <Row style={styles.billDetailRow}>
                   <Col>
-                   
                     <Row style={styles.rowDetail_inner}>
                       <Text>500.000 VNĐ</Text>
                     </Row>
@@ -292,7 +293,7 @@ class historyDetail extends Component {
               </Col>
               <Col>
                 <Row style={styles.row_Header}>
-                  <H2>
+                  <H2 style={styles.textPadding}>
                     {I18n.t("remain", {
                       locale: locale ? locale : "vn"
                     })}
@@ -376,7 +377,7 @@ class historyDetail extends Component {
               </Col>
               <Col>
                 <Row style={styles.row_Header}>
-                  <H2>
+                  <H2 style={styles.textPadding}>
                     {I18n.t("cash", {
                       locale: locale ? locale : "vn"
                     })}
@@ -460,7 +461,7 @@ class historyDetail extends Component {
               </Col>
               <Col>
                 <Row style={styles.row_Header}>
-                  <H2>
+                  <H2 style={styles.textPadding}>
                     {I18n.t("credit", {
                       locale: locale ? locale : "vn"
                     })}
@@ -479,7 +480,6 @@ class historyDetail extends Component {
                 </Row>
                 <Row style={styles.billDetailRow}>
                   <Col>
-                    
                     <Row style={styles.rowDetail_inner_checkBox}>
                       <CheckBox
                         color={"#054f9a"}
@@ -544,7 +544,7 @@ class historyDetail extends Component {
               </Col>
               <Col>
                 <Row style={styles.row_Header}>
-                  <H2>
+                  <H2 style={styles.textPadding}>
                     {I18n.t("remain2", {
                       locale: locale ? locale : "vn"
                     })}
@@ -555,7 +555,6 @@ class historyDetail extends Component {
                 </Row>
                 <Row style={styles.billDetailRow}>
                   <Col>
-                    
                     <Row style={styles.rowDetail_inner}>
                       <Text>0</Text>
                     </Row>

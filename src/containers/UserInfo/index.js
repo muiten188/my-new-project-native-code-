@@ -32,8 +32,8 @@ import * as navigationAction from "../../store/actions/root_navigation/root_navi
 import * as helper from "../../helper";
 import * as userInfoAction from "../../store/actions/containers/userInfo_action";
 import * as AppConfig from "../../config/app_config";
-const resolveAssetSource = require('resolveAssetSource');
-const userAvar = require("../../resources/assets/user.jpg")
+const resolveAssetSource = require("resolveAssetSource");
+const userAvar = require("../../resources/assets/user.jpg");
 class userInfo extends Component {
   static navigationOptions = {
     header: null
@@ -116,13 +116,20 @@ class userInfo extends Component {
             >
               <Thumbnail
                 style={styles.thumbnail_avatar}
-                source={this.props.user.avatar ? {
-                  uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
-                } : userAvar}
-
-                ref={(thumbnail) => { this.thumbnail = thumbnail; }}
-                onError={(e) => {
-                  this.thumbnail.setNativeProps({ src: [resolveAssetSource(userAvar)] })
+                source={
+                  this.props.user.avatar
+                    ? {
+                        uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
+                      }
+                    : userAvar
+                }
+                ref={thumbnail => {
+                  this.thumbnail = thumbnail;
+                }}
+                onError={e => {
+                  this.thumbnail.setNativeProps({
+                    src: [resolveAssetSource(userAvar)]
+                  });
                 }}
               />
               <Button
@@ -134,10 +141,15 @@ class userInfo extends Component {
               </Button>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>{this.props.user.fullName}</H3>
+              <H3 style={styles.textPadding}>{this.props.user.fullName}</H3>
             </Item>
             <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3>{"CMTND: " + this.props.user.identification}</H3>
+              <H3 style={styles.textPadding}>
+                {"CMTND: "}
+                {this.props.user.identification
+                  ? this.props.user.identification
+                  : ""}
+              </H3>
             </Item>
             <Form>
               <Field

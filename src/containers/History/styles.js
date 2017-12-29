@@ -34,6 +34,17 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
+  item_container_half: {
+    width: "50%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  item_container_full: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
   listResult: {
     height: 100,
     paddingTop: 0

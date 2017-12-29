@@ -282,7 +282,7 @@ class billDetail extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={buildingEmpty ? "#ff373a" : "#054f9a"}
           checked={state.buildingCashPay}
           onPress={() => {
@@ -322,7 +322,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={electricEmpty ? "#ff373a" : "#054f9a"}
           checked={state.electricCashPay}
           onPress={() => {
@@ -362,7 +362,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={waterEmpty ? "#ff373a" : "#054f9a"}
           checked={state.waterCashPay}
           onPress={() => {
@@ -402,7 +402,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={bikeEmpty ? "#ff373a" : "#054f9a"}
           checked={state.bikeCashPay}
           onPress={() => {
@@ -442,7 +442,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={carEmpty ? "#ff373a" : "#054f9a"}
           checked={state.carCashPay}
           onPress={() => {
@@ -482,7 +482,7 @@ class billDetail extends Component {
     } else {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={otherEmpty ? "#ff373a" : "#054f9a"}
           checked={state.otherCashPay}
           onPress={() => {
@@ -534,7 +534,7 @@ class billDetail extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={buildingEmpty ? "#ff373a" : "#054f9a"}
           checked={state.buildingCreditPay}
           onPress={() => {
@@ -576,7 +576,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={electricEmpty ? "#ff373a" : "#054f9a"}
           checked={state.electricCreditPay}
           onPress={() => {
@@ -618,7 +618,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={waterEmpty ? "#ff373a" : "#054f9a"}
           checked={state.waterCreditPay}
           onPress={() => {
@@ -660,7 +660,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={bikeEmpty ? "#ff373a" : "#054f9a"}
           checked={state.bikeCreditPay}
           onPress={() => {
@@ -702,7 +702,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={carEmpty ? "#ff373a" : "#054f9a"}
           checked={state.carCreditPay}
           onPress={() => {
@@ -744,7 +744,7 @@ class billDetail extends Component {
     } else {
       return (
         <CheckBox
-          disabled={item.invoiceDetailAmount == 0&&false}
+          disabled={item.invoiceDetailAmount == 0 && false}
           color={otherEmpty ? "#ff373a" : "#054f9a"}
           checked={state.otherCreditPay}
           onPress={() => {
@@ -828,7 +828,7 @@ class billDetail extends Component {
               <Row style={styles.billDetailRow}>
                 <Col>
                   <Row style={styles.rowDetail_inner_title}>
-                    <H3 style={{paddingLeft:16}}>
+                    <H3 style={[{ paddingLeft: 16 }, styles.textPadding]}>
                       {I18n.t("billCostTitle", {
                         locale: locale ? locale : "vn"
                       })}{" "}
@@ -845,7 +845,12 @@ class billDetail extends Component {
                 </Col>
               </Row>
               <Row style={styles.rowUse}>
-                <H3 style={remainUseEmpty ? styles.label_row_empty : {}}>
+                <H3
+                  style={[
+                    remainUseEmpty ? styles.label_row_empty : {},
+                    styles.textPadding
+                  ]}
+                >
                   {I18n.t("use1stRent", {
                     locale: locale ? locale : "vn"
                   })}
@@ -855,7 +860,7 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2>
+                <H2 style={styles.textPadding}>
                   {I18n.t("totalMoney", {
                     locale: locale ? locale : "vn"
                   })}
@@ -887,7 +892,7 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2>
+                <H2 style={styles.textPadding}>
                   {I18n.t("payed", {
                     locale: locale ? locale : "vn"
                   })}
@@ -919,7 +924,7 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2>
+                <H2 style={styles.textPadding}>
                   {I18n.t("totalCash", {
                     locale: locale ? locale : "vn"
                   })}
@@ -974,7 +979,7 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2>
+                <H2 style={styles.textPadding}>
                   {I18n.t("totalCredit", {
                     locale: locale ? locale : "vn"
                   })}
@@ -1021,7 +1026,7 @@ class billDetail extends Component {
             </Col>
             <Col style={styles.totalCol}>
               <Row style={styles.row_Header}>
-                <H2>
+                <H2 style={styles.textPadding}>
                   {I18n.t("TotalPay", {
                     locale: locale ? locale : "vn"
                   })}
@@ -1029,7 +1034,13 @@ class billDetail extends Component {
               </Row>
               <Row style={[styles.border, styles.center]}>
                 <View style={[{ flex: 1 }, styles.center]}>
-                  <H1 style={[styles.pay_item, styles.totalPay]}>
+                  <H1
+                    style={[
+                      styles.pay_item,
+                      styles.totalPay,
+                      styles.textPadding
+                    ]}
+                  >
                     {state.totalPay <= 0
                       ? "0 VNĐ"
                       : state.totalPay.format() + " VNĐ"}

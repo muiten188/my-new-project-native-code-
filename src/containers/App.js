@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { AppRegistry, StyleSheet, Text, View,AsyncStorage } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage
+} from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { Provider } from "react-redux";
@@ -19,6 +25,12 @@ class App extends Component {
     let { loginReducer } = this.props;
     if (loginReducer.Logout == true) {
       AsyncStorage.clear();
+    } else if (loginReducer.Logged == true) {
+      try {
+        AsyncStorage.setItem("@user", JSON.stringify(loginReducer.user));
+      } catch (error) {
+        console.log("save error");
+      }
     }
     if (!loginReducer || !loginReducer.Logged) {
       return <AuthenNavigation />;

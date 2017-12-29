@@ -59,7 +59,7 @@ export default class extends Component {
             </Item>
           }
           <Item disabled style={[styles.borderBottomNone, styles.itemCash]}>
-            <H1 style={[styles.pay_item, styles.totalPay]}>{totalMoney + " VNĐ"}</H1>
+            <H1 style={[styles.pay_item, styles.totalPay,styles.textPadding]}>{totalMoney + " VNĐ"}</H1>
           </Item>
           <Item disabled style={[styles.itemPhone, styles.borderBottomNone]}>
             <Label>{I18n.t("content", {

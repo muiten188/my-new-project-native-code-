@@ -37,7 +37,7 @@ export function InputField({
         {...custom}
         style={{ ...styles.input, ...inputStyle }}
       />
-      {touched && error ? <Text style={{ width: 10 }}>{error}</Text> : <Text />}
+      {touched && error ? <Text style={{ width: 50 }}>{error}</Text> : <Text />}
     </Item>
   );
 }

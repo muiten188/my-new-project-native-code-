@@ -51,8 +51,8 @@ export default {
   header_content: {
     width: "100%",
     height: 90,
-    borderBottomWidth:1.5,
-    borderColor:'#cecece'
+    borderBottomWidth: 1.5,
+    borderColor: "#cecece"
   },
   titleCol: {
     width: 260
@@ -161,4 +161,7 @@ export default {
     alignItems: "center",
     justifyContent: "center"
   },
+  textPadding: {
+    paddingBottom: 7
+  }
 };

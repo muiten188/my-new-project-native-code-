@@ -32,8 +32,8 @@ export default class extends Component {
             <View
               style={styles.modalContent}
             >
-              <H3 style={styles.item_content}>Mã giao dịch</H3>
-              <H1 style={[styles.item_content,styles.codeText]}>{transactionCode}</H1>
+              <H3 style={[styles.item_content,styles.textPadding]}>Mã giao dịch</H3>
+              <H1 style={[styles.item_content,styles.codeText,styles.textPadding]}>{transactionCode}</H1>
               <Text style={[styles.item_content,styles.textSize]}>
                 Thanh toán đã được thực hiện Cảm ơn sự hợp tác của quý khách
               </Text>

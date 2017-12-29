@@ -68,7 +68,10 @@ export default {
   flex_end: {
     justifyContent: "flex-end"
   },
-  primary:{
+  primary: {
     color: "#5b71ff"
+  },
+  textPadding: {
+    paddingBottom: 7
   }
 };

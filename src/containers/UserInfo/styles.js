@@ -10,22 +10,23 @@ export default {
   },
   container_info_outer: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   container_info_inter: {
     width: 400,
     marginTop: -50,
     height: "100%",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
   thumbnail_avatar: {
+    marginTop:6,
     width: 105,
     height: 105,
     borderRadius: 100,
     marginLeft: 150,
-    borderWidth:1,
-    borderColor:'#cecece',
+    borderWidth: 1,
+    borderColor: "#cecece"
   },
   button_edit: {
     position: "absolute",
@@ -50,10 +51,13 @@ export default {
   button_changepassword: {
     marginLeft: 70,
     marginRight: 30,
-    backgroundColor:'#054f9a',
-    borderRadius:5
+    backgroundColor: "#054f9a",
+    borderRadius: 5
   },
-  itemButton_changepw:{
-    marginTop:20
+  itemButton_changepw: {
+    marginTop: 20
+  },
+  textPadding: {
+    paddingBottom: 7
   }
 };

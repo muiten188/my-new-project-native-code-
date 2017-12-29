@@ -82,5 +82,8 @@ export default {
     },
     itemCash: {
         marginTop: 15
+    },
+    textPadding:{
+        paddingBottom:7
     }
 }

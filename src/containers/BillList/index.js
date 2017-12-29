@@ -108,7 +108,7 @@ class billList extends Component {
                           locale: locale ? locale : "vn"
                         })}
                       </Label>
-                      <H3>{state.params.apartment.ownerName}</H3>
+                      <H3 style={styles.textPadding}>{state.params.apartment.ownerName}</H3>
                     </Item>
 
                     <Item style={styles.item}>

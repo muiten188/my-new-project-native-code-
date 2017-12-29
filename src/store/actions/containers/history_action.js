@@ -1,16 +1,16 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
 
-export function getHistory(apartmentId,currentTime) {
+export function getHistory(apartmentId, currentTime) {
   let apartmentIdParam = apartmentId || -1;
-  let _currentTime=currentTime||"";
+  let _currentTime = currentTime || "";
   return dispatch => {
     dispatch(_historying());
-    
+
     fetch(
       `${AppConfig.API_HOST}tablet/?${getQueryString({
         apartmentId: apartmentIdParam,
-        month:_currentTime
+        month: _currentTime
       })}`,
       {
         method: "GET"
@@ -21,11 +21,8 @@ export function getHistory(apartmentId,currentTime) {
       })
       .then(function(responseJson) {
         let historyList = responseJson.data;
-        if (historyList) {
-          dispatch(_history(historyList));
-        } else {
-          //fail
-        }
+        debugger;
+        dispatch(_history(historyList));
       });
   };
 }
@@ -38,7 +35,7 @@ function _historying() {
 function _history(historyList) {
   return {
     type: types.HISTORY,
-    listResult:historyList
+    listResult: historyList
   };
 }
 

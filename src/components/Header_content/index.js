@@ -19,9 +19,15 @@ export default class extends Component {
   static navigationOptions = {
     header: null
   };
-  
+
   render() {
-    const { showButtonLeft, headerTitle, showUser, showSearch,onSearch } = this.props;
+    const {
+      showButtonLeft,
+      headerTitle,
+      showUser,
+      showSearch,
+      onSearch
+    } = this.props;
     return (
       <Header style={styles.header}>
         <Grid>
@@ -33,7 +39,7 @@ export default class extends Component {
             </Col>
           ) : null}
           <Col style={styles.itemHeaderBody}>
-            <H3 style={styles.text}>{headerTitle}</H3>
+            <H3 style={[styles.text]}>{headerTitle}</H3>
           </Col>
           {showUser == true ? (
             <Col style={styles.itemHeader}>
@@ -45,8 +51,14 @@ export default class extends Component {
           ) : null}
           {showSearch == true ? (
             <Col style={styles.itemHeader}>
-              <Button transparent style={styles.buttonSearch} onPress={onSearch}>
-                <Text style={styles.text} uppercase={false}>tim kiếm</Text>
+              <Button
+                transparent
+                style={styles.buttonSearch}
+                onPress={onSearch}
+              >
+                <Text style={styles.text} uppercase={false}>
+                  tim kiếm
+                </Text>
                 <Icon name="search" />
               </Button>
             </Col>

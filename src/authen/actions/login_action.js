@@ -12,11 +12,15 @@ export function login(user) {
       },
       body: JSON.stringify(user)
     })
-      .then(function (response) {
-        return response.json();
+      .then(function(response) {
+        if (response.status != 200) {
+          dispatch(_login(false));
+        } else {
+          return response.json();
+        }
       })
-      .then(function (responseJson) {
-        if (responseJson.username) {
+      .then(function(responseJson) {
+        if (responseJson&&responseJson.username) {
           user = responseJson;
           dispatch(_login(true, user));
         }
@@ -38,8 +42,7 @@ export function _login(status, user) {
       user: user,
       Logged: status
     };
-  }
-  else {
+  } else {
     return {
       type: types.LOGIN_EROR,
       Logged: status
@@ -50,11 +53,11 @@ export function _login(status, user) {
 export function setUser(user) {
   return dispatch => {
     dispatch(_login(true, user));
-  }
+  };
 }
 
 export function logout() {
   return {
-    type: types.LOGGED_OUT,
+    type: types.LOGGED_OUT
   };
 }

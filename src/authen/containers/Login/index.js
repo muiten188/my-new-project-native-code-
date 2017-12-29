@@ -75,11 +75,12 @@ class login extends Component {
       const { loginAction } = this.props;
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
-          //alert(value);
-          user = JSON.parse(value);
-          if (user) {
-            loginAction.setUser(user);
-          }
+          try {
+            user = JSON.parse(value);
+            if (user) {
+              loginAction.setUser(user);
+            }
+          } catch (e) {}
         })
         .done();
     } catch (error) {
@@ -104,14 +105,6 @@ class login extends Component {
     ) {
       alert("Đăng nhập thất bại");
       loginReducer.Logged = null;
-    }
-    if (loginReducer.Logged == true) {
-      try {
-        AsyncStorage.clear();
-        AsyncStorage.setItem("@user", JSON.stringify(loginReducer.user));
-      } catch (error) {
-        console.log("save error");
-      }
     }
 
     return (

@@ -33,7 +33,7 @@ export default class extends Component {
             </Col>
           ) : null}
           <Col style={styles.itemHeaderBody}>
-            <H3 style={styles.text}>{headerTitle}</H3>
+            <H3 style={[styles.text]}>{headerTitle}</H3>
           </Col>
           {showUser == true ? (
             <Col style={styles.itemHeader}>

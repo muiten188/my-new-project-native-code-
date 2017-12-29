@@ -69,11 +69,13 @@ export default class extends Component {
     let totalPaid = 0;
     for (var i = 0; i < listInvoiceDetail.length; i++) {
       total =
-        total + (listInvoiceDetail[i].invoiceDetailAmount == null
+        total +
+        (listInvoiceDetail[i].invoiceDetailAmount == null
           ? 0
-          : listInvoiceDetail[i].invoiceDetailAmount)
+          : listInvoiceDetail[i].invoiceDetailAmount);
       totalPaid =
-        totalPaid + (listInvoiceDetail[i].invoiceDetailPaid == null
+        totalPaid +
+        (listInvoiceDetail[i].invoiceDetailPaid == null
           ? 0
           : listInvoiceDetail[i].invoiceDetailPaid);
     }
@@ -143,17 +145,19 @@ export default class extends Component {
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
               <Col>
-                <H3>
+                <H3 style={styles.textPadding}>
                   {I18n.t("billTotal", {
                     locale: locale ? locale : "vn"
                   })}
                 </H3>
               </Col>
               <Col style={styles.center}>
-                <H3>{total.format() + " VNĐ"}</H3>
+                <H3 style={styles.textPadding}>{total.format() + " VNĐ"}</H3>
               </Col>
-              <Col style={{ width: 160}}>
-                <H3 style={styles.primary}>{totalPaid.format() + " VNĐ"}</H3>
+              <Col style={{ width: 160 }}>
+                <H3 style={[styles.primary, styles.textPadding]}>
+                  {totalPaid.format() + " VNĐ"}
+                </H3>
               </Col>
             </Row>
           </Grid>

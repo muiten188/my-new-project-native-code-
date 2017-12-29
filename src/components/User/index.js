@@ -8,9 +8,13 @@ import {
   findNodeHandle,
   AsyncStorage
 } from "react-native";
-import { Button, Text } from "native-base";
+import { Button, Text, Thumbnail } from "native-base";
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as loginAction from "../../authen/actions/login_action";
+import * as AppConfig from "../../config/app_config";
+import styles from "./styles";
+const resolveAssetSource = require("resolveAssetSource");
+const userAvar = require("../../resources/assets/user.jpg");
 const ICON_SIZE = 24;
 
 class user extends React.Component {
@@ -95,7 +99,26 @@ class user extends React.Component {
             paddingRight: 15
           }}
         >
-          <Icon name="user" size={ICON_SIZE} color="white" ref="menu" />
+          <Thumbnail
+            ref="menu"
+            style={styles.thumbnail_avatar}
+            source={
+              this.state.avatar
+                ? {
+                    uri: `${AppConfig.API_HOST}${this.state.avatar}`
+                  }
+                : userAvar
+            }
+            ref={thumbnail => {
+              this.thumbnail = thumbnail;
+            }}
+            onError={e => {
+              // this.thumbnail.setNativeProps({
+              //   src: [resolveAssetSource(userAvar)]
+              // });
+            }}
+          />
+          <Icon name="user" size={0} color="white" ref="menu" />
           <Text>{this.state.fullName}</Text>
         </Button>
       </View>

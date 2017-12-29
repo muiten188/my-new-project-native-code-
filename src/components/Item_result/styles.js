@@ -9,7 +9,7 @@ export default {
     justifyContent: "center",
     paddingTop: 35,
     paddingBottom: 30,
-    alignItems: "center",
+    alignItems: "center"
   },
   item: {
     paddingTop: 15,
@@ -23,17 +23,17 @@ export default {
     alignItems: "flex-start",
     paddingLeft: 20,
     paddingRight: 20,
-    marginRight:5
+    marginRight: 5
   },
   thumbnail_avatar: {
     position: "absolute",
-    width: 75,
-    height: 75,
+    width: 65,
+    height: 65,
     borderRadius: 50,
-    top: -3,
+    top: -2,
     borderWidth: 4,
     zIndex: 9999,
-    borderColor: "#fff",
+    borderColor: "#fff"
   },
   itemPostion: {
     marginTop: 6,
@@ -47,12 +47,15 @@ export default {
     marginRight: 6
   },
   name_center: {
-    marginTop:5,
+    marginTop: 5,
     justifyContent: "center",
     alignItems: "center",
-    width:'100%'
+    width: "100%"
   },
-  borderBottomNone:{
-    borderBottomWidth:0,
+  borderBottomNone: {
+    borderBottomWidth: 0
+  },
+  textPadding: {
+    paddingBottom: 7
   }
 };

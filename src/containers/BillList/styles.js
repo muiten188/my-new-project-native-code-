@@ -58,10 +58,10 @@ export default {
   },
   listResult: {
     paddingTop: 10,
-    width:"100%",
+    width: "100%"
   },
   listResult_container: {
-    alignItems: "center",
+    alignItems: "center"
   },
   itemList: {
     width: "50%",
@@ -73,7 +73,7 @@ export default {
     //width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    marginTop:30
+    marginTop: 30
   },
   thumbnail_avatar: {
     width: 85,
@@ -94,16 +94,19 @@ export default {
     fontSize: 27,
     marginRight: 10
   },
-  textRemainMoney:{
-    color:'#82b263',
-    fontSize:17,
-    fontWeight:'bold'
+  textRemainMoney: {
+    color: "#82b263",
+    fontSize: 17,
+    fontWeight: "bold"
   },
-  buttonViewHistory:{
-    marginTop:30,
+  buttonViewHistory: {
+    marginTop: 30,
     marginLeft: 30,
     marginRight: 30,
-    backgroundColor:'#054f9a',
-    borderRadius:5
+    backgroundColor: "#054f9a",
+    borderRadius: 5
+  },
+  textPadding: {
+    paddingBottom: 7
   }
 };

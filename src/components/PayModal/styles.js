@@ -70,4 +70,7 @@ export default {
     color: "#054f9a",
     fontWeight:'bold'
   },
+  textPadding:{
+    paddingBottom:7
+  }
 };
