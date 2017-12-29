@@ -4,7 +4,8 @@ import {
   View,
   KeyboardAvoidingView,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import {
   Container,
@@ -54,18 +55,15 @@ class search extends Component {
     // searchAction.search();
   }
 
-  onSearchClick() {
-    alert(1);
-    // const { navigationAction } = this.props.navigation;
-    // navigationAction.push({ id: "FilmDetail", title: "Film Detail", oFilm: oData });
-  }
-
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { listResult, isLoading } = this.props.searchReducer;
+    const { listResult, isLoading,searchErorr } = this.props.searchReducer;
     const { searchAction, handleSubmit } = this.props;
     const { user } = this.props.loginReducer;
+    if(searchErorr==true){
+      Alert.alert("Thông báo","Tìm kiếm lỗi kiểm tra lại đường truyền.");
+    }
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -150,7 +148,7 @@ class search extends Component {
                   <Button
                     full
                     disabled={isLoading}
-                    onPress={handleSubmit(searchAction.search,user)}
+                    onPress={handleSubmit((values)=>{searchAction.search(values,user)})}
                     style={styles.buttomSearch}
                   >
                     <Text>

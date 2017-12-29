@@ -1,4 +1,5 @@
 import { AsyncStorage } from "react-native";
+import * as types from "../store/constants/action_types";
 
 export function setAsyncStorage(key, value) {
     try {
@@ -45,3 +46,8 @@ export function buildHeader(user) {
     }
 }   
 
+function _fetchCatch() {
+    return {
+      type: types.BILL_DETAIL_FETCH_CATCH,
+    };
+  }

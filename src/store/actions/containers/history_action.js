@@ -1,7 +1,8 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
+import { buildHeader, fetchCatch } from "../../../helper";
 
-export function getHistory(apartmentId, currentTime) {
+export function getHistory(apartmentId, currentTime, user) {
   let apartmentIdParam = apartmentId || -1;
   let _currentTime = currentTime || "";
   return dispatch => {
@@ -13,16 +14,27 @@ export function getHistory(apartmentId, currentTime) {
         month: _currentTime
       })}`,
       {
+        headers: buildHeader(user),
         method: "GET"
       }
     )
       .then(function(response) {
-        return response.json();
+        if (response.status != 200) {
+          dispatch(_historyError());
+        } else {
+          return response.json();
+        }
       })
       .then(function(responseJson) {
         let historyList = responseJson.data;
-        debugger;
-        dispatch(_history(historyList));
+        if (historyList) {
+          dispatch(_history(historyList));
+        } else {
+          dispatch(_historyError());
+        }
+      })
+      .catch(function(error) {
+        dispatch(_historyError());
       });
   };
 }
@@ -36,6 +48,12 @@ function _history(historyList) {
   return {
     type: types.HISTORY,
     listResult: historyList
+  };
+}
+
+function _historyError() {
+  return {
+    type: types.HISTORY_ERROR
   };
 }
 

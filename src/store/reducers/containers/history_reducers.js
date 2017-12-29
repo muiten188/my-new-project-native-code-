@@ -1,7 +1,8 @@
 import * as types from "../../constants/action_types";
 const initState = {
   isLoading: true,
-  listResult:[]
+  listResult: [],
+  historyError:false
 };
 
 export default function(state = initState, action = {}) {
@@ -9,13 +10,21 @@ export default function(state = initState, action = {}) {
     case types.HISTORYING:
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
+        historyError:initState.historyError
       };
     case types.HISTORY:
       return {
         ...state,
         listResult: action.listResult,
-        isLoading: false
+        isLoading: false,
+        historyError:initState.historyError
+      };
+    case types.HISTORY_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        historyError: true
       };
     default:
       return state;

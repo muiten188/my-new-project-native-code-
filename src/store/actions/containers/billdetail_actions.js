@@ -1,19 +1,19 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-
-export function billPay(paymentItemList, bill, balance) {
+import { buildHeader, fetchCatch } from "../../../helper";
+export function billPay(paymentItemList, bill, balance, user) {
   let dataPost = {};
   let _paymentItemList = [];
   let paymentItem = {};
   dataPost.accountBalance = balance;
   dataPost.apartmentId = bill.apartmentId;
   dataPost.invoiceId = bill.invoiceId;
-  
+
   for (var i = 0; i < paymentItemList.length; i++) {
-    paymentItem={}
+    paymentItem = {};
     paymentItem.invoiceDetailId = paymentItemList[i].invoiceDetailId;
     paymentItem.paymentAmount = paymentItemList[i].invoiceDetailAmount;
-    paymentItem.paymentMethod=paymentItemList[i].paymentMethod;
+    paymentItem.paymentMethod = paymentItemList[i].paymentMethod;
     _paymentItemList.push(paymentItem);
   }
   dataPost.paymentItemList = _paymentItemList;
@@ -21,22 +21,32 @@ export function billPay(paymentItemList, bill, balance) {
     dispatch(_billPaying());
     fetch(`${AppConfig.API_HOST}tablet/payment`, {
       method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json"
-      },
+      headers: Object.assign(
+        {},
+        {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json"
+        },
+        buildHeader(user)
+      ),
       body: JSON.stringify(dataPost)
     })
       .then(function(response) {
-        return response.json();
+        if (response.status != 200) {
+          dispatch(_billPayError());
+        } else {
+          return response.json();
+        }
       })
       .then(function(responseJson) {
         if (responseJson) {
-          // oFilmDetail = JSON.parse(responseJson.Data);
           dispatch(_billPay(responseJson));
         } else {
-          //fail
+          dispatch(_billPayError());
         }
+      })
+      .catch(function(error) {
+        dispatch(_billPayError());
       });
   };
 }
@@ -51,5 +61,11 @@ function _billPay(data) {
 function _billPaying() {
   return {
     type: types.BILL_PAYING
+  };
+}
+
+function _billPayError() {
+  return {
+    type: types.BILL_PAY_ERROR
   };
 }

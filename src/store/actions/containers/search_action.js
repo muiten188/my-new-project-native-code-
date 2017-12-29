@@ -1,7 +1,7 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-import {buildHeader} from '../../../helper';
-export function search(values,user) {
+import { buildHeader,fetchCatch } from "../../../helper";
+export function search(values, user) {
   let data = [];
   let dataPost = values || {};
   return dispatch => {
@@ -9,18 +9,25 @@ export function search(values,user) {
     fetch(`${AppConfig.API_HOST}tablet/apartment?${getQueryString(dataPost)}`, {
       headers: buildHeader(user),
       method: "GET",
-      qs:dataPost
+      qs: dataPost
     })
       .then(function(response) {
-        return response.json();
+        if (response.status != 200) {
+          dispatch(_seachError());
+        } else {
+          return response.json();
+        }
       })
       .then(function(responseJson) {
         if (responseJson.data) {
           data = responseJson.data;
           dispatch(_search(data));
         } else {
-          dispatch(_search(data));
+          dispatch(_seachError());
         }
+      })
+      .catch(function(error) {
+        dispatch(_seachError());
       });
   };
 }
@@ -29,14 +36,21 @@ function _search(data) {
   return {
     type: types.LIST_RESULT,
     data: data,
-    isLoading:false
+    isLoading: false
   };
 }
 
-function _searching(){
+function _searching() {
   return {
     type: types.SEARCHING,
     isLoading: true
+  };
+}
+
+function _seachError() {
+  return {
+    type: types.SEARCH_ERROR,
+    isLoading: false
   };
 }
 

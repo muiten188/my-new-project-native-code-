@@ -1,59 +1,72 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
+import { buildHeader, fetchCatch } from "../../../helper";
 
-function getBalance(apartmentId, dispatch) {
+function getBalance(apartmentId, dispatch, user) {
   let apartmentIdParam = apartmentId || -1;
   fetch(
     `${
       AppConfig.API_HOST
     }tablet/apartment/${apartmentIdParam}/account-balance/`,
     {
+      headers: buildHeader(user),
       method: "GET"
     }
   )
     .then(function(response) {
-      return response.json();
+      if (response.status != 200) {
+        dispatch(_billError());
+      } else {
+        return response.json();
+      }
     })
     .then(function(responseJson) {
       let balance = responseJson.accountBalance;
       let totalDebit = responseJson.totalDebit;
-      if (balance !== undefined) {
+      if (balance !== undefined && totalDebit !== undefined) {
         dispatch(_balance(balance, totalDebit));
       } else {
-        //fail
+        dispatch(_billError());
       }
+    })
+    .catch(function(error) {
+      dispatch(_billError());
     });
 }
 
-export function getBillList(apartmentId) {
+export function getBillList(apartmentId, user) {
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     dispatch(_billListing());
-    getBalance(apartmentIdParam, dispatch);
+    getBalance(apartmentIdParam, dispatch, user);
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
         aparmentId: apartmentIdParam
       })}`,
       {
+        headers: buildHeader(user),
         method: "GET"
       }
     )
       .then(function(response) {
-        return response.json();
+        if (response.status != 200) {
+          dispatch(_billError());
+        } else {
+          return response.json();
+        }
       })
       .then(function(responseJson) {
         let billList = responseJson.data;
         if (billList) {
           dispatch(_billList(billList));
         } else {
-          //fail
+          dispatch(_billError());
         }
+      })
+      .catch(function(error) {
+        dispatch(_billError());
       });
   };
-}
-
-export function refresh(apartmentId){
-  getBillList(apartmentId)
 }
 
 function _balance(balance, totalDebit) {
@@ -75,6 +88,12 @@ function _billListing() {
   return {
     type: types.BILL_LISTING,
     isLoading: true
+  };
+}
+
+function _billError() {
+  return {
+    type: types.LIST_ERROR
   };
 }
 

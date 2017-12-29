@@ -1,7 +1,9 @@
 import * as types from "../../constants/action_types";
+import { FETCH_CATCH } from "../../constants/action_types";
 const initState = {
   isLoading: false,
-  listResult:[]
+  listResult: [],
+  searchErorr: false
 };
 
 export default function(state = initState, action = {}) {
@@ -9,13 +11,27 @@ export default function(state = initState, action = {}) {
     case types.LIST_RESULT:
       return {
         ...state,
-        listResult:action.data,
-        isLoading:false
+        listResult: action.data,
+        isLoading: initState.isLoading,
+        searchErorr: initState.searchErorr
       };
     case types.SEARCHING:
       return {
         ...state,
-        isLoading:action.isLoading
+        isLoading: action.isLoading,
+        searchErorr: initState.searchErorr
+      };
+    case types.SEARCH_ERROR:
+      return {
+        ...state,
+        isLoading: action.isLoading,
+        searchErorr: true
+      };
+    case types.FETCH_CATCH:
+      return {
+        ...state,
+        isLoading: action.isLoading,
+        searchErorr: true
       };
     default:
       return state;

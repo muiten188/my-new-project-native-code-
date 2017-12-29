@@ -1,3 +1,6 @@
+//Fetch API
+export const FETCH_CATCH = "FETCH_CATCH";
+//authen
 export const LOGIN = "LOGIN";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_EROR = "LOGIN_EROR";
@@ -15,16 +18,23 @@ export const DEFAULT = "DEFAULT";
 //search actions
 export const LIST_RESULT = "LIST_RESULT";
 export const SEARCHING = "SEARCHING";
-
+export const SEARCH_ERROR = "SEARCH_ERROR";
+export const SEARCH_FETCH_ERROR = "SEARCH_FETCH_ERROR";
 //user info
 export const USER_INFO = "USER_INFO";
 //bill list
 export const BALANCE = "BALANCE";
 export const BILL_LIST = "BILL_LIST";
 export const BILL_LISTING = "BILL_LISTING";
+export const LIST_ERROR = "LIST_ERROR";
+export const BILL_LIST_FETCH_CATCH = "BILL_LIST_FETCH_CATCH";
 //bill detail
 export const BILL_PAY = "BILL_PAY";
 export const BILL_PAYING = "BILL_PAYING";
+export const BILL_PAY_ERROR = "BILL_PAY_ERROR";
+export const BILL_DETAIL_FETCH_CATCH = "BILL_DETAIL_FETCH_CATCH";
 //history
 export const HISTORYING = "HISTORYING";
 export const HISTORY = "HISTORY";
+export const HISTORY_ERROR = "HISTORY_ERROR";
+export const HISTORY_FETCH_CATCH = "HISTORY_FETCH_CATCH";

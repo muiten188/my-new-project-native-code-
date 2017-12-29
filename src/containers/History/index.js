@@ -4,7 +4,8 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Alert
 } from "react-native";
 import {
   Container,
@@ -44,7 +45,7 @@ class history extends Component {
 
   constructor(props) {
     super(props);
-    let currentMonth = currentDate.getMonth()+1;
+    let currentMonth = currentDate.getMonth() + 1;
     let currentYear = currentDate.getFullYear();
     this.state = { currentTime: currentMonth + "/" + currentYear };
     I18n.defaultLocale = "vi";
@@ -58,15 +59,25 @@ class history extends Component {
 
   componentDidMount() {
     const { historyAction, navigation } = this.props;
-    const {state}=this;
-    historyAction.getHistory(navigation.state.params.apartment.apartmentId,state.currentTime);
+    const { user } = this.props.loginReducer;
+    const { state } = this;
+    historyAction.getHistory(
+      navigation.state.params.apartment.apartmentId,
+      state.currentTime,
+      user
+    );
   }
 
   HistoryPickerChange(month, year) {
     const { historyAction, navigation } = this.props;
+    const { user } = this.props.loginReducer;
     let currentTime = month + "/" + year;
     this.setState({ currentTime: currentTime });
-    historyAction.getHistory(navigation.state.params.apartment.apartmentId,currentTime);
+    historyAction.getHistory(
+      navigation.state.params.apartment.apartmentId,
+      currentTime,
+      user
+    );
   }
 
   _onPressHandle() {
@@ -77,7 +88,10 @@ class history extends Component {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
     const state = this.state;
-    const { listResult,isLoading } = this.props.historyReducer;
+    const { listResult, isLoading,historyError } = this.props.historyReducer;
+    if(historyError==true){
+      Alert.alert("Thông báo","Lấy danh sách lịch sử giao dịch thất bại kiểm tra lại đường truyền.")
+    }
     return (
       <Container style={styles.container}>
         <Header
@@ -91,7 +105,7 @@ class history extends Component {
           showUser={true}
         />
         <View style={styles.container_info_outer}>
-          <Loading isShow={isLoading}/>
+          <Loading isShow={isLoading} />
           <HistoryPicker onChange={this.HistoryPickerChange.bind(this)} />
           <FlatList
             style={styles.listResult}
@@ -112,9 +126,11 @@ class history extends Component {
     return (
       <TouchableOpacity
         key={item.index}
-        style={listResult && listResult.length >= 2
-          ? styles.item_container_half
-          : styles.item_container_full}
+        style={
+          listResult && listResult.length >= 2
+            ? styles.item_container_half
+            : styles.item_container_full
+        }
         // onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
       >
         <ItemHistory

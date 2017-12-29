@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
-import { View, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  Alert
+} from "react-native";
 import {
   Container,
   Text,
@@ -790,13 +795,20 @@ class billDetail extends Component {
     const { dispatch } = this.props.navigation;
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
     const { billDetailAction } = this.props;
-    const { transactionCode } = this.props.billDetailReducer;
+    const { transactionCode, billPayError } = this.props.billDetailReducer;
     const { billListAction, navigation } = this.props;
+    const { user } = this.props.loginReducer;
     const state = this.state;
     let rentEmpty = false;
     let remainUseEmpty = false;
     if (!state.rentCashPay && !state.rentCreditPay) {
       rentEmpty = true;
+    }
+    if (billPayError == true) {
+      Alert.alert(
+        "Thông Báo",
+        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền."
+      );
     }
     return (
       <Container style={styles.container}>
@@ -1087,7 +1099,7 @@ class billDetail extends Component {
 
             dispatch.pop();
             setTimeout(() => {
-              billListAction.getBillList(bill.apartmentId);
+              billListAction.getBillList(bill.apartmentId, user);
             }, 15);
           }}
         />
@@ -1096,7 +1108,12 @@ class billDetail extends Component {
           onClose={() => this.setState({ isModalConfirm: false })}
           onProcess={() => {
             this.setState({ isModalVisible: true, isModalConfirm: false });
-            billDetailAction.billPay(state.paymentItemList, bill, balance);
+            billDetailAction.billPay(
+              state.paymentItemList,
+              bill,
+              balance,
+              user
+            );
           }}
         />
       </Container>
@@ -1105,7 +1122,8 @@ class billDetail extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    billDetailReducer: state.billDetailReducer
+    billDetailReducer: state.billDetailReducer,
+    loginReducer: state.loginReducer
   };
 }
 function mapToDispatch(dispatch) {

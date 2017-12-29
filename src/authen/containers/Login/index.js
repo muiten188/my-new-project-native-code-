@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Image, View, AsyncStorage } from "react-native";
+import {
+  TouchableOpacity,
+  Image,
+  View,
+  AsyncStorage,
+  Alert
+} from "react-native";
 import {
   Container,
   Spinner,
@@ -103,7 +109,7 @@ class login extends Component {
       loginReducer.Logged == false &&
       loginReducer.Loging == false
     ) {
-      alert("Đăng nhập thất bại");
+      Alert.alert("Thông báo","Đăng nhập thất bại");
       loginReducer.Logged = null;
     }
 

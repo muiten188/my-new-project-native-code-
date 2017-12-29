@@ -5,7 +5,8 @@ import {
   KeyboardAvoidingView,
   FlatList,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  Alert
 } from "react-native";
 import {
   Container,
@@ -56,7 +57,8 @@ class billList extends Component {
 
   componentDidMount() {
     const { billListAction, navigation } = this.props;
-    billListAction.getBillList(navigation.state.params.apartment.apartmentId);
+    const {user}=this.props.loginReducer;
+    billListAction.getBillList(navigation.state.params.apartment.apartmentId,user);
   }
 
   onSearchClick() {
@@ -68,9 +70,13 @@ class billList extends Component {
   render() {
     const locale = "vn";
     const { dispatch, state } = this.props.navigation;
-    const { listResult, isLoading, balance } = this.props.billListReducer;
+    const { listResult, isLoading, balance,billError } = this.props.billListReducer;
     const { key, userName, position, phone, avatarUrl } = this.props;
     const { billListAction, navigation } = this.props;
+    const { user } = this.props.loginReducer;
+    if(billError==true){
+      Alert.alert("Thông Báo","Lấy danh sách hóa đơn lỗi kiểm tra lại đường truyền");
+    }
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -172,7 +178,7 @@ class billList extends Component {
                       refreshing={isLoading}
                       onRefresh={() =>
                         billListAction.getBillList(
-                          navigation.state.params.apartment.apartmentId
+                          navigation.state.params.apartment.apartmentId,user
                         )
                       }
                     />
@@ -224,7 +230,8 @@ class billList extends Component {
 }
 function mapStateToProps(state, props) {
   return {
-    billListReducer: state.billListReducer
+    billListReducer: state.billListReducer,
+    loginReducer: state.loginReducer
   };
 }
 function mapToDispatch(dispatch) {
