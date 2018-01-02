@@ -22,7 +22,7 @@ export default {
   item: {
     marginBottom: 10,
     borderRadius: 5,
-    borderWidth: 1
+    borderWidth: 0.5
   },
   container_login: {
     marginTop: -105,

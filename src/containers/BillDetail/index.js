@@ -1144,7 +1144,7 @@ class billDetail extends Component {
       let printerList = RNXprinter.getDeviceList().then(printerList => {
         RNXprinter.selectDevice(printerList[0].address);
         // RNXprinter.pickPrinter();
-        RNXprinter.pushText("bui dinh bach1", 0);
+        RNXprinter.pushText("<h1>           bui dhtml              </h1>", 0);
         RNXprinter.pushText("bui dinh bach2", 0);
         RNXprinter.pushText("bui dinh bach3", 0);
         RNXprinter.pushText("bui dinh bach4", 0);
