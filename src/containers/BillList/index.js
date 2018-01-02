@@ -85,7 +85,7 @@ class billList extends Component {
           keyboardVerticalOffset={-350}
         >
           <Grid>
-            <Col size={32} style={[styles.grid_col, styles.col_form]}>
+            <Col size={35} style={[styles.grid_col, styles.col_form]}>
               <HeaderForm
                 onBack={() => dispatch.pop()}
                 headerTitle={I18n.t("homeInfo", {
@@ -161,7 +161,7 @@ class billList extends Component {
                 </View>
               </Content>
             </Col>
-            <Col size={68} style={[styles.grid_col, styles.col_content]}>
+            <Col size={65} style={[styles.grid_col, styles.col_content]}>
               <HeaderContent
                 onBack={() => dispatch.pop()}
                 showUser={true}

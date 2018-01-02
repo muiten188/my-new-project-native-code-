@@ -36,6 +36,10 @@ import ConfirmModal from "../../components/ConfirmModal";
 import PayModal from "../../components/PayModal";
 import * as billDetailAction from "../../store/actions/containers/billdetail_actions";
 import * as billListAction from "../../store/actions/containers/billList_actions";
+import RNXprinter from "react-native-xprinter";
+RNXprinter.initialize();
+
+
 class billDetail extends Component {
   static navigationOptions = {
     header: null
@@ -543,7 +547,7 @@ class billDetail extends Component {
           color={buildingEmpty ? "#ff373a" : "#054f9a"}
           checked={state.buildingCreditPay}
           onPress={() => {
-            item.paymentMethod = "BANK_TRANSFER";
+            item.paymentMethod = "POS";
             state.buildingCreditPay == true
               ? this.setState({
                   buildingCreditPay: false,
@@ -585,7 +589,7 @@ class billDetail extends Component {
           color={electricEmpty ? "#ff373a" : "#054f9a"}
           checked={state.electricCreditPay}
           onPress={() => {
-            item.paymentMethod = "BANK_TRANSFER";
+            item.paymentMethod = "POS";
             state.electricCreditPay == true
               ? this.setState({
                   electricCreditPay: false,
@@ -627,7 +631,7 @@ class billDetail extends Component {
           color={waterEmpty ? "#ff373a" : "#054f9a"}
           checked={state.waterCreditPay}
           onPress={() => {
-            item.paymentMethod = "BANK_TRANSFER";
+            item.paymentMethod = "POS";
             state.waterCreditPay == true
               ? this.setState({
                   waterCreditPay: false,
@@ -669,7 +673,7 @@ class billDetail extends Component {
           color={bikeEmpty ? "#ff373a" : "#054f9a"}
           checked={state.bikeCreditPay}
           onPress={() => {
-            item.paymentMethod = "BANK_TRANSFER";
+            item.paymentMethod = "POS";
             state.bikeCreditPay == true
               ? this.setState({
                   bikeCreditPay: false,
@@ -711,7 +715,7 @@ class billDetail extends Component {
           color={carEmpty ? "#ff373a" : "#054f9a"}
           checked={state.carCreditPay}
           onPress={() => {
-            item.paymentMethod = "BANK_TRANSFER";
+            item.paymentMethod = "POS";
             state.carCreditPay == true
               ? this.setState({
                   carCreditPay: false,
@@ -753,7 +757,7 @@ class billDetail extends Component {
           color={otherEmpty ? "#ff373a" : "#054f9a"}
           checked={state.otherCreditPay}
           onPress={() => {
-            item.paymentMethod = "BANK_TRANSFER";
+            item.paymentMethod = "POS";
             state.otherCreditPay == true
               ? this.setState({
                   otherCreditPay: false,
@@ -1077,7 +1081,14 @@ class billDetail extends Component {
                   </Item>
                   <Button
                     full
-                    style={styles.buttomPay}
+                    disabled={
+                      state.paymentItemList && state.paymentItemList.length <= 0
+                    }
+                    style={
+                      state.paymentItemList && state.paymentItemList.length <= 0
+                        ? styles.buttomPay_disabled
+                        : styles.buttomPay
+                    }
                     onPress={() => this.setState({ isModalConfirm: true })}
                   >
                     <Text uppercase={false}>
@@ -1102,6 +1113,9 @@ class billDetail extends Component {
               billListAction.getBillList(bill.apartmentId, user);
             }, 15);
           }}
+          onPay={()=>{
+            this.printBill()
+          }}
         />
         <ConfirmModal
           show={this.state.isModalConfirm}
@@ -1118,6 +1132,30 @@ class billDetail extends Component {
         />
       </Container>
     );
+  }
+
+  printBill(){
+    try{
+      let printerList = RNXprinter.getDeviceList().then(printerList => {
+        RNXprinter.selectDevice(printerList[0].address);
+        // RNXprinter.pickPrinter();
+        RNXprinter.pushText("bui dinh bach1", 0);
+        RNXprinter.pushText("bui dinh bach2", 0);
+        RNXprinter.pushText("bui dinh bach3", 0);
+        RNXprinter.pushText("bui dinh bach4", 0);
+        RNXprinter.pushText("bui dinh bach5", 0);
+        RNXprinter.pushText("bui dinh bach6", 0);
+        RNXprinter.pushFlashImage(0);
+  
+        // Push Cut Paper
+        RNXprinter.pushCutPaper();
+        RNXprinter.print();
+      });
+    }
+    catch(e){
+      Alert.alert("Thông báo","In hóa đơn thất bại, kiểm tra lại kết nối máy in !")
+    }
+    
   }
 }
 function mapStateToProps(state, props) {

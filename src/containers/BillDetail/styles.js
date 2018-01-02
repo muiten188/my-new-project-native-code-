@@ -149,6 +149,11 @@ export default {
     borderRadius: 4,
     backgroundColor: "#054f9a"
   },
+  buttomPay_disabled: {
+    marginLeft: 20,
+    marginRight: 20,
+    borderRadius: 4,
+  },
   textPadding: {
     paddingBottom: 7
   }

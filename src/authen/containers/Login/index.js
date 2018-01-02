@@ -4,7 +4,8 @@ import {
   Image,
   View,
   AsyncStorage,
-  Alert
+  Alert,
+  NativeModules
 } from "react-native";
 import {
   Container,
@@ -109,7 +110,7 @@ class login extends Component {
       loginReducer.Logged == false &&
       loginReducer.Loging == false
     ) {
-      Alert.alert("Thông báo","Đăng nhập thất bại");
+      Alert.alert("Thông báo", "Đăng nhập thất bại");
       loginReducer.Logged = null;
     }
 

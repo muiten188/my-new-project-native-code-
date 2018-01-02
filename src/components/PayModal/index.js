@@ -19,22 +19,25 @@ export default class extends Component {
   }
 
   render() {
-    const { show, onClose,transactionCode } = this.props;
+    const { show, onClose, transactionCode, onPay } = this.props;
     return (
-      <Modal
-        isVisible={show}
-        style={styles.modal}
-      >
-        <View
-          style={styles.modalContainer}
-        >
+      <Modal isVisible={show} style={styles.modal}>
+        <View style={styles.modalContainer}>
           <Content>
-            <View
-              style={styles.modalContent}
-            >
-              <H3 style={[styles.item_content,styles.textPadding]}>Mã giao dịch</H3>
-              <H1 style={[styles.item_content,styles.codeText,styles.textPadding]}>{transactionCode}</H1>
-              <Text style={[styles.item_content,styles.textSize]}>
+            <View style={styles.modalContent}>
+              <H3 style={[styles.item_content, styles.textPadding]}>
+                Mã giao dịch
+              </H3>
+              <H1
+                style={[
+                  styles.item_content,
+                  styles.codeText,
+                  styles.textPadding
+                ]}
+              >
+                {transactionCode}
+              </H1>
+              <Text style={[styles.item_content, styles.textSize]}>
                 Thanh toán đã được thực hiện Cảm ơn sự hợp tác của quý khách
               </Text>
             </View>
@@ -49,7 +52,7 @@ export default class extends Component {
                   Quay lại
                 </Text>
               </Button>
-              <Button onPress={onClose} style={styles.buttonCancel}>
+              <Button onPress={onPay} style={styles.buttonCancel}>
                 <Text style={[styles.textSize, styles.textOk]}>
                   In biên lai
                 </Text>
