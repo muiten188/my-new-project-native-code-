@@ -37,8 +37,8 @@ import Bill from "../../components/Bill";
 import ItemResult from "../../components/Item_result";
 import * as billListAction from "../../store/actions/containers/billList_actions";
 import Loading from "../../components/Loading";
-const resolveAssetSource = require('resolveAssetSource');
-const userAvar = require("../../resources/assets/user.jpg")
+const resolveAssetSource = require("resolveAssetSource");
+const userAvar = require("../../resources/assets/user.jpg");
 class billList extends Component {
   static navigationOptions = {
     header: null
@@ -57,8 +57,11 @@ class billList extends Component {
 
   componentDidMount() {
     const { billListAction, navigation } = this.props;
-    const {user}=this.props.loginReducer;
-    billListAction.getBillList(navigation.state.params.apartment.apartmentId,user);
+    const { user } = this.props.loginReducer;
+    billListAction.getBillList(
+      navigation.state.params.apartment.apartmentId,
+      user
+    );
   }
 
   onSearchClick() {
@@ -70,12 +73,21 @@ class billList extends Component {
   render() {
     const locale = "vn";
     const { dispatch, state } = this.props.navigation;
-    const { listResult, isLoading, balance,billError } = this.props.billListReducer;
+    const {
+      listResult,
+      isLoading,
+      balance,
+      billError,
+      totalDebit
+    } = this.props.billListReducer;
     const { key, userName, position, phone, avatarUrl } = this.props;
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
-    if(billError==true){
-      Alert.alert("Thông Báo","Lấy danh sách hóa đơn lỗi kiểm tra lại đường truyền");
+    if (billError == true) {
+      Alert.alert(
+        "Thông Báo",
+        "Lấy danh sách hóa đơn lỗi kiểm tra lại đường truyền"
+      );
     }
     return (
       <Container style={styles.container}>
@@ -96,15 +108,23 @@ class billList extends Component {
                 <View style={styles.formContainer}>
                   <Thumbnail
                     style={styles.thumbnail_avatar}
-                    source={state.params.apartment.avatarUrl ? {
-                      uri: state.params.apartment.avatarUrl
-                    } : userAvar}
-                    ref={(thumbnail) => { this.thumbnail = thumbnail; }}
+                    source={
+                      state.params.apartment.avatarUrl
+                        ? {
+                            uri: state.params.apartment.avatarUrl
+                          }
+                        : userAvar
+                    }
+                    ref={thumbnail => {
+                      this.thumbnail = thumbnail;
+                    }}
                     // onError={(e) => {
                     //   this.thumbnail.setNativeProps({ src: [{ uri: "https://exelord.github.io/ember-initials/images/default-d5f51047d8bd6327ec4a74361a7aae7f.jpg" }] })
                     // }}
-                    onError={(e) => {
-                      this.thumbnail.setNativeProps({ src: [resolveAssetSource(userAvar)] })
+                    onError={e => {
+                      this.thumbnail.setNativeProps({
+                        src: [resolveAssetSource(userAvar)]
+                      });
                     }}
                   />
                   <View>
@@ -114,7 +134,9 @@ class billList extends Component {
                           locale: locale ? locale : "vn"
                         })}
                       </Label>
-                      <H3 style={styles.textPadding}>{state.params.apartment.ownerName}</H3>
+                      <H3 style={styles.textPadding}>
+                        {state.params.apartment.ownerName}
+                      </H3>
                     </Item>
 
                     <Item style={styles.item}>
@@ -125,7 +147,7 @@ class billList extends Component {
                       <Icon name="phone" style={styles.icon} />
                       <Text>{state.params.apartment.ownerPhone}</Text>
                     </Item>
-                    <Item style={styles.item}>
+                    {/* <Item style={styles.item}>
                       <Label inlineLabel>
                         {I18n.t("remainMoney", {
                           locale: locale ? locale : "vn"
@@ -142,14 +164,19 @@ class billList extends Component {
                         })}
                       </Label>
                       <Text style={styles.textRemainMoney}>
-                        {balance + " VNĐ"}
+                        {totalDebit + " VNĐ"}
                       </Text>
-                    </Item>
+                    </Item> */}
                   </View>
                   <Button
                     full
                     style={styles.buttonViewHistory}
-                    onPress={() => dispatch.push({ id: "History", apartment: navigation.state.params.apartment })}
+                    onPress={() =>
+                      dispatch.push({
+                        id: "History",
+                        apartment: navigation.state.params.apartment
+                      })
+                    }
                   >
                     <Text uppercase={false}>
                       {" "}
@@ -178,7 +205,8 @@ class billList extends Component {
                       refreshing={isLoading}
                       onRefresh={() =>
                         billListAction.getBillList(
-                          navigation.state.params.apartment.apartmentId,user
+                          navigation.state.params.apartment.apartmentId,
+                          user
                         )
                       }
                     />

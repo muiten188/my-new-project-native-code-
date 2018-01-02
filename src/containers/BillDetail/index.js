@@ -36,9 +36,9 @@ import ConfirmModal from "../../components/ConfirmModal";
 import PayModal from "../../components/PayModal";
 import * as billDetailAction from "../../store/actions/containers/billdetail_actions";
 import * as billListAction from "../../store/actions/containers/billList_actions";
+import Loading from "../../components/Loading";
 import RNXprinter from "react-native-xprinter";
 RNXprinter.initialize();
-
 
 class billDetail extends Component {
   static navigationOptions = {
@@ -799,7 +799,11 @@ class billDetail extends Component {
     const { dispatch } = this.props.navigation;
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
     const { billDetailAction } = this.props;
-    const { transactionCode, billPayError } = this.props.billDetailReducer;
+    const {
+      transactionCode,
+      billPayError,
+      isLoading
+    } = this.props.billDetailReducer;
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
     const state = this.state;
@@ -829,6 +833,7 @@ class billDetail extends Component {
           showUser={true}
         />
         <View style={styles.container_info_outer}>
+          <Loading isShow={isLoading} />
           <Grid>
             <Col style={styles.titleCol}>
               <Row style={styles.row_Header}>
@@ -860,7 +865,7 @@ class billDetail extends Component {
                   })}
                 </Col>
               </Row>
-              <Row style={styles.rowUse}>
+              {/* <Row style={styles.rowUse}>
                 <H3
                   style={[
                     remainUseEmpty ? styles.label_row_empty : {},
@@ -871,7 +876,7 @@ class billDetail extends Component {
                     locale: locale ? locale : "vn"
                   })}
                 </H3>
-              </Row>
+              </Row> */}
               <Row style={styles.lastRow} />
             </Col>
             <Col>
@@ -899,11 +904,11 @@ class billDetail extends Component {
                   })}
                 </Col>
               </Row>
-              <Row style={styles.rowUse}>
+              {/* <Row style={styles.rowUse}>
                 <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
                   {balance.format() + " VNĐ"}
                 </Text>
-              </Row>
+              </Row> */}
               <Row style={styles.lastRow} />
             </Col>
             <Col>
@@ -931,11 +936,11 @@ class billDetail extends Component {
                   })}
                 </Col>
               </Row>
-              <Row style={styles.rowUse}>
-                {/* <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
+              {/*<Row style={styles.rowUse}>
+                 <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
                   {balance.format() + " VNĐ"}
-                </Text> */}
-              </Row>
+                </Text> 
+              </Row>*/}
               <Row style={styles.lastRow} />
             </Col>
             <Col>
@@ -972,7 +977,7 @@ class billDetail extends Component {
                   })}
                 </Col>
               </Row>
-              <Row style={styles.rowUse_checkbox}>
+              {/* <Row style={styles.rowUse_checkbox}>
                 <CheckBox
                   color={remainUseEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.useRemainCashPay}
@@ -990,7 +995,7 @@ class billDetail extends Component {
                         })
                   }
                 />
-              </Row>
+              </Row> */}
               <Row style={styles.lastRow} />
             </Col>
             <Col>
@@ -1027,8 +1032,8 @@ class billDetail extends Component {
                   })}
                 </Col>
               </Row>
-              <Row style={styles.rowUse_checkbox}>
-                {/* <CheckBox disabled={item.invoiceDetailAmount==0}
+              {/* <Row style={styles.rowUse_checkbox}>
+                <CheckBox disabled={item.invoiceDetailAmount==0}
                   color={remainUseEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.useRemainCreditPay}
                   onPress={() =>
@@ -1036,8 +1041,8 @@ class billDetail extends Component {
                       ? this.setState({ useRemainCreditPay: false })
                       : this.setState({ useRemainCreditPay: true })
                   }
-                /> */}
-              </Row>
+                /> 
+              </Row>*/}
               <Row style={styles.lastRow} />
             </Col>
             <Col style={styles.totalCol}>
@@ -1103,7 +1108,7 @@ class billDetail extends Component {
           </Grid>
         </View>
         <PayModal
-          show={this.state.isModalVisible}
+          show={this.state.isModalVisible && transactionCode != null}
           transactionCode={transactionCode}
           onClose={() => {
             this.setState({ isModalVisible: false });
@@ -1113,8 +1118,8 @@ class billDetail extends Component {
               billListAction.getBillList(bill.apartmentId, user);
             }, 15);
           }}
-          onPay={()=>{
-            this.printBill()
+          onPay={() => {
+            this.printBill();
           }}
         />
         <ConfirmModal
@@ -1134,8 +1139,8 @@ class billDetail extends Component {
     );
   }
 
-  printBill(){
-    try{
+  printBill() {
+    try {
       let printerList = RNXprinter.getDeviceList().then(printerList => {
         RNXprinter.selectDevice(printerList[0].address);
         // RNXprinter.pickPrinter();
@@ -1146,16 +1151,17 @@ class billDetail extends Component {
         RNXprinter.pushText("bui dinh bach5", 0);
         RNXprinter.pushText("bui dinh bach6", 0);
         RNXprinter.pushFlashImage(0);
-  
+
         // Push Cut Paper
         RNXprinter.pushCutPaper();
         RNXprinter.print();
       });
+    } catch (e) {
+      Alert.alert(
+        "Thông báo",
+        "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"
+      );
     }
-    catch(e){
-      Alert.alert("Thông báo","In hóa đơn thất bại, kiểm tra lại kết nối máy in !")
-    }
-    
   }
 }
 function mapStateToProps(state, props) {
