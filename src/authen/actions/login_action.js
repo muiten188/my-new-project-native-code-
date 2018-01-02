@@ -20,10 +20,13 @@ export function login(user) {
         }
       })
       .then(function(responseJson) {
-        if (responseJson&&responseJson.username) {
+        if (responseJson && responseJson.username) {
           user = responseJson;
           dispatch(_login(true, user));
         }
+      })
+      .catch(function(error) {
+        dispatch(_login(false));
       });
   };
 }
