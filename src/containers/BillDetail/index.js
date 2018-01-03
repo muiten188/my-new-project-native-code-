@@ -291,6 +291,7 @@ class billDetail extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={buildingEmpty ? "#ff373a" : "#054f9a"}
           checked={state.buildingCashPay}
@@ -331,6 +332,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={electricEmpty ? "#ff373a" : "#054f9a"}
           checked={state.electricCashPay}
@@ -371,6 +373,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={waterEmpty ? "#ff373a" : "#054f9a"}
           checked={state.waterCashPay}
@@ -411,6 +414,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={bikeEmpty ? "#ff373a" : "#054f9a"}
           checked={state.bikeCashPay}
@@ -451,6 +455,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={carEmpty ? "#ff373a" : "#054f9a"}
           checked={state.carCashPay}
@@ -491,6 +496,7 @@ class billDetail extends Component {
     } else {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={otherEmpty ? "#ff373a" : "#054f9a"}
           checked={state.otherCashPay}
@@ -543,6 +549,7 @@ class billDetail extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={buildingEmpty ? "#ff373a" : "#054f9a"}
           checked={state.buildingCreditPay}
@@ -585,6 +592,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={electricEmpty ? "#ff373a" : "#054f9a"}
           checked={state.electricCreditPay}
@@ -627,6 +635,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={waterEmpty ? "#ff373a" : "#054f9a"}
           checked={state.waterCreditPay}
@@ -669,6 +678,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={bikeEmpty ? "#ff373a" : "#054f9a"}
           checked={state.bikeCreditPay}
@@ -711,6 +721,7 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={carEmpty ? "#ff373a" : "#054f9a"}
           checked={state.carCreditPay}
@@ -753,6 +764,7 @@ class billDetail extends Component {
     } else {
       return (
         <CheckBox
+          style={styles.checkBox}
           disabled={item.invoiceDetailAmount == 0 && false}
           color={otherEmpty ? "#ff373a" : "#054f9a"}
           checked={state.otherCreditPay}
@@ -952,7 +964,7 @@ class billDetail extends Component {
                 </H2>
               </Row>
               {/* <Row style={styles.rowRent_checkBox}>
-                <CheckBox disabled={item.invoiceDetailAmount==0}
+                <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
                   color={rentEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.rentCashPay}
                   onPress={() =>
@@ -978,7 +990,7 @@ class billDetail extends Component {
                 </Col>
               </Row>
               {/* <Row style={styles.rowUse_checkbox}>
-                <CheckBox
+                <CheckBox           style={styles.checkBox}
                   color={remainUseEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.useRemainCashPay}
                   onPress={() =>
@@ -1007,7 +1019,7 @@ class billDetail extends Component {
                 </H2>
               </Row>
               {/* <Row style={styles.rowRent_checkBox}>
-                <CheckBox disabled={item.invoiceDetailAmount==0}
+                <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
                   color={rentEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.rentCreditPay}
                   onPress={() =>
@@ -1033,7 +1045,7 @@ class billDetail extends Component {
                 </Col>
               </Row>
               {/* <Row style={styles.rowUse_checkbox}>
-                <CheckBox disabled={item.invoiceDetailAmount==0}
+                <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
                   color={remainUseEmpty ? "#ff373a" : "#054f9a"}
                   checked={state.useRemainCreditPay}
                   onPress={() =>

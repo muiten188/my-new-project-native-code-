@@ -152,9 +152,15 @@ export default {
   buttomPay_disabled: {
     marginLeft: 20,
     marginRight: 20,
-    borderRadius: 4,
+    borderRadius: 4
   },
   textPadding: {
     paddingBottom: 7
+  },
+  checkBox: {
+    width: 26,
+    height: 26,
+    alignItems: "center",
+    justifyContent: "center"
   }
 };
