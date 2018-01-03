@@ -1,6 +1,6 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-import { buildHeader,fetchCatch } from "../../../helper";
+import { buildHeader, fetchCatch, _logout } from "../../../helper";
 export function search(values, user) {
   let data = [];
   let dataPost = values || {};
@@ -12,18 +12,22 @@ export function search(values, user) {
       qs: dataPost
     })
       .then(function(response) {
-        if (response.status != 200) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        } else if (response.status != 200) {
           dispatch(_seachError());
         } else {
           return response.json();
         }
       })
       .then(function(responseJson) {
-        if (responseJson.data) {
-          data = responseJson.data;
-          dispatch(_search(data));
-        } else {
-          dispatch(_seachError());
+        if (responseJson) {
+          if (responseJson.data) {
+            data = responseJson.data;
+            dispatch(_search(data));
+          } else {
+            dispatch(_seachError());
+          }
         }
       })
       .catch(function(error) {

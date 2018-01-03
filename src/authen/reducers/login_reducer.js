@@ -3,7 +3,9 @@ const initState = {
   Logged: null,
   Loging: false,
   logout: false,
-  user: {}
+  userForm: null,
+  user: {},
+  authen_expri: false
 };
 
 export default function(state = initState, action = {}) {
@@ -38,8 +40,25 @@ export default function(state = initState, action = {}) {
         Logged: null,
         Loging: false,
         Logout: true,
+        authen_expri: initState.authen_expri,
         action
       };
+    case types.EXPORT_FORM:
+      return {
+        ...state,
+        userForm: action.userForm,
+        action
+      };
+    case types.AUTHEN_EXPRI: {
+      return {
+        ...state,
+        Logged: null,
+        Loging: false,
+        Logout: true,
+        authen_expri:true,
+        action
+      };
+    }
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-import { buildHeader, fetchCatch } from "../../../helper";
+import { buildHeader, _logout } from "../../../helper";
 
 function getBalance(apartmentId, dispatch, user) {
   let apartmentIdParam = apartmentId || -1;
@@ -14,6 +14,9 @@ function getBalance(apartmentId, dispatch, user) {
     }
   )
     .then(function(response) {
+      if (response.status == 401) {
+        dispatch(_logout());
+      }
       if (response.status != 200) {
         dispatch(_billError());
       } else {
@@ -21,12 +24,14 @@ function getBalance(apartmentId, dispatch, user) {
       }
     })
     .then(function(responseJson) {
-      let balance = responseJson.accountBalance;
-      let totalDebit = responseJson.totalDebit;
-      if (balance !== undefined && totalDebit !== undefined) {
-        dispatch(_balance(balance, totalDebit));
-      } else {
-        dispatch(_billError());
+      if (responseJson) {
+        let balance = responseJson.accountBalance;
+        let totalDebit = responseJson.totalDebit;
+        if (balance !== undefined && totalDebit !== undefined) {
+          dispatch(_balance(balance, totalDebit));
+        } else {
+          dispatch(_billError());
+        }
       }
     })
     .catch(function(error) {
@@ -49,6 +54,9 @@ export function getBillList(apartmentId, user) {
       }
     )
       .then(function(response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
         if (response.status != 200) {
           dispatch(_billError());
         } else {
@@ -56,11 +64,13 @@ export function getBillList(apartmentId, user) {
         }
       })
       .then(function(responseJson) {
-        let billList = responseJson.data;
-        if (billList) {
-          dispatch(_billList(billList));
-        } else {
-          dispatch(_billError());
+        if (responseJson) {
+          let billList = responseJson.data;
+          if (billList) {
+            dispatch(_billList(billList));
+          } else {
+            dispatch(_billError());
+          }
         }
       })
       .catch(function(error) {

@@ -1,6 +1,6 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-import { buildHeader, fetchCatch } from "../../../helper";
+import { buildHeader, _logout } from "../../../helper";
 
 export function getHistory(apartmentId, currentTime, user) {
   let apartmentIdParam = apartmentId || -1;
@@ -19,6 +19,9 @@ export function getHistory(apartmentId, currentTime, user) {
       }
     )
       .then(function(response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
         if (response.status != 200) {
           dispatch(_historyError());
         } else {
@@ -26,11 +29,13 @@ export function getHistory(apartmentId, currentTime, user) {
         }
       })
       .then(function(responseJson) {
-        let historyList = responseJson.data;
-        if (historyList) {
-          dispatch(_history(historyList));
-        } else {
-          dispatch(_historyError());
+        if (responseJson) {
+          let historyList = responseJson.data;
+          if (historyList) {
+            dispatch(_history(historyList));
+          } else {
+            dispatch(_historyError());
+          }
         }
       })
       .catch(function(error) {

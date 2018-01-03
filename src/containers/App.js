@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -24,7 +25,12 @@ class App extends Component {
   render() {
     let { loginReducer } = this.props;
     if (loginReducer.Logout == true) {
-      AsyncStorage.clear();
+      AsyncStorage.setItem("@user", "");
+    } else if (
+      loginReducer.authen_expri == true &&
+      loginReducer.Logged == true
+    ) {
+      Alert.alert("Thông báo","Phiên làm việc của bạn đã hết vui lòng đăng nhập lại.")
     } else if (loginReducer.Logged == true) {
       try {
         AsyncStorage.setItem("@user", JSON.stringify(loginReducer.user));

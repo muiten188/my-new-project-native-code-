@@ -1,6 +1,6 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
-import { buildHeader, fetchCatch } from "../../../helper";
+import { buildHeader, _logout } from "../../../helper";
 export function billPay(paymentItemList, bill, balance, user) {
   let dataPost = {};
   let _paymentItemList = [];
@@ -32,6 +32,9 @@ export function billPay(paymentItemList, bill, balance, user) {
       body: JSON.stringify(dataPost)
     })
       .then(function(response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
         if (response.status != 200) {
           dispatch(_billPayError());
         } else {

@@ -35,6 +35,8 @@ import { InputField } from "../../../components/Element/Form";
 import Loading from "../../../components/Loading";
 
 import * as helper from "../../../helper";
+const username = "";
+const password = "";
 
 const validate = values => {
   const error = {};
@@ -78,21 +80,38 @@ class login extends Component {
   }
 
   componentDidMount() {
+    // try {
+    //   const { loginAction } = this.props;
+    //   const hadUser = AsyncStorage.getItem("@user")
+    //     .then(value => {
+    //       try {
+    //         user = JSON.parse(value);
+    //         if (user) {
+    //           loginAction.setUser(user);
+    //         }
+    //       } catch (e) {}
+    //     })
+    //     .done();
+    // } catch (error) {
+    //   alert(error);
+    //   // Error retrieving data
+    // }
+    const { loginAction } = this.props;
+    const { loginReducer } = this.props;
     try {
-      const { loginAction } = this.props;
-      const hadUser = AsyncStorage.getItem("@user")
+      const hadUser = AsyncStorage.getItem("@userLogin")
         .then(value => {
-          try {
-            user = JSON.parse(value);
-            if (user) {
-              loginAction.setUser(user);
-            }
-          } catch (e) {}
+          let userLogin = JSON.parse(value);
+          if (userLogin && loginReducer.Logout) {
+            loginAction.setFormLogin(userLogin);
+          } else {
+            loginAction.setFormLogin(userLogin);
+            loginAction.login(userLogin);
+          }
         })
         .done();
     } catch (error) {
-      alert(error);
-      // Error retrieving data
+      //error
     }
   }
 
@@ -240,10 +259,12 @@ class login extends Component {
 function mapStateToProps(state, props) {
   return {
     loginReducer: state.loginReducer,
-    initialValues: {
-      username: "synt",
-      password: "123456a@"
-    }
+    initialValues: state.loginReducer.userForm
+      ? state.loginReducer.userForm
+      : {
+          username: "",
+          password: ""
+        }
   };
 }
 function mapToDispatch(dispatch) {
@@ -254,7 +275,8 @@ function mapToDispatch(dispatch) {
 
 login = reduxForm({
   form: "LoginForm",
-  validate
+  validate,
+  enableReinitialize: true
 })(login);
 login = connect(mapStateToProps, mapToDispatch)(login);
 export default login;

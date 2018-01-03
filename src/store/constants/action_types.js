@@ -7,6 +7,8 @@ export const LOGIN_EROR = "LOGIN_EROR";
 export const LOGING = "LOGING";
 export const LOGGED_IN = "LOGGED_IN";
 export const LOGGED_OUT = "LOGGED_OUT";
+export const EXPORT_FORM = "EXPORT_FORM";
+export const AUTHEN_EXPRI="AUTHEN_EXPRI"
 //navigation
 export const PUSH_ROUTE = "PUSH_ROUTE";
 export const POP_ROUTE = "POP_ROUTE";

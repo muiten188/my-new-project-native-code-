@@ -1,9 +1,12 @@
+import { AsyncStorage } from "react-native";
+
 import * as types from "../../store/constants/action_types";
 import * as AppConfig from "../../config/app_config";
 
 export function login(user) {
   return dispatch => {
     dispatch(_loging());
+    AsyncStorage.setItem("@userLogin", JSON.stringify(user));
     fetch(`${AppConfig.API_HOST}mobile/authen/login`, {
       method: "POST",
       headers: {
@@ -28,6 +31,13 @@ export function login(user) {
       .catch(function(error) {
         dispatch(_login(false));
       });
+  };
+}
+
+export function setFormLogin(userForm) {
+  return {
+    type: types.EXPORT_FORM,
+    userForm: userForm
   };
 }
 

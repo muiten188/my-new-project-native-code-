@@ -52,17 +52,18 @@ class search extends Component {
 
   componentDidMount() {
     const { searchAction } = this.props;
-    // searchAction.search();
+    const { user } = this.props.loginReducer;
+    searchAction.search({}, user);
   }
 
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { listResult, isLoading,searchErorr } = this.props.searchReducer;
+    const { listResult, isLoading, searchErorr } = this.props.searchReducer;
     const { searchAction, handleSubmit } = this.props;
     const { user } = this.props.loginReducer;
-    if(searchErorr==true){
-      Alert.alert("Thông báo","Tìm kiếm lỗi kiểm tra lại đường truyền.");
+    if (searchErorr == true) {
+      Alert.alert("Thông báo", "Tìm kiếm lỗi kiểm tra lại đường truyền.");
     }
     return (
       <Container style={styles.container}>
@@ -148,7 +149,9 @@ class search extends Component {
                   <Button
                     full
                     disabled={isLoading}
-                    onPress={handleSubmit((values)=>{searchAction.search(values,user)})}
+                    onPress={handleSubmit(values => {
+                      searchAction.search(values, user);
+                    })}
                     style={styles.buttomSearch}
                   >
                     <Text>
