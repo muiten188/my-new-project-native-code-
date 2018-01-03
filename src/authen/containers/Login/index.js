@@ -104,7 +104,11 @@ class login extends Component {
           let userLogin = JSON.parse(value);
           if (userLogin && loginReducer.Logout) {
             loginAction.setFormLogin(userLogin);
-          } else {
+          } else if (
+            userLogin &&
+            userLogin.username != "" &&
+            userLogin.password != ""
+          ) {
             loginAction.setFormLogin(userLogin);
             loginAction.login(userLogin);
           }
