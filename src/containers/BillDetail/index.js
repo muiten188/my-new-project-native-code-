@@ -48,6 +48,7 @@ class billDetail extends Component {
   constructor(props) {
     super(props);
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
+    let temparr = [];
     for (var i = 0; i < bill.listInvoiceDetail.length; i++) {
       if (bill.listInvoiceDetail[i].invoiceDetailPaid == null) {
         bill.listInvoiceDetail[i].invoiceDetailPaid = 0;
@@ -108,7 +109,9 @@ class billDetail extends Component {
             name="building"
             style={[styles.icon, buildingEmpty ? styles.label_row_empty : {}]}
           />
-          <Label style={buildingEmpty ? styles.label_row_empty : {}}>
+          <Label
+            style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
+          >
             {I18n.t("buildingCost", {
               locale: locale ? locale : "vn"
             })}
@@ -122,7 +125,9 @@ class billDetail extends Component {
             name="plug"
             style={[styles.icon, electricEmpty ? styles.label_row_empty : {}]}
           />
-          <Label style={electricEmpty ? styles.label_row_empty : {}}>
+          <Label
+            style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
+          >
             {I18n.t("electricCost", {
               locale: locale ? locale : "vn"
             })}
@@ -136,7 +141,9 @@ class billDetail extends Component {
             name="tint"
             style={[styles.icon, waterEmpty ? styles.label_row_empty : {}]}
           />
-          <Label style={waterEmpty ? styles.label_row_empty : {}}>
+          <Label
+            style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}
+          >
             {I18n.t("waterCost", {
               locale: locale ? locale : "vn"
             })}
@@ -150,7 +157,7 @@ class billDetail extends Component {
             name="motorcycle"
             style={[styles.icon, bikeEmpty ? styles.label_row_empty : {}]}
           />
-          <Label style={bikeEmpty ? styles.label_row_empty : {}}>
+          <Label style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
             {I18n.t("bikeCost", {
               locale: locale ? locale : "vn"
             })}
@@ -164,7 +171,7 @@ class billDetail extends Component {
             name="car"
             style={[styles.icon, carEmpty ? styles.label_row_empty : {}]}
           />
-          <Label style={carEmpty ? styles.label_row_empty : {}}>
+          <Label style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
             {I18n.t("carCost", {
               locale: locale ? locale : "vn"
             })}
@@ -174,12 +181,110 @@ class billDetail extends Component {
     } else {
       return (
         <Item style={styles.itemBorderNone}>
-          <Label>
+          <Label style={styles.text}>
             {I18n.t("serviceOther", {
               locale: locale ? locale : "vn"
             })}
           </Label>
         </Item>
+      );
+    }
+  }
+
+  buildRowBillDetailStartPeriod(item, locale) {
+    const {
+      buildingEmpty,
+      electricEmpty,
+      waterEmpty,
+      bikeEmpty,
+      carEmpty
+    } = this.state;
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <Text
+          style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
+        >
+          {item.earlyPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <Text
+          style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
+        >
+          {item.earlyPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
+          {item.earlyPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
+          {item.earlyPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
+          {item.earlyPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else {
+      return (
+        <Text style={styles.text}>{item.earlyPeriod.format() + " VNĐ"}</Text>
+      );
+    }
+  }
+
+  buildRowBillDetailInPeriod(item, locale) {
+    const {
+      buildingEmpty,
+      electricEmpty,
+      waterEmpty,
+      bikeEmpty,
+      carEmpty
+    } = this.state;
+    if (item.serviceName.indexOf("BUILDING") > -1) {
+      return (
+        <Text
+          style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
+        >
+          {item.arisingPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
+      return (
+        <Text
+          style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
+        >
+          {item.arisingPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("WATER") > -1) {
+      return (
+        <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
+          {item.arisingPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
+      return (
+        <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
+          {item.arisingPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else if (item.serviceName.indexOf("CAR") > -1) {
+      return (
+        <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
+          {item.arisingPeriod.format() + " VNĐ"}
+        </Text>
+      );
+    } else {
+      return (
+        <Text style={styles.text}>{item.arisingPeriod.format() + " VNĐ"}</Text>
       );
     }
   }
@@ -194,36 +299,44 @@ class billDetail extends Component {
     } = this.state;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
-        <Text style={buildingEmpty ? styles.label_row_empty : {}}>
+        <Text
+          style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
+        >
           {item.invoiceDetailAmount.format() + " VNĐ"}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
-        <Text style={electricEmpty ? styles.label_row_empty : {}}>
+        <Text
+          style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
+        >
           {item.invoiceDetailAmount.format() + " VNĐ"}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
-        <Text style={waterEmpty ? styles.label_row_empty : {}}>
+        <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
           {item.invoiceDetailAmount.format() + " VNĐ"}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
-        <Text style={bikeEmpty ? styles.label_row_empty : {}}>
+        <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
           {item.invoiceDetailAmount.format() + " VNĐ"}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
-        <Text style={carEmpty ? styles.label_row_empty : {}}>
+        <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
           {item.invoiceDetailAmount.format() + " VNĐ"}
         </Text>
       );
     } else {
-      return <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>;
+      return (
+        <Text style={styles.text}>
+          {item.invoiceDetailAmount.format() + " VNĐ"}
+        </Text>
+      );
     }
   }
   buildRowBillDetailPaid(item, locale) {
@@ -240,7 +353,11 @@ class billDetail extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Text
-          style={[buildingEmpty ? styles.label_row_empty : {}, styles.primary]}
+          style={[
+            styles.text,
+            buildingEmpty ? styles.label_row_empty : {},
+            styles.primary
+          ]}
         >
           {item.invoiceDetailPaid.format() + " VNĐ"}
         </Text>
@@ -248,7 +365,11 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <Text
-          style={[electricEmpty ? styles.label_row_empty : {}, styles.primary]}
+          style={[
+            styles.text,
+            electricEmpty ? styles.label_row_empty : {},
+            styles.primary
+          ]}
         >
           {item.invoiceDetailPaid.format() + " VNĐ"}
         </Text>
@@ -256,25 +377,45 @@ class billDetail extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text
-          style={[waterEmpty ? styles.label_row_empty : {}, styles.primary]}
+          style={[
+            styles.text,
+            waterEmpty ? styles.label_row_empty : {},
+            styles.primary
+          ]}
         >
           {item.invoiceDetailPaid.format() + " VNĐ"}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
-        <Text style={[bikeEmpty ? styles.label_row_empty : {}, styles.primary]}>
+        <Text
+          style={[
+            styles.text,
+            bikeEmpty ? styles.label_row_empty : {},
+            styles.primary
+          ]}
+        >
           {item.invoiceDetailPaid.format() + " VNĐ"}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
-        <Text style={[carEmpty ? styles.label_row_empty : {}, styles.primary]}>
+        <Text
+          style={[
+            styles.text,
+            carEmpty ? styles.label_row_empty : {},
+            styles.primary
+          ]}
+        >
           {item.invoiceDetailPaid.format() + " VNĐ"}
         </Text>
       );
     } else {
-      return <Text>{item.invoiceDetailPaid.format() + " VNĐ"}</Text>;
+      return (
+        <Text style={styles.text}>
+          {item.invoiceDetailPaid.format() + " VNĐ"}
+        </Text>
+      );
     }
   }
   buildRowBillDetailCash(item, locale) {
@@ -287,16 +428,17 @@ class billDetail extends Component {
       otherEmpty
     } = this.state;
     const { state } = this;
-
+    const { bill, balance, totalDebit } = this.props.navigation.state.params;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={buildingEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.buildingCashPay}
           onPress={() => {
             item.paymentMethod = "CASH";
+            item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.buildingCashPay == true
               ? this.setState({
                   buildingCashPay: false,
@@ -333,11 +475,12 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={electricEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.electricCashPay}
           onPress={() => {
             item.paymentMethod = "CASH";
+            item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.electricCashPay == true
               ? this.setState({
                   electricCashPay: false,
@@ -374,11 +517,12 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={waterEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.waterCashPay}
           onPress={() => {
             item.paymentMethod = "CASH";
+            item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.waterCashPay == true
               ? this.setState({
                   waterCashPay: false,
@@ -415,12 +559,13 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={bikeEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.bikeCashPay}
           onPress={() => {
             item.paymentMethod = "CASH";
-            state.bikeCashPay == true
+            item.listInvoiceDetailId = item.listInvoiceDetailId;
+            state.bikeCashPay
               ? this.setState({
                   bikeCashPay: false,
                   totalPay: state.totalPay - item.invoiceDetailAmount,
@@ -456,12 +601,13 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={carEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.carCashPay}
           onPress={() => {
             item.paymentMethod = "CASH";
-            state.carCashPay == true
+            item.listInvoiceDetailId = item.listInvoiceDetailId;
+            state.carCashPay
               ? this.setState({
                   carCashPay: false,
                   totalPay: state.totalPay - item.invoiceDetailAmount,
@@ -497,11 +643,12 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={otherEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.otherCashPay}
           onPress={() => {
             item.paymentMethod = "CASH";
+            item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.otherCashPay == true
               ? this.setState({
                   otherCashPay: false,
@@ -546,15 +693,16 @@ class billDetail extends Component {
       otherEmpty
     } = this.state;
     const { state } = this;
+    const { bill, balance, totalDebit } = this.props.navigation.state.params;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={buildingEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.buildingCreditPay}
           onPress={() => {
-            item.paymentMethod = "POS";
+            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.buildingCreditPay == true
               ? this.setState({
                   buildingCreditPay: false,
@@ -593,11 +741,11 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={electricEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.electricCreditPay}
           onPress={() => {
-            item.paymentMethod = "POS";
+            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.electricCreditPay == true
               ? this.setState({
                   electricCreditPay: false,
@@ -636,11 +784,11 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={waterEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.waterCreditPay}
           onPress={() => {
-            item.paymentMethod = "POS";
+            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.waterCreditPay == true
               ? this.setState({
                   waterCreditPay: false,
@@ -679,14 +827,14 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={bikeEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.bikeCreditPay}
           onPress={() => {
-            item.paymentMethod = "POS";
+            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.bikeCreditPay == true
               ? this.setState({
-                  bikeCreditPay: false,
+                  bikeCreditPay: [],
                   totalPay: state.totalPay - item.invoiceDetailAmount,
                   totalCreditPay:
                     state.totalCreditPay - item.invoiceDetailAmount,
@@ -722,11 +870,11 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={carEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.carCreditPay}
           onPress={() => {
-            item.paymentMethod = "POS";
+            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.carCreditPay == true
               ? this.setState({
                   carCreditPay: false,
@@ -765,11 +913,11 @@ class billDetail extends Component {
       return (
         <CheckBox
           style={styles.checkBox}
-          disabled={item.invoiceDetailAmount == 0 && false}
-          color={otherEmpty ? "#ff373a" : "#054f9a"}
+          disabled={item.invoiceDetailAmount <= 0}
+          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
           checked={state.otherCreditPay}
           onPress={() => {
-            item.paymentMethod = "POS";
+            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.otherCreditPay == true
               ? this.setState({
                   otherCreditPay: false,
@@ -846,10 +994,15 @@ class billDetail extends Component {
         />
         <View style={styles.container_info_outer}>
           <Loading isShow={isLoading} />
-          <Grid>
+          <Grid style={{ paddingTop: 2 }}>
             <Col style={styles.titleCol}>
               <Row style={styles.row_Header}>
-                <Text />
+                <H3 style={[{ paddingLeft: 16 }, styles.textPadding]}>
+                  {I18n.t("billCostTitle", {
+                    locale: locale ? locale : "vn"
+                  })}{" "}
+                  {bill.invoiceMonth}
+                </H3>
               </Row>
               {/* <Row style={styles.rowRent}>
                 <H3 style={rentEmpty ? styles.label_row_empty : {}}>
@@ -860,14 +1013,6 @@ class billDetail extends Component {
               </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
-                  <Row style={styles.rowDetail_inner_title}>
-                    <H3 style={[{ paddingLeft: 16 }, styles.textPadding]}>
-                      {I18n.t("billCostTitle", {
-                        locale: locale ? locale : "vn"
-                      })}{" "}
-                      {bill.invoiceMonth}
-                    </H3>
-                  </Row>
                   {bill.listInvoiceDetail.map((item, index) => {
                     return (
                       <Row key={index} style={styles.rowDetail_inner}>
@@ -893,11 +1038,11 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2 style={styles.textPadding}>
-                  {I18n.t("totalMoney", {
+                <H3 style={styles.textPadding}>
+                  {I18n.t("balancePeriod", {
                     locale: locale ? locale : "vn"
                   })}
-                </H2>
+                </H3>
               </Row>
               {/* <Row style={styles.rowRent}>
                 <Text style={rentEmpty ? styles.label_row_empty : {}}>
@@ -906,7 +1051,71 @@ class billDetail extends Component {
               </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
-                  <Row style={styles.rowDetail_inner_title} />
+                  {/* <Row style={styles.rowDetail_inner_title} /> */}
+                  {bill.listInvoiceDetail.map((item, index) => {
+                    return (
+                      <Row key={index} style={styles.rowDetail_inner}>
+                        {this.buildRowBillDetailStartPeriod(item, locale)}
+                      </Row>
+                    );
+                  })}
+                </Col>
+              </Row>
+              {/* <Row style={styles.rowUse}>
+                <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
+                  {balance.format() + " VNĐ"}
+                </Text>
+              </Row> */}
+              <Row style={styles.lastRow} />
+            </Col>
+            <Col>
+              <Row style={styles.row_Header}>
+                <H3 style={styles.textPadding}>
+                  {I18n.t("incresePeriod", {
+                    locale: locale ? locale : "vn"
+                  })}
+                </H3>
+              </Row>
+              {/* <Row style={styles.rowRent}>
+                <Text style={rentEmpty ? styles.label_row_empty : {}}>
+                  {totalDebit.format() + " VNĐ"}
+                </Text>
+              </Row> */}
+              <Row style={styles.billDetailRow}>
+                <Col>
+                  {/* <Row style={styles.rowDetail_inner_title} /> */}
+                  {bill.listInvoiceDetail.map((item, index) => {
+                    return (
+                      <Row key={index} style={styles.rowDetail_inner}>
+                        {this.buildRowBillDetailInPeriod(item, locale)}
+                      </Row>
+                    );
+                  })}
+                </Col>
+              </Row>
+              {/* <Row style={styles.rowUse}>
+                <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
+                  {balance.format() + " VNĐ"}
+                </Text>
+              </Row> */}
+              <Row style={styles.lastRow} />
+            </Col>
+            <Col>
+              <Row style={styles.row_Header}>
+                <H3 style={styles.textPadding}>
+                  {I18n.t("totalMoney", {
+                    locale: locale ? locale : "vn"
+                  })}
+                </H3>
+              </Row>
+              {/* <Row style={styles.rowRent}>
+                <Text style={rentEmpty ? styles.label_row_empty : {}}>
+                  {totalDebit.format() + " VNĐ"}
+                </Text>
+              </Row> */}
+              <Row style={styles.billDetailRow}>
+                <Col>
+                  {/* <Row style={styles.rowDetail_inner_title} /> */}
                   {bill.listInvoiceDetail.map((item, index) => {
                     return (
                       <Row key={index} style={styles.rowDetail_inner}>
@@ -925,11 +1134,11 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2 style={styles.textPadding}>
+                <H3 style={styles.textPadding}>
                   {I18n.t("payed", {
                     locale: locale ? locale : "vn"
                   })}
-                </H2>
+                </H3>
               </Row>
               {/* <Row style={styles.rowRent}>
                 <Text style={rentEmpty ? styles.label_row_empty : {}}>
@@ -938,7 +1147,7 @@ class billDetail extends Component {
               </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
-                  <Row style={styles.rowDetail_inner_title} />
+                  {/* <Row style={styles.rowDetail_inner_title} /> */}
                   {bill.listInvoiceDetail.map((item, index) => {
                     return (
                       <Row key={index} style={styles.rowDetail_inner}>
@@ -957,11 +1166,11 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2 style={styles.textPadding}>
+                <H3 style={styles.textPadding}>
                   {I18n.t("totalCash", {
                     locale: locale ? locale : "vn"
                   })}
-                </H2>
+                </H3>
               </Row>
               {/* <Row style={styles.rowRent_checkBox}>
                 <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
@@ -979,7 +1188,7 @@ class billDetail extends Component {
               </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
-                  <Row style={styles.rowDetail_inner_title} />
+                  {/* <Row style={styles.rowDetail_inner_title} /> */}
                   {bill.listInvoiceDetail.map((item, index) => {
                     return (
                       <Row key={index} style={styles.rowDetail_inner_checkBox}>
@@ -1012,11 +1221,11 @@ class billDetail extends Component {
             </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H2 style={styles.textPadding}>
+                <H3 style={styles.textPadding}>
                   {I18n.t("totalCredit", {
                     locale: locale ? locale : "vn"
                   })}
-                </H2>
+                </H3>
               </Row>
               {/* <Row style={styles.rowRent_checkBox}>
                 <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
@@ -1034,7 +1243,7 @@ class billDetail extends Component {
               </Row> */}
               <Row style={styles.billDetailRow}>
                 <Col>
-                  <Row style={styles.rowDetail_inner_title} />
+                  {/* <Row style={styles.rowDetail_inner_title} /> */}
                   {bill.listInvoiceDetail.map((item, index) => {
                     return (
                       <Row key={index} style={styles.rowDetail_inner_checkBox}>
@@ -1059,11 +1268,11 @@ class billDetail extends Component {
             </Col>
             <Col style={styles.totalCol}>
               <Row style={styles.row_Header}>
-                <H2 style={styles.textPadding}>
+                <H3 style={styles.textPadding}>
                   {I18n.t("TotalPay", {
                     locale: locale ? locale : "vn"
                   })}
-                </H2>
+                </H3>
               </Row>
               <Row style={[styles.border, styles.center]}>
                 <View style={[{ flex: 1 }, styles.center]}>
@@ -1084,7 +1293,7 @@ class billDetail extends Component {
                     })}
                   </Text>
                   <Item style={[styles.pay_item, styles.borderBottomNone]}>
-                    <Icon name="plug" style={styles.icon} />
+                    <Icon name="money" style={styles.icon} />
                     <Text>
                       {state.totalCashPay.format() + " VNĐ"}{" "}
                       {state.payBalance > 0

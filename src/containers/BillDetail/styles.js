@@ -8,6 +8,9 @@ export default {
     width: 100,
     height: 60
   },
+  CheckBoxDisabled:{
+    color:"#cecece"
+  },
   container_info_outer: {
     justifyContent: "center",
     alignItems: "center",
@@ -40,10 +43,10 @@ export default {
     justifyContent: "center"
   },
   titleCol: {
-    width: 220
+    width: 170
   },
   totalCol: {
-    width: 220
+    width: 170
   },
   rowRent: {
     height: 70,
@@ -89,7 +92,7 @@ export default {
   },
   lastRow: {
     borderWidth: 0,
-    maxHeight: 90,
+    maxHeight: 0,
     alignItems: "center",
     justifyContent: "center"
   },
@@ -98,7 +101,6 @@ export default {
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
-    paddingTop: 15,
     borderColor: "#d8d8d8",
     alignItems: "flex-start",
     justifyContent: "center"
@@ -110,12 +112,12 @@ export default {
     justifyContent: "center"
   },
   rowDetail_inner: {
-    height: 55,
+    height: 45,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   rowDetail_inner_checkBox: {
-    height: 55,
+    height: 45,
     alignItems: "center",
     justifyContent: "center",
     paddingRight: 20
@@ -162,5 +164,8 @@ export default {
     height: 26,
     alignItems: "center",
     justifyContent: "center"
+  },
+  text:{
+    fontSize:15
   }
 };

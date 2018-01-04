@@ -5,15 +5,32 @@ export function billPay(paymentItemList, bill, balance, user) {
   let dataPost = {};
   let _paymentItemList = [];
   let paymentItem = {};
+  debugger;
   dataPost.accountBalance = balance;
   dataPost.apartmentId = bill.apartmentId;
   dataPost.invoiceId = bill.invoiceId;
-
+  for (var j = 0; j < bill.listInvoiceDetail.length; j++) {
+    paymentItem = {};
+    if (
+      bill.listInvoiceDetail[j].invoiceDetailAmount <= 0 &&
+      bill.listInvoiceDetail[j].invoiceDetailPaid <= 0
+    ) {
+      paymentItem.invoiceDetailId = bill.listInvoiceDetail[j].invoiceDetailId;
+      paymentItem.paymentAmount = bill.listInvoiceDetail[j].arisingPeriod;
+      paymentItem.paymentMethod = "BANK_TRANSFER";
+      _paymentItemList.push(paymentItem);
+    }
+  }
   for (var i = 0; i < paymentItemList.length; i++) {
     paymentItem = {};
     paymentItem.invoiceDetailId = paymentItemList[i].invoiceDetailId;
-    paymentItem.paymentAmount = paymentItemList[i].invoiceDetailAmount;
+    if (paymentItemList[i].invoiceDetailAmount <= 0) {
+      paymentItem.paymentAmount = paymentItemList[i].arisingPeriod;
+    } else {
+      paymentItem.paymentAmount = paymentItemList[i].invoiceDetailAmount;
+    }
     paymentItem.paymentMethod = paymentItemList[i].paymentMethod;
+    paymentItem.listInvoiceDetailId = paymentItemList[i].listInvoiceDetailId;
     _paymentItemList.push(paymentItem);
   }
   dataPost.paymentItemList = _paymentItemList;

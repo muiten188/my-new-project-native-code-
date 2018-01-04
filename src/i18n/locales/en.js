@@ -62,6 +62,8 @@ export default {
     car:"Ô tô",
     motobike:'Xe máy',
     remainRent:'Dư nợ',
-    payed:'Đã thanh toán'
+    payed:'Đã thanh toán',
+    balancePeriod:'SD Đầu kỳ',
+    incresePeriod:'PS Trong kỳ'
   };
   
