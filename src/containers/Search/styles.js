@@ -83,5 +83,11 @@ export default {
     marginRight: 50,
     backgroundColor:'#054f9a',
     borderRadius:5
+  },
+  buttomSearchDisabled:{
+    marginLeft: 50,
+    marginRight: 50,
+    backgroundColor:'#cecece',
+    borderRadius:5
   }
 };

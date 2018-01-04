@@ -30,6 +30,7 @@ export const BILL_LIST = "BILL_LIST";
 export const BILL_LISTING = "BILL_LISTING";
 export const LIST_ERROR = "LIST_ERROR";
 export const BILL_LIST_FETCH_CATCH = "BILL_LIST_FETCH_CATCH";
+export const LIST_RESET = "LIST_RESET";
 //bill detail
 export const BILL_PAY = "BILL_PAY";
 export const BILL_PAYING = "BILL_PAYING";

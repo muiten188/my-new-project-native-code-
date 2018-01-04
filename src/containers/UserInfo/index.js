@@ -58,7 +58,9 @@ class userInfo extends Component {
     I18n.currentLocale();
   }
   componentDidMount() {
-    this.getUser();
+    setTimeout(()=>{
+      this.getUser();
+    },0)
   }
 
   getUser() {

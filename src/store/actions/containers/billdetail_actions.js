@@ -5,7 +5,6 @@ export function billPay(paymentItemList, bill, balance, user) {
   let dataPost = {};
   let _paymentItemList = [];
   let paymentItem = {};
-  debugger;
   dataPost.accountBalance = balance;
   dataPost.apartmentId = bill.apartmentId;
   dataPost.invoiceId = bill.invoiceId;

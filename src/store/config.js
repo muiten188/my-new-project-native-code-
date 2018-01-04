@@ -4,22 +4,21 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { persistStore, autoRehydrate } from 'redux-persist'
 import reducers from './reducers/index';
-import logger from 'redux-logger'
+// import logger from 'redux-logger'
 
 const initialState = {};
 
 const middleware = [thunk]
 
-if (__DEV__) {
-    middleware.push(logger);
-}
+// if (__DEV__) {
+//     middleware.push(logger);
+// }
 
 export default function storeConfig(callback) {
     const store = createStore(reducers,
         initialState,
         compose(
-            applyMiddleware(...middleware),
-            window.devToolsExtension ? window.devToolsExtension() : x => x
+            applyMiddleware(...middleware)
         )
     )
     // const store = createStore(reducers,

@@ -58,16 +58,19 @@ class billList extends Component {
   componentDidMount() {
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
-    billListAction.getBillList(
-      navigation.state.params.apartment.apartmentId,
-      user
-    );
+    setTimeout(() => {
+      billListAction.getBillList(
+        navigation.state.params.apartment.apartmentId,
+        user
+      );
+    });
+
   }
 
-  onSearchClick() {
-    alert(1);
-    // const { navigationAction } = this.props.navigation;
-    // navigationAction.push({ id: "FilmDetail", title: "Film Detail", oFilm: oData });
+  componentWillUnmount(){
+    const { billListAction, navigation } = this.props;
+    debugger
+    billListAction.reset();
   }
 
   render() {
@@ -111,8 +114,8 @@ class billList extends Component {
                     source={
                       state.params.apartment.avatarUrl
                         ? {
-                            uri: state.params.apartment.avatarUrl
-                          }
+                          uri: state.params.apartment.avatarUrl
+                        }
                         : userAvar
                     }
                     ref={thumbnail => {
@@ -171,11 +174,13 @@ class billList extends Component {
                   <Button
                     full
                     style={styles.buttonViewHistory}
-                    onPress={() =>
+                    onPress={() => {
+                      // billListAction.reset();
                       dispatch.push({
                         id: "History",
                         apartment: navigation.state.params.apartment
                       })
+                    }
                     }
                   >
                     <Text uppercase={false}>

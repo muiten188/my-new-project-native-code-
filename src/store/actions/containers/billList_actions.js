@@ -120,3 +120,9 @@ function getQueryString(params) {
     })
     .join("&");
 }
+
+export function reset(){
+  return {
+    type: types.LIST_RESET
+  };
+}

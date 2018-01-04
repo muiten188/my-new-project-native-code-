@@ -53,7 +53,9 @@ class search extends Component {
   componentDidMount() {
     const { searchAction } = this.props;
     const { user } = this.props.loginReducer;
-    searchAction.search({}, user);
+    setTimeout(()=>{
+      searchAction.search({}, user);
+    })
   }
 
   render() {
@@ -149,10 +151,10 @@ class search extends Component {
                   <Button
                     full
                     disabled={isLoading}
+                    style={isLoading?styles.buttomSearchDisabled:styles.buttomSearch}
                     onPress={handleSubmit(values => {
                       searchAction.search(values, user);
                     })}
-                    style={styles.buttomSearch}
                   >
                     <Text>
                       {I18n.t("search", {
@@ -217,6 +219,7 @@ class search extends Component {
   }
 }
 function mapStateToProps(state, props) {
+  debugger;
   return {
     searchReducer: state.searchReducer,
     loginReducer: state.loginReducer

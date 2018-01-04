@@ -160,8 +160,8 @@ export default {
     paddingBottom: 7
   },
   checkBox: {
-    width: 26,
-    height: 26,
+    width: 30,
+    height: 30,
     alignItems: "center",
     justifyContent: "center"
   },

@@ -3,10 +3,11 @@ const initState = {
   isLoading: true,
   balance: 200000,
   totalDebit: 0,
-  billError: false
+  billError: false,
+  listResult:[]
 };
 
-export default function(state = initState, action = {}) {
+export default function (state = initState, action = {}) {
   switch (action.type) {
     case types.BILL_LIST:
       return {
@@ -41,6 +42,11 @@ export default function(state = initState, action = {}) {
         ...state,
         isLoading: false,
         billError: true
+      };
+    case types.LIST_RESET:
+      return {
+        ...state,
+        ...initState
       };
     default:
       return state;

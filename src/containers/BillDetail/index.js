@@ -37,8 +37,8 @@ import PayModal from "../../components/PayModal";
 import * as billDetailAction from "../../store/actions/containers/billdetail_actions";
 import * as billListAction from "../../store/actions/containers/billList_actions";
 import Loading from "../../components/Loading";
-import RNXprinter from "react-native-xprinter";
-RNXprinter.initialize();
+// import RNXprinter from "react-native-xprinter";
+// RNXprinter.initialize();
 
 class billDetail extends Component {
   static navigationOptions = {
@@ -199,6 +199,7 @@ class billDetail extends Component {
       bikeEmpty,
       carEmpty
     } = this.state;
+    item.earlyPeriod=item.earlyPeriod?item.earlyPeriod:0;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Text
@@ -248,6 +249,7 @@ class billDetail extends Component {
       bikeEmpty,
       carEmpty
     } = this.state;
+    item.arisingPeriod=item.arisingPeriod?item.arisingPeriod:0;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Text
@@ -1340,7 +1342,7 @@ class billDetail extends Component {
             }, 15);
           }}
           onPay={() => {
-            this.printBill();
+            // this.printBill();
           }}
         />
         <ConfirmModal
