@@ -53,7 +53,7 @@ class search extends Component {
   componentDidMount() {
     const { searchAction } = this.props;
     const { user } = this.props.loginReducer;
-    setTimeout(()=>{
+    setTimeout(() => {
       searchAction.search({}, user);
     })
   }
@@ -69,6 +69,7 @@ class search extends Component {
     }
     return (
       <Container style={styles.container}>
+      <Loading isShow={isLoading} />
         <KeyboardAvoidingView
           behavior="padding"
           style={styles.container_outer}
@@ -151,9 +152,9 @@ class search extends Component {
                   <Button
                     full
                     disabled={isLoading}
-                    style={isLoading?styles.buttomSearchDisabled:styles.buttomSearch}
+                    style={isLoading ? styles.buttomSearchDisabled : styles.buttomSearch}
                     onPress={handleSubmit(values => {
-                      searchAction.search(values, user);
+                        searchAction.search(values, user);
                     })}
                   >
                     <Text>
@@ -174,7 +175,6 @@ class search extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading isShow={isLoading} />
                 <FlatList
                   style={styles.listResult}
                   data={listResult ? listResult : []}
@@ -219,7 +219,6 @@ class search extends Component {
   }
 }
 function mapStateToProps(state, props) {
-  debugger;
   return {
     searchReducer: state.searchReducer,
     loginReducer: state.loginReducer

@@ -86,13 +86,13 @@ class billDetail extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   buildRowBillDetail(item, locale) {
     const {
@@ -199,7 +199,7 @@ class billDetail extends Component {
       bikeEmpty,
       carEmpty
     } = this.state;
-    item.earlyPeriod=item.earlyPeriod?item.earlyPeriod:0;
+    item.earlyPeriod = item.earlyPeriod ? item.earlyPeriod : 0;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Text
@@ -249,7 +249,7 @@ class billDetail extends Component {
       bikeEmpty,
       carEmpty
     } = this.state;
-    item.arisingPeriod=item.arisingPeriod?item.arisingPeriod:0;
+    item.arisingPeriod = item.arisingPeriod ? item.arisingPeriod : 0;
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Text
@@ -443,33 +443,33 @@ class billDetail extends Component {
             item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.buildingCashPay == true
               ? this.setState({
-                  buildingCashPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                buildingCashPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  buildingCashPay: true,
-                  buildingCreditPay: false,
-                  totalPay:
-                    state.buildingCreditPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.buildingCreditPay != true
-                      ? state.totalCreditPay
-                      : state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                buildingCashPay: true,
+                buildingCreditPay: false,
+                totalPay:
+                  state.buildingCreditPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.buildingCreditPay != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -485,33 +485,33 @@ class billDetail extends Component {
             item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.electricCashPay == true
               ? this.setState({
-                  electricCashPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                electricCashPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  electricCashPay: true,
-                  electricCreditPay: false,
-                  totalPay:
-                    state.electricCreditPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.electricCreditPay != true
-                      ? state.totalCreditPay
-                      : state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                electricCashPay: true,
+                electricCreditPay: false,
+                totalPay:
+                  state.electricCreditPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.electricCreditPay != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -527,33 +527,33 @@ class billDetail extends Component {
             item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.waterCashPay == true
               ? this.setState({
-                  waterCashPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                waterCashPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  waterCashPay: true,
-                  waterCreditPay: false,
-                  totalPay:
-                    state.waterCreditPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.waterCreditPay != true
-                      ? state.totalCreditPay
-                      : state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                waterCashPay: true,
+                waterCreditPay: false,
+                totalPay:
+                  state.waterCreditPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.waterCreditPay != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -569,33 +569,33 @@ class billDetail extends Component {
             item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.bikeCashPay
               ? this.setState({
-                  bikeCashPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                bikeCashPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  bikeCashPay: true,
-                  bikeCreditPay: false,
-                  totalPay:
-                    state.bikeCreditPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.bikeCreditPay != true
-                      ? state.totalCreditPay
-                      : state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                bikeCashPay: true,
+                bikeCreditPay: false,
+                totalPay:
+                  state.bikeCreditPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.bikeCreditPay != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -611,33 +611,33 @@ class billDetail extends Component {
             item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.carCashPay
               ? this.setState({
-                  carCashPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                carCashPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  carCashPay: true,
-                  carCreditPay: false,
-                  totalPay:
-                    state.carCreditPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.carCreditPay != true
-                      ? state.totalCreditPay
-                      : state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                carCashPay: true,
+                carCreditPay: false,
+                totalPay:
+                  state.carCreditPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.carCreditPay != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -653,33 +653,33 @@ class billDetail extends Component {
             item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.otherCashPay == true
               ? this.setState({
-                  otherCashPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                otherCashPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  otherCashPay: true,
-                  otherCreditPay: false,
-                  totalPay:
-                    state.otherCreditPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.otherCreditPay != true
-                      ? state.totalCreditPay
-                      : state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                otherCashPay: true,
+                otherCreditPay: false,
+                totalPay:
+                  state.otherCreditPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.otherCreditPay != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -707,35 +707,35 @@ class billDetail extends Component {
             item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;
             state.buildingCreditPay == true
               ? this.setState({
-                  buildingCreditPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                buildingCreditPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  buildingCreditPay: true,
-                  buildingCashPay: false,
-                  totalPay:
-                    state.buildingCashPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCreditPay:
-                    state.totalCreditPay + item.invoiceDetailAmount,
-                  totalCashPay:
-                    state.buildingCashPay != true
-                      ? state.totalCashPay
-                      : state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                buildingCreditPay: true,
+                buildingCashPay: false,
+                totalPay:
+                  state.buildingCashPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay:
+                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state.buildingCashPay != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -750,35 +750,35 @@ class billDetail extends Component {
             item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.electricCreditPay == true
               ? this.setState({
-                  electricCreditPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                electricCreditPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  electricCreditPay: true,
-                  electricCashPay: false,
-                  totalPay:
-                    state.electricCashPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCreditPay:
-                    state.totalCreditPay + item.invoiceDetailAmount,
-                  totalCashPay:
-                    state.electricCashPay != true
-                      ? state.totalCashPay
-                      : state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                electricCreditPay: true,
+                electricCashPay: false,
+                totalPay:
+                  state.electricCashPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay:
+                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state.electricCashPay != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -793,35 +793,35 @@ class billDetail extends Component {
             item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.waterCreditPay == true
               ? this.setState({
-                  waterCreditPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                waterCreditPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  waterCreditPay: true,
-                  waterCashPay: false,
-                  totalPay:
-                    state.waterCashPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCreditPay:
-                    state.totalCreditPay + item.invoiceDetailAmount,
-                  totalCashPay:
-                    state.waterCashPay != true
-                      ? state.totalCashPay
-                      : state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                waterCreditPay: true,
+                waterCashPay: false,
+                totalPay:
+                  state.waterCashPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay:
+                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state.waterCashPay != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -836,35 +836,35 @@ class billDetail extends Component {
             item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.bikeCreditPay == true
               ? this.setState({
-                  bikeCreditPay: [],
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                bikeCreditPay: [],
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  bikeCreditPay: true,
-                  bikeCashPay: false,
-                  totalPay:
-                    state.bikeCashPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCreditPay:
-                    state.totalCreditPay + item.invoiceDetailAmount,
-                  totalCashPay:
-                    state.bikeCashPay != true
-                      ? state.totalCashPay
-                      : state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                bikeCreditPay: true,
+                bikeCashPay: false,
+                totalPay:
+                  state.bikeCashPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay:
+                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state.bikeCashPay != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -879,35 +879,35 @@ class billDetail extends Component {
             item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.carCreditPay == true
               ? this.setState({
-                  carCreditPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                carCreditPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  carCreditPay: true,
-                  carCashPay: false,
-                  totalPay:
-                    state.carCashPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCreditPay:
-                    state.totalCreditPay + item.invoiceDetailAmount,
-                  totalCashPay:
-                    state.carCashPay != true
-                      ? state.totalCashPay
-                      : state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                carCreditPay: true,
+                carCashPay: false,
+                totalPay:
+                  state.carCashPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay:
+                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state.carCashPay != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -922,35 +922,35 @@ class billDetail extends Component {
             item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
             state.otherCreditPay == true
               ? this.setState({
-                  otherCreditPay: false,
-                  totalPay: state.totalPay - item.invoiceDetailAmount,
-                  totalCreditPay:
-                    state.totalCreditPay - item.invoiceDetailAmount,
-                  paymentItemList: state.paymentItemList.filter((i, index) => {
-                    return (
-                      i.invoiceDetailId != item.invoiceDetailId &&
-                      i.paymentMethod != item.paymentMethod
-                    );
-                  })
+                otherCreditPay: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay:
+                  state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return (
+                    i.invoiceDetailId != item.invoiceDetailId &&
+                    i.paymentMethod != item.paymentMethod
+                  );
                 })
+              })
               : this.setState({
-                  otherCreditPay: true,
-                  otherCashPay: false,
-                  totalPay:
-                    state.otherCashPay != true
-                      ? state.totalPay + item.invoiceDetailAmount
-                      : state.totalPay,
-                  totalCreditPay:
-                    state.totalCreditPay + item.invoiceDetailAmount,
-                  totalCashPay:
-                    state.otherCashPay != true
-                      ? state.totalCashPay
-                      : state.totalCashPay - item.invoiceDetailAmount,
-                  paymentItemList:
-                    state.paymentItemList.indexOf(item) == -1
-                      ? [...state.paymentItemList, item]
-                      : state.paymentItemList
-                });
+                otherCreditPay: true,
+                otherCashPay: false,
+                totalPay:
+                  state.otherCashPay != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay:
+                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state.otherCashPay != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
           }}
         />
       );
@@ -997,276 +997,108 @@ class billDetail extends Component {
         <View style={styles.container_info_outer}>
           <Loading isShow={isLoading} />
           <Grid style={{ paddingTop: 2 }}>
-            <Col style={styles.titleCol}>
-              <Row style={styles.row_Header}>
-                <H3 style={[{ paddingLeft: 16 }, styles.textPadding]}>
-                  {I18n.t("billCostTitle", {
-                    locale: locale ? locale : "vn"
-                  })}{" "}
-                  {bill.invoiceMonth}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent}>
-                <H3 style={rentEmpty ? styles.label_row_empty : {}}>
-                  {I18n.t("pay1stRent", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row> */}
-              <Row style={styles.billDetailRow}>
-                <Col>
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner}>
-                        {this.buildRowBillDetail(item, locale)}
-                      </Row>
-                    );
-                  })}
-                </Col>
-              </Row>
-              {/* <Row style={styles.rowUse}>
-                <H3
-                  style={[
-                    remainUseEmpty ? styles.label_row_empty : {},
-                    styles.textPadding
-                  ]}
-                >
-                  {I18n.t("use1stRent", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row> */}
-              <Row style={styles.lastRow} />
-            </Col>
             <Col>
               <Row style={styles.row_Header}>
-                <H3 style={styles.textPadding}>
-                  {I18n.t("balancePeriod", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent}>
-                <Text style={rentEmpty ? styles.label_row_empty : {}}>
-                  {totalDebit.format() + " VNĐ"}
-                </Text>
-              </Row> */}
-              <Row style={styles.billDetailRow}>
-                <Col>
-                  {/* <Row style={styles.rowDetail_inner_title} /> */}
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner}>
-                        {this.buildRowBillDetailStartPeriod(item, locale)}
-                      </Row>
-                    );
-                  })}
+                <Col style={styles.titleCol}>
+                  <H3 style={[{ paddingLeft: 16 }, styles.textPadding]}>
+                    {I18n.t("billCostTitle", {
+                      locale: locale ? locale : "vn"
+                    })}{" "}
+                    {bill.invoiceMonth}
+                  </H3>
+                </Col>
+                <Col style={styles.col}>
+                  <H3 style={styles.textPadding}>
+                    {I18n.t("balancePeriod", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </H3>
+                </Col>
+                <Col style={styles.col}>
+                  <H3 style={styles.textPadding}>
+                    {I18n.t("incresePeriod", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </H3>
+                </Col>
+                <Col style={styles.col}>
+                  <H3 style={styles.textPadding}>
+                    {I18n.t("totalMoney", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </H3>
+                </Col>
+                <Col style={styles.col}>
+                  <H3 style={styles.textPadding}>
+                    {I18n.t("totalCash", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </H3>
+                </Col>
+                <Col style={styles.col}>
+                  <H3 style={styles.textPadding}>
+                    {I18n.t("totalCredit", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </H3>
                 </Col>
               </Row>
-              {/* <Row style={styles.rowUse}>
-                <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
-                  {balance.format() + " VNĐ"}
-                </Text>
-              </Row> */}
-              <Row style={styles.lastRow} />
-            </Col>
-            <Col>
-              <Row style={styles.row_Header}>
-                <H3 style={styles.textPadding}>
-                  {I18n.t("incresePeriod", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent}>
-                <Text style={rentEmpty ? styles.label_row_empty : {}}>
-                  {totalDebit.format() + " VNĐ"}
-                </Text>
-              </Row> */}
               <Row style={styles.billDetailRow}>
-                <Col>
-                  {/* <Row style={styles.rowDetail_inner_title} /> */}
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner}>
-                        {this.buildRowBillDetailInPeriod(item, locale)}
-                      </Row>
-                    );
-                  })}
-                </Col>
+                  <Col style={styles.titleDetailCol}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetail(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetailStartPeriod(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetailInPeriod(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetailTotal(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetailCash(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetailCredit(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
               </Row>
-              {/* <Row style={styles.rowUse}>
-                <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
-                  {balance.format() + " VNĐ"}
-                </Text>
-              </Row> */}
-              <Row style={styles.lastRow} />
-            </Col>
-            <Col>
-              <Row style={styles.row_Header}>
-                <H3 style={styles.textPadding}>
-                  {I18n.t("totalMoney", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent}>
-                <Text style={rentEmpty ? styles.label_row_empty : {}}>
-                  {totalDebit.format() + " VNĐ"}
-                </Text>
-              </Row> */}
-              <Row style={styles.billDetailRow}>
-                <Col>
-                  {/* <Row style={styles.rowDetail_inner_title} /> */}
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner}>
-                        {this.buildRowBillDetailTotal(item, locale)}
-                      </Row>
-                    );
-                  })}
-                </Col>
-              </Row>
-              {/* <Row style={styles.rowUse}>
-                <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
-                  {balance.format() + " VNĐ"}
-                </Text>
-              </Row> */}
-              <Row style={styles.lastRow} />
-            </Col>
-            <Col>
-              <Row style={styles.row_Header}>
-                <H3 style={styles.textPadding}>
-                  {I18n.t("payed", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent}>
-                <Text style={rentEmpty ? styles.label_row_empty : {}}>
-                  {totalDebit.format() + " VNĐ"}
-                </Text>
-              </Row> */}
-              <Row style={styles.billDetailRow}>
-                <Col>
-                  {/* <Row style={styles.rowDetail_inner_title} /> */}
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner}>
-                        {this.buildRowBillDetailPaid(item, locale)}
-                      </Row>
-                    );
-                  })}
-                </Col>
-              </Row>
-              {/*<Row style={styles.rowUse}>
-                 <Text style={remainUseEmpty ? styles.label_row_empty : {}}>
-                  {balance.format() + " VNĐ"}
-                </Text> 
-              </Row>*/}
-              <Row style={styles.lastRow} />
-            </Col>
-            <Col>
-              <Row style={styles.row_Header}>
-                <H3 style={styles.textPadding}>
-                  {I18n.t("totalCash", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent_checkBox}>
-                <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
-                  color={rentEmpty ? "#ff373a" : "#054f9a"}
-                  checked={state.rentCashPay}
-                  onPress={() =>
-                    state.rentCashPay == true
-                      ? this.setState({ rentCashPay: false })
-                      : this.setState({
-                          rentCashPay: true,
-                          rentCreditPay: false
-                        })
-                  }
-                />
-              </Row> */}
-              <Row style={styles.billDetailRow}>
-                <Col>
-                  {/* <Row style={styles.rowDetail_inner_title} /> */}
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner_checkBox}>
-                        {this.buildRowBillDetailCash(item, locale)}
-                      </Row>
-                    );
-                  })}
-                </Col>
-              </Row>
-              {/* <Row style={styles.rowUse_checkbox}>
-                <CheckBox           style={styles.checkBox}
-                  color={remainUseEmpty ? "#ff373a" : "#054f9a"}
-                  checked={state.useRemainCashPay}
-                  onPress={() =>
-                    state.useRemainCashPay == true
-                      ? this.setState({
-                          useRemainCashPay: false,
-                          totalPay: state.totalPay + balance,
-                          payBalance: 0
-                        })
-                      : this.setState({
-                          useRemainCashPay: true,
-                          totalPay: state.totalPay - balance,
-                          payBalance: balance
-                        })
-                  }
-                />
-              </Row> */}
-              <Row style={styles.lastRow} />
-            </Col>
-            <Col>
-              <Row style={styles.row_Header}>
-                <H3 style={styles.textPadding}>
-                  {I18n.t("totalCredit", {
-                    locale: locale ? locale : "vn"
-                  })}
-                </H3>
-              </Row>
-              {/* <Row style={styles.rowRent_checkBox}>
-                <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
-                  color={rentEmpty ? "#ff373a" : "#054f9a"}
-                  checked={state.rentCreditPay}
-                  onPress={() =>
-                    state.rentCreditPay == true
-                      ? this.setState({ rentCreditPay: false })
-                      : this.setState({
-                          rentCreditPay: true,
-                          rentCashPay: false
-                        })
-                  }
-                />
-              </Row> */}
-              <Row style={styles.billDetailRow}>
-                <Col>
-                  {/* <Row style={styles.rowDetail_inner_title} /> */}
-                  {bill.listInvoiceDetail.map((item, index) => {
-                    return (
-                      <Row key={index} style={styles.rowDetail_inner_checkBox}>
-                        {this.buildRowBillDetailCredit(item, locale)}
-                      </Row>
-                    );
-                  })}
-                </Col>
-              </Row>
-              {/* <Row style={styles.rowUse_checkbox}>
-                <CheckBox           style={styles.checkBox} disabled={item.invoiceDetailAmount==0}
-                  color={remainUseEmpty ? "#ff373a" : "#054f9a"}
-                  checked={state.useRemainCreditPay}
-                  onPress={() =>
-                    state.useRemainCreditPay == true
-                      ? this.setState({ useRemainCreditPay: false })
-                      : this.setState({ useRemainCreditPay: true })
-                  }
-                /> 
-              </Row>*/}
-              <Row style={styles.lastRow} />
             </Col>
             <Col style={styles.totalCol}>
               <Row style={styles.row_Header}>

@@ -43,7 +43,30 @@ export default {
     justifyContent: "center"
   },
   titleCol: {
-    width: 170
+    width: 170,
+    height: 55,
+    borderRightWidth: 0.8,
+    borderColor: "#d8d8d8",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  titleDetailCol:{
+    width: 170,
+    height:'100%',
+    borderRightWidth: 0.8,
+    borderColor: "#d8d8d8",
+  },
+  col:{
+    height: 55,
+    borderRightWidth: 0.8,
+    borderColor: "#d8d8d8",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  col_detail:{
+    height:'100%',
+    borderRightWidth: 0.8,
+    borderColor: "#d8d8d8",
   },
   totalCol: {
     width: 170
@@ -97,6 +120,7 @@ export default {
     justifyContent: "center"
   },
   billDetailRow: {
+    flex:1,
     borderLeftWidth: 0.5,
     borderRightWidth: 0.5,
     borderTopWidth: 0.5,
