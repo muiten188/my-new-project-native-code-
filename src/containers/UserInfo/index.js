@@ -34,6 +34,7 @@ import * as userInfoAction from "../../store/actions/containers/userInfo_action"
 import * as AppConfig from "../../config/app_config";
 const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
+const blockAction = false;
 class userInfo extends Component {
   static navigationOptions = {
     header: null
@@ -83,7 +84,13 @@ class userInfo extends Component {
   }
   onSearchClick() {
     const { dispatch } = this.props.navigation;
-    dispatch.push({ id: "Search" });
+    if (!blockAction) {
+      blockAction = true;
+      dispatch.push({ id: "Search" });
+      setTimeout(() => {
+        blockAction = false;
+      }, 150)
+    }
   }
   /**
    *

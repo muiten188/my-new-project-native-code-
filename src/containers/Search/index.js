@@ -34,6 +34,7 @@ import { DateField } from "../../components/Element/Form";
 import ItemResult from "../../components/Item_result";
 import * as searchAction from "../../store/actions/containers/search_action";
 import Loading from "../../components/Loading";
+const blockAction = false;
 class search extends Component {
   static navigationOptions = {
     header: null
@@ -53,9 +54,16 @@ class search extends Component {
   componentDidMount() {
     const { searchAction } = this.props;
     const { user } = this.props.loginReducer;
-    setTimeout(() => {
-      searchAction.search({}, user);
-    });
+
+    if (!blockAction) {
+      blockAction = true;
+      setTimeout(() => {
+        searchAction.search({}, user);
+      });
+      setTimeout(() => {
+        blockAction = false;
+      }, 50)
+    }
   }
 
   render() {
@@ -78,8 +86,14 @@ class search extends Component {
             <Col size={32} style={[styles.grid_col, styles.col_form]}>
               <HeaderForm
                 onBack={() => {
-                  searchAction.searchReset();
-                  dispatch.push({ id: "UserInfo" });
+                  if (!blockAction) {
+                    blockAction = true;
+                    searchAction.searchReset();
+                    dispatch.push({ id: "UserInfo" });
+                    setTimeout(() => {
+                      blockAction = false;
+                    }, 150)
+                  }
                 }}
                 headerTitle={I18n.t("searchInfo", {
                   locale: locale ? locale : "vn"
@@ -160,7 +174,13 @@ class search extends Component {
                         : styles.buttomSearch
                     }
                     onPress={handleSubmit(values => {
-                      searchAction.search(values, user);
+                      if (!blockAction) {
+                        blockAction = true;
+                        searchAction.search(values, user);
+                        setTimeout(() => {
+                          blockAction = false;
+                        }, 150)
+                      }
                     })}
                   >
                     <Text>
@@ -211,7 +231,15 @@ class search extends Component {
             ? styles.item_container_half
             : styles.item_container_full
         }
-        onPress={() => dispatch.push({ id: "BillList", apartment: item })}
+        onPress={() => {
+          if (!blockAction) {
+            blockAction = true;
+            dispatch.push({ id: "BillList", apartment: item })
+            setTimeout(() => {
+              blockAction = false;
+            }, 150)
+          }
+        }}
       >
         <ItemResult
           key={item.index}

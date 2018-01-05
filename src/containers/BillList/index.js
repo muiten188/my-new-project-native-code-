@@ -39,6 +39,7 @@ import * as billListAction from "../../store/actions/containers/billList_actions
 import Loading from "../../components/Loading";
 const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
+const blockAction = false;
 class billList extends Component {
   static navigationOptions = {
     header: null
@@ -67,7 +68,7 @@ class billList extends Component {
 
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     const { billListAction, navigation } = this.props;
     billListAction.reset();
   }
@@ -174,11 +175,16 @@ class billList extends Component {
                     full
                     style={styles.buttonViewHistory}
                     onPress={() => {
-                      // billListAction.reset();
-                      dispatch.push({
-                        id: "History",
-                        apartment: navigation.state.params.apartment
-                      })
+                      if (!blockAction) {
+                        blockAction = true;
+                        dispatch.push({
+                          id: "History",
+                          apartment: navigation.state.params.apartment
+                        })
+                        setTimeout(() => {
+                          blockAction = false;
+                        }, 150)
+                      }
                     }
                     }
                   >
@@ -238,13 +244,19 @@ class billList extends Component {
         key={item.index}
         style={styles.item_container}
         onPress={() => {
-          if (item.invoiceStatus == "INCOMPLETE") {
-            dispatch.push({
-              id: "BillDetail",
-              bill: item,
-              balance: balance,
-              totalDebit: totalDebit
-            });
+          if (!blockAction) {
+            blockAction = true;
+            if (item.invoiceStatus == "INCOMPLETE") {
+              dispatch.push({
+                id: "BillDetail",
+                bill: item,
+                balance: balance,
+                totalDebit: totalDebit
+              });
+            }
+            setTimeout(() => {
+              blockAction = false;
+            }, 150)
           }
         }}
       >
