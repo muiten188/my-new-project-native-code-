@@ -102,7 +102,15 @@ class billList extends Component {
           <Grid>
             <Col size={35} style={[styles.grid_col, styles.col_form]}>
               <HeaderForm
-                onBack={() => dispatch.pop()}
+                onBack={() => {
+                  if (!blockAction) {
+                    blockAction = true;
+                    dispatch.pop()
+                    setTimeout(() => {
+                      blockAction = false;
+                    }, 150)
+                  }
+                }}
                 headerTitle={I18n.t("homeInfo", {
                   locale: locale ? locale : "vn"
                 })}

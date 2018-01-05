@@ -451,8 +451,7 @@ class billDetail extends Component {
                 totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
                 paymentItemList: state.paymentItemList.filter((i, index) => {
                   return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
+                    i.invoiceDetailId != item.invoiceDetailId 
                   );
                 })
               })
