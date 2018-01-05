@@ -69,7 +69,6 @@ class billList extends Component {
 
   componentWillUnmount(){
     const { billListAction, navigation } = this.props;
-    debugger
     billListAction.reset();
   }
 

@@ -48,7 +48,8 @@ class billDetail extends Component {
   constructor(props) {
     super(props);
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
-    let temparr = [];
+    let tempState = {};
+    let checkboxArr = [];
     for (var i = 0; i < bill.listInvoiceDetail.length; i++) {
       if (bill.listInvoiceDetail[i].invoiceDetailPaid == null) {
         bill.listInvoiceDetail[i].invoiceDetailPaid = 0;
@@ -59,24 +60,18 @@ class billDetail extends Component {
       if (bill.listInvoiceDetail[i].invoiceDetailAmount < 0) {
         bill.listInvoiceDetail[i].invoiceDetailAmount = 0;
       }
+      tempState["cashPay" + bill.listInvoiceDetail[i].invoiceDetailId] = false;
+      checkboxArr.push("cashPay" + bill.listInvoiceDetail[i].invoiceDetailId);
+      tempState[
+        "creditPay" + bill.listInvoiceDetail[i].invoiceDetailId
+      ] = false;
+      checkboxArr.push("creditPay" + bill.listInvoiceDetail[i].invoiceDetailId);
     }
     this.state = {
-      rentCashPay: false,
-      rentCreditPay: false,
-      electricCashPay: false,
-      electricCreditPay: false,
-      waterCashPay: false,
-      waterCreditPay: false,
-      buildingCashPay: false,
-      buildingCreditPay: false,
-      bikeCashPay: false,
-      bikeCreditPay: false,
-      carCashPay: false,
-      carCreditPay: false,
-      otherCashPay: false,
-      otherCreditPay: false,
-      useRemainCashPay: false,
-      useRemainCreditPay: false,
+      ...tempState,
+      checkboxArr: checkboxArr,
+      creditAll: false,
+      cashAll: false,
       totalPay: 0,
       totalCashPay: 0,
       totalCreditPay: 0,
@@ -86,13 +81,13 @@ class billDetail extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function (n, x) {
+    Number.prototype.format = function(n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   buildRowBillDetail(item, locale) {
     const {
@@ -431,19 +426,27 @@ class billDetail extends Component {
     } = this.state;
     const { state } = this;
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
-    if (item.serviceName.indexOf("BUILDING") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.buildingCashPay}
-          onPress={() => {
-            item.paymentMethod = "CASH";
-            item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.buildingCashPay == true
-              ? this.setState({
-                buildingCashPay: false,
+    return (
+      <CheckBox
+        style={styles.checkBox}
+        disabled={item.invoiceDetailAmount <= 0}
+        color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
+        checked={state["cashPay" + item.invoiceDetailId]}
+        onPress={() => {
+          item.paymentMethod = "CASH";
+          item.listInvoiceDetailId = item.listInvoiceDetailId;
+          let temp = {};
+          let temp2 = {};
+          temp["cashPay" + item.invoiceDetailId];
+          state["cashPay" + item.invoiceDetailId] == true
+            ? (temp["cashPay" + item.invoiceDetailId] = false)
+            : (temp["cashPay" + item.invoiceDetailId] = true),
+            (temp2["creditPay" + item.invoiceDetailId] = false);
+          state["cashPay" + item.invoiceDetailId] == true
+            ? this.setState({
+                ...temp,
+                creditAll: false,
+                cashAll: false,
                 totalPay: state.totalPay - item.invoiceDetailAmount,
                 totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
                 paymentItemList: state.paymentItemList.filter((i, index) => {
@@ -453,16 +456,18 @@ class billDetail extends Component {
                   );
                 })
               })
-              : this.setState({
-                buildingCashPay: true,
-                buildingCreditPay: false,
+            : this.setState({
+                ...temp,
+                ...temp2,
+                creditAll: false,
+                cashAll: false,
                 totalPay:
-                  state.buildingCreditPay != true
+                  state["creditPay" + item.invoiceDetailId] != true
                     ? state.totalPay + item.invoiceDetailAmount
                     : state.totalPay,
                 totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
                 totalCreditPay:
-                  state.buildingCreditPay != true
+                  state["creditPay" + item.invoiceDetailId] != true
                     ? state.totalCreditPay
                     : state.totalCreditPay - item.invoiceDetailAmount,
                 paymentItemList:
@@ -470,220 +475,9 @@ class billDetail extends Component {
                     ? [...state.paymentItemList, item]
                     : state.paymentItemList
               });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.electricCashPay}
-          onPress={() => {
-            item.paymentMethod = "CASH";
-            item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.electricCashPay == true
-              ? this.setState({
-                electricCashPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                electricCashPay: true,
-                electricCreditPay: false,
-                totalPay:
-                  state.electricCreditPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.electricCreditPay != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("WATER") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.waterCashPay}
-          onPress={() => {
-            item.paymentMethod = "CASH";
-            item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.waterCashPay == true
-              ? this.setState({
-                waterCashPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                waterCashPay: true,
-                waterCreditPay: false,
-                totalPay:
-                  state.waterCreditPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.waterCreditPay != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.bikeCashPay}
-          onPress={() => {
-            item.paymentMethod = "CASH";
-            item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.bikeCashPay
-              ? this.setState({
-                bikeCashPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                bikeCashPay: true,
-                bikeCreditPay: false,
-                totalPay:
-                  state.bikeCreditPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.bikeCreditPay != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("CAR") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.carCashPay}
-          onPress={() => {
-            item.paymentMethod = "CASH";
-            item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.carCashPay
-              ? this.setState({
-                carCashPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                carCashPay: true,
-                carCreditPay: false,
-                totalPay:
-                  state.carCreditPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.carCreditPay != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.otherCashPay}
-          onPress={() => {
-            item.paymentMethod = "CASH";
-            item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.otherCashPay == true
-              ? this.setState({
-                otherCashPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                otherCashPay: true,
-                otherCreditPay: false,
-                totalPay:
-                  state.otherCreditPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.otherCreditPay != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    }
+        }}
+      />
+    );
   }
   buildRowBillDetailCredit(item, locale) {
     const {
@@ -696,21 +490,29 @@ class billDetail extends Component {
     } = this.state;
     const { state } = this;
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
-    if (item.serviceName.indexOf("BUILDING") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.buildingCreditPay}
-          onPress={() => {
-            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;
-            state.buildingCreditPay == true
-              ? this.setState({
-                buildingCreditPay: false,
+    return (
+      <CheckBox
+        style={styles.checkBox}
+        disabled={item.invoiceDetailAmount <= 0}
+        color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
+        checked={state["creditPay" + item.invoiceDetailId]}
+        onPress={() => {
+          item.paymentMethod = "POS";
+          item.listInvoiceDetailId = item.listInvoiceDetailId;
+          let temp = {};
+          let temp2 = {};
+          temp["creditPay" + item.invoiceDetailId];
+          state["creditPay" + item.invoiceDetailId] == true
+            ? (temp["creditPay" + item.invoiceDetailId] = false)
+            : (temp["creditPay" + item.invoiceDetailId] = true),
+            (temp2["cashPay" + item.invoiceDetailId] = false);
+          state["creditPay" + item.invoiceDetailId] == true
+            ? this.setState({
+                ...temp,
+                creditAll: false,
+                cashAll: false,
                 totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.totalCreditPay - item.invoiceDetailAmount,
+                totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
                 paymentItemList: state.paymentItemList.filter((i, index) => {
                   return (
                     i.invoiceDetailId != item.invoiceDetailId &&
@@ -718,17 +520,18 @@ class billDetail extends Component {
                   );
                 })
               })
-              : this.setState({
-                buildingCreditPay: true,
-                buildingCashPay: false,
+            : this.setState({
+                ...temp,
+                ...temp2,
+                creditAll: false,
+                cashAll: false,
                 totalPay:
-                  state.buildingCashPay != true
+                  state["cashPay" + item.invoiceDetailId] != true
                     ? state.totalPay + item.invoiceDetailAmount
                     : state.totalPay,
-                totalCreditPay:
-                  state.totalCreditPay + item.invoiceDetailAmount,
+                totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
                 totalCashPay:
-                  state.buildingCashPay != true
+                  state["cashPay" + item.invoiceDetailId] != true
                     ? state.totalCashPay
                     : state.totalCashPay - item.invoiceDetailAmount,
                 paymentItemList:
@@ -736,225 +539,100 @@ class billDetail extends Component {
                     ? [...state.paymentItemList, item]
                     : state.paymentItemList
               });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.electricCreditPay}
-          onPress={() => {
-            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
-            state.electricCreditPay == true
-              ? this.setState({
-                electricCreditPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                electricCreditPay: true,
-                electricCashPay: false,
-                totalPay:
-                  state.electricCashPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay:
-                  state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state.electricCashPay != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("WATER") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.waterCreditPay}
-          onPress={() => {
-            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
-            state.waterCreditPay == true
-              ? this.setState({
-                waterCreditPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                waterCreditPay: true,
-                waterCashPay: false,
-                totalPay:
-                  state.waterCashPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay:
-                  state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state.waterCashPay != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.bikeCreditPay}
-          onPress={() => {
-            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
-            state.bikeCreditPay == true
-              ? this.setState({
-                bikeCreditPay: [],
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                bikeCreditPay: true,
-                bikeCashPay: false,
-                totalPay:
-                  state.bikeCashPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay:
-                  state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state.bikeCashPay != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else if (item.serviceName.indexOf("CAR") > -1) {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.carCreditPay}
-          onPress={() => {
-            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
-            state.carCreditPay == true
-              ? this.setState({
-                carCreditPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                carCreditPay: true,
-                carCashPay: false,
-                totalPay:
-                  state.carCashPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay:
-                  state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state.carCashPay != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
-    } else {
-      return (
-        <CheckBox
-          style={styles.checkBox}
-          disabled={item.invoiceDetailAmount <= 0}
-          color={item.invoiceDetailAmount <= 0 ? "#cecece" : "#054f9a"}
-          checked={state.otherCreditPay}
-          onPress={() => {
-            item.paymentMethod = "POS"; item.listInvoiceDetailId = item.listInvoiceDetailId;;
-            state.otherCreditPay == true
-              ? this.setState({
-                otherCreditPay: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay:
-                  state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
-                  );
-                })
-              })
-              : this.setState({
-                otherCreditPay: true,
-                otherCashPay: false,
-                totalPay:
-                  state.otherCashPay != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay:
-                  state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state.otherCashPay != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
-          }}
-        />
-      );
+        }}
+      />
+    );
+  }
+  checkAll(payMedthod) {
+    const state = this.state;
+    const { bill, balance, totalDebit } = this.props.navigation.state.params;
+    let paymentItemList = [];
+    let totalPay = 0;
+    let totalCreditPay = 0;
+    let totalCashPay = 0;
+    checkedObj = {};
+    checkObj = {};
+    for (var i = 0; i < bill.listInvoiceDetail.length; i++) {
+      bill.listInvoiceDetail[i].paymentMethod = payMedthod;
+      if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+        paymentItemList.push(bill.listInvoiceDetail[i]);
+      }
+      if (payMedthod == "CASH") {
+        if (state.cashAll == false) {
+          totalCreditPay = 0;
+          totalPay = totalPay + bill.listInvoiceDetail[i].invoiceDetailAmount;
+          totalCashPay =
+            totalCashPay + bill.listInvoiceDetail[i].invoiceDetailAmount;
+          for (var j = 0; j < state.checkboxArr.length; j++) {
+            if (
+              state.checkboxArr[j] &&
+              state.checkboxArr[j].indexOf("cash") >= 0
+            ) {
+              checkedObj[state.checkboxArr[j]] = true;
+            } else if (
+              state.checkboxArr[j] &&
+              state.checkboxArr[j].indexOf("credit") >= 0
+            ) {
+              checkedObj[state.checkboxArr[j]] = false;
+            }
+          }
+        } else {
+          for (var j = 0; j < state.checkboxArr.length; j++) {
+            if (
+              state.checkboxArr[j] &&
+              state.checkboxArr[j].indexOf("cash") >= 0
+            ) {
+              checkedObj[state.checkboxArr[j]] = false;
+            }
+          }
+        }
+        checkObj = {
+          creditAll: false,
+          cashAll: state.cashAll ? false : true
+        };
+      } else if (payMedthod == "POS") {
+        if (state.creditAll == false) {
+          totalCashPay = 0;
+          totalPay = totalPay + bill.listInvoiceDetail[i].invoiceDetailAmount;
+          totalCreditPay =
+            totalCreditPay + bill.listInvoiceDetail[i].invoiceDetailAmount;
+          for (var j = 0; j < state.checkboxArr.length; j++) {
+            if (
+              state.checkboxArr[j] &&
+              state.checkboxArr[j].indexOf("credit") >= 0
+            ) {
+              checkedObj[state.checkboxArr[j]] = true;
+            } else if (
+              state.checkboxArr[j] &&
+              state.checkboxArr[j].indexOf("cash") >= 0
+            ) {
+              checkedObj[state.checkboxArr[j]] = false;
+            }
+          }
+        } else {
+          for (var j = 0; j < state.checkboxArr.length; j++) {
+            if (
+              state.checkboxArr[j] &&
+              state.checkboxArr[j].indexOf("credit") >= 0
+            ) {
+              checkedObj[state.checkboxArr[j]] = false;
+            }
+          }
+        }
+        checkObj = {
+          creditAll: state.creditAll ? false : true,
+          cashAll: false
+        };
+      }
     }
+    this.setState({
+      ...checkObj,
+      ...checkedObj,
+      paymentItemList: paymentItemList,
+      totalCashPay: totalCashPay,
+      totalCreditPay: totalCreditPay,
+      totalPay: totalPay
+    });
   }
   render() {
     const locale = "vn";
@@ -986,7 +664,7 @@ class billDetail extends Component {
           headerTitle={
             I18n.t("billDetail", {
               locale: locale ? locale : "vn"
-            }) + "8"
+            }) + bill.invoiceMonth
           }
           showButtonLeft={true}
           onBack={() => dispatch.pop()}
@@ -1030,6 +708,13 @@ class billDetail extends Component {
                 </Col>
                 <Col style={styles.col}>
                   <H3 style={styles.textPadding}>
+                    {I18n.t("payed", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </H3>
+                </Col>
+                <Col style={styles.col}>
+                  <H3 style={styles.textPadding}>
                     {I18n.t("totalCash", {
                       locale: locale ? locale : "vn"
                     })}
@@ -1043,7 +728,40 @@ class billDetail extends Component {
                   </H3>
                 </Col>
               </Row>
-              <Row style={styles.billDetailRow}>
+              <Content>
+                <Row style={[styles.billDetailRow]}>
+                  <Col style={styles.titleDetailCol} />
+                  <Col style={styles.col_detail} />
+                  <Col style={styles.col_detail} />
+                  <Col style={styles.col_detail} />
+                  <Col style={styles.col_detail} />
+                  <Col style={styles.col_detail}>
+                    <CheckBox
+                      style={[
+                        styles.checkBox,
+                        { marginTop: 6, marginBottom: 6 }
+                      ]}
+                      disabled={bill.listInvoiceDetail <= 0}
+                      color={
+                        bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
+                      }
+                      checked={state.cashAll}
+                      onPress={this.checkAll.bind(this, "CASH")}
+                    />
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    <CheckBox
+                      style={styles.checkBox}
+                      disabled={bill.listInvoiceDetail <= 0}
+                      color={
+                        bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
+                      }
+                      checked={state.creditAll}
+                      onPress={this.checkAll.bind(this, "POS")}
+                    />
+                  </Col>
+                </Row>
+                <Row style={styles.billDetailRow}>
                   <Col style={styles.titleDetailCol}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
@@ -1084,6 +802,15 @@ class billDetail extends Component {
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
                         <Row key={index} style={styles.rowDetail_inner}>
+                          {this.buildRowBillDetailPaid(item, locale)}
+                        </Row>
+                      );
+                    })}
+                  </Col>
+                  <Col style={styles.col_detail}>
+                    {bill.listInvoiceDetail.map((item, index) => {
+                      return (
+                        <Row key={index} style={styles.rowDetail_inner}>
                           {this.buildRowBillDetailCash(item, locale)}
                         </Row>
                       );
@@ -1098,7 +825,8 @@ class billDetail extends Component {
                       );
                     })}
                   </Col>
-              </Row>
+                </Row>
+              </Content>
             </Col>
             <Col style={styles.totalCol}>
               <Row style={styles.row_Header}>

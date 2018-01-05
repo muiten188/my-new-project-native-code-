@@ -33,6 +33,11 @@ export default function(state = initState, action = {}) {
         isLoading: action.isLoading,
         searchErorr: true
       };
+    case types.SEARCH_RESET:
+      return {
+        ...state,
+        ...initState
+      };
     default:
       return state;
   }

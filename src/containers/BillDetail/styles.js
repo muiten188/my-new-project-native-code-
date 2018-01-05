@@ -67,6 +67,8 @@ export default {
     height:'100%',
     borderRightWidth: 0.8,
     borderColor: "#d8d8d8",
+    alignItems: "center",
+    justifyContent: "center"
   },
   totalCol: {
     width: 170
@@ -136,12 +138,12 @@ export default {
     justifyContent: "center"
   },
   rowDetail_inner: {
-    height: 45,
+    height: 55,
     alignItems: "center",
     justifyContent: "center",
   },
   rowDetail_inner_checkBox: {
-    height: 45,
+    height: 55,
     alignItems: "center",
     justifyContent: "center",
     paddingRight: 20

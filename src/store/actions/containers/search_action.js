@@ -71,3 +71,9 @@ function getQueryString(params) {
     })
     .join("&");
 }
+
+export function searchReset(){
+  return {
+    type: types.SEARCH_RESET,
+  };
+}

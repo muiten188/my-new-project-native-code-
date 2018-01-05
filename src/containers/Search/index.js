@@ -55,7 +55,7 @@ class search extends Component {
     const { user } = this.props.loginReducer;
     setTimeout(() => {
       searchAction.search({}, user);
-    })
+    });
   }
 
   render() {
@@ -69,7 +69,6 @@ class search extends Component {
     }
     return (
       <Container style={styles.container}>
-      <Loading isShow={isLoading} />
         <KeyboardAvoidingView
           behavior="padding"
           style={styles.container_outer}
@@ -78,7 +77,10 @@ class search extends Component {
           <Grid>
             <Col size={32} style={[styles.grid_col, styles.col_form]}>
               <HeaderForm
-                onBack={() => dispatch.push({ id: "UserInfo" })}
+                onBack={() => {
+                  searchAction.searchReset();
+                  dispatch.push({ id: "UserInfo" });
+                }}
                 headerTitle={I18n.t("searchInfo", {
                   locale: locale ? locale : "vn"
                 })}
@@ -152,9 +154,13 @@ class search extends Component {
                   <Button
                     full
                     disabled={isLoading}
-                    style={isLoading ? styles.buttomSearchDisabled : styles.buttomSearch}
+                    style={
+                      isLoading
+                        ? styles.buttomSearchDisabled
+                        : styles.buttomSearch
+                    }
                     onPress={handleSubmit(values => {
-                        searchAction.search(values, user);
+                      searchAction.search(values, user);
                     })}
                   >
                     <Text>
@@ -168,13 +174,16 @@ class search extends Component {
             </Col>
             <Col size={68} style={[styles.grid_col, styles.col_content]}>
               <HeaderContent
-                onBack={() => dispatch.pop()}
+                onBack={() => {
+                  dispatch.pop();
+                }}
                 showUser={true}
                 headerTitle={I18n.t("result", {
                   locale: locale ? locale : "vn"
                 })}
               />
               <Container style={styles.listResult_container}>
+                <Loading isShow={isLoading} />
                 <FlatList
                   style={styles.listResult}
                   data={listResult ? listResult : []}
