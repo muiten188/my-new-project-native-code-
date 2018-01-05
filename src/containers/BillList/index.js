@@ -108,7 +108,7 @@ class billList extends Component {
                     dispatch.pop()
                     setTimeout(() => {
                       blockAction = false;
-                    }, 150)
+                    }, 1000)
                   }
                 }}
                 headerTitle={I18n.t("homeInfo", {
@@ -191,7 +191,7 @@ class billList extends Component {
                         })
                         setTimeout(() => {
                           blockAction = false;
-                        }, 150)
+                        }, 1000)
                       }
                     }
                     }
@@ -264,7 +264,7 @@ class billList extends Component {
             }
             setTimeout(() => {
               blockAction = false;
-            }, 150)
+            }, 1000)
           }
         }}
       >

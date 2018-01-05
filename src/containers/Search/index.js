@@ -62,7 +62,7 @@ class search extends Component {
       });
       setTimeout(() => {
         blockAction = false;
-      }, 50)
+      }, 500)
     }
   }
 
@@ -92,7 +92,7 @@ class search extends Component {
                     dispatch.push({ id: "UserInfo" });
                     setTimeout(() => {
                       blockAction = false;
-                    }, 150)
+                    }, 800)
                   }
                 }}
                 headerTitle={I18n.t("searchInfo", {
@@ -120,7 +120,7 @@ class search extends Component {
                                 searchAction.search(values, user);
                                 setTimeout(() => {
                                   blockAction = false;
-                                }, 150)
+                                }, 800)
                               }
                             })}
                           />
@@ -138,7 +138,7 @@ class search extends Component {
                                 searchAction.search(values, user);
                                 setTimeout(() => {
                                   blockAction = false;
-                                }, 150)
+                                }, 800)
                               }
                             })}
                           />
@@ -156,7 +156,7 @@ class search extends Component {
                                 searchAction.search(values, user);
                                 setTimeout(() => {
                                   blockAction = false;
-                                }, 150)
+                                }, 800)
                               }
                             })}
                           />
@@ -180,7 +180,7 @@ class search extends Component {
                               searchAction.search(values, user);
                               setTimeout(() => {
                                 blockAction = false;
-                              }, 150)
+                              }, 800)
                             }
                           })}
                         />
@@ -203,7 +203,7 @@ class search extends Component {
                               searchAction.search(values, user);
                               setTimeout(() => {
                                 blockAction = false;
-                              }, 150)
+                              }, 800)
                             }
                           })}
                         />
@@ -221,10 +221,11 @@ class search extends Component {
                     onPress={handleSubmit(values => {
                       if (!blockAction) {
                         blockAction = true;
+                        console.log('search')
                         searchAction.search(values, user);
                         setTimeout(() => {
                           blockAction = false;
-                        }, 150)
+                        }, 800)
                       }
                     })}
                   >
@@ -288,7 +289,7 @@ class search extends Component {
             dispatch.push({ id: "BillList", apartment: item })
             setTimeout(() => {
               blockAction = false;
-            }, 150)
+            }, 800)
           }
         }}
       >

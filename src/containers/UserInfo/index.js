@@ -89,7 +89,7 @@ class userInfo extends Component {
       dispatch.push({ id: "Search" });
       setTimeout(() => {
         blockAction = false;
-      }, 150)
+      }, 800)
     }
   }
   /**
