@@ -23,6 +23,8 @@ export const SEARCHING = "SEARCHING";
 export const SEARCH_ERROR = "SEARCH_ERROR";
 export const SEARCH_FETCH_ERROR = "SEARCH_FETCH_ERROR";
 export const SEARCH_RESET="SEARCH_RESET";
+export const SEARCH_LOAD_MORE="SEARCH_LOAD_MORE";
+
 //user info
 export const USER_INFO = "USER_INFO";
 //bill list

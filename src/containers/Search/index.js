@@ -114,6 +114,15 @@ class search extends Component {
                               locale: locale ? locale : "vi"
                             })}
                             component={InputField}
+                            onSubmitEditing={handleSubmit(values => {
+                              if (!blockAction) {
+                                blockAction = true;
+                                searchAction.search(values, user);
+                                setTimeout(() => {
+                                  blockAction = false;
+                                }, 150)
+                              }
+                            })}
                           />
                         </Row>
                         <Row style={[styles.border, styles.fieldForm]}>
@@ -123,6 +132,15 @@ class search extends Component {
                               locale: locale ? locale : "vi"
                             })}
                             component={InputField}
+                            onSubmitEditing={handleSubmit(values => {
+                              if (!blockAction) {
+                                blockAction = true;
+                                searchAction.search(values, user);
+                                setTimeout(() => {
+                                  blockAction = false;
+                                }, 150)
+                              }
+                            })}
                           />
                         </Row>
                         <Row style={[styles.border, styles.fieldForm]}>
@@ -132,6 +150,15 @@ class search extends Component {
                               locale: locale ? locale : "vi"
                             })}
                             component={InputField}
+                            onSubmitEditing={handleSubmit(values => {
+                              if (!blockAction) {
+                                blockAction = true;
+                                searchAction.search(values, user);
+                                setTimeout(() => {
+                                  blockAction = false;
+                                }, 150)
+                              }
+                            })}
                           />
                         </Row>
                       </Col>
@@ -147,6 +174,15 @@ class search extends Component {
                             locale: locale ? locale : "vi"
                           })}
                           component={InputField}
+                          onSubmitEditing={handleSubmit(values => {
+                            if (!blockAction) {
+                              blockAction = true;
+                              searchAction.search(values, user);
+                              setTimeout(() => {
+                                blockAction = false;
+                              }, 150)
+                            }
+                          })}
                         />
                       </Col>
                     </Row>
@@ -161,6 +197,15 @@ class search extends Component {
                             locale: locale ? locale : "vi"
                           })}
                           component={InputField}
+                          onSubmitEditing={handleSubmit(values => {
+                            if (!blockAction) {
+                              blockAction = true;
+                              searchAction.search(values, user);
+                              setTimeout(() => {
+                                blockAction = false;
+                              }, 150)
+                            }
+                          })}
                         />
                       </Col>
                     </Row>
@@ -210,6 +255,12 @@ class search extends Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={2}
+                  onEndReached={({ distanceFromEnd }) => {
+                    if(distanceFromEnd>0){
+                      searchAction.loadMore()
+                    }
+                  }}
+                  onEndReachedThreshold={0.5}
                 />
               </Container>
             </Col>

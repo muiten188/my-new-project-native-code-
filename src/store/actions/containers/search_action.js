@@ -11,7 +11,7 @@ export function search(values, user) {
       method: "GET",
       qs: dataPost
     })
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         } else if (response.status != 200) {
@@ -20,7 +20,7 @@ export function search(values, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
@@ -30,7 +30,7 @@ export function search(values, user) {
           }
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_seachError());
       });
   };
@@ -72,8 +72,20 @@ function getQueryString(params) {
     .join("&");
 }
 
-export function searchReset(){
+export function searchReset() {
   return {
     type: types.SEARCH_RESET,
+  };
+}
+
+export function loadMore() {
+  return dispatch => {
+    dispatch(_searching());
+    setTimeout(() => dispatch(_dataMore()), 1400)
+  }
+}
+function _dataMore() {
+  return {
+    type: types.SEARCH_LOAD_MORE,
   };
 }

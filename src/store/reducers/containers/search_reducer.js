@@ -6,7 +6,7 @@ const initState = {
   searchErorr: false
 };
 
-export default function(state = initState, action = {}) {
+export default function (state = initState, action = {}) {
   switch (action.type) {
     case types.LIST_RESULT:
       return {
@@ -37,6 +37,13 @@ export default function(state = initState, action = {}) {
       return {
         ...state,
         ...initState
+      };
+    case types.SEARCH_LOAD_MORE:
+      return {
+        ...state,
+        listResult: [...state.listResult,...state.listResult],
+        isLoading: initState.isLoading,
+        searchErorr: initState.searchErorr
       };
     default:
       return state;

@@ -55,7 +55,7 @@ export default {
     alignItems: "center"
   },
   listResult: {
-    paddingTop: 15
+    paddingTop: 15,
   },
   listResult_container: {
     justifyContent: "center",
