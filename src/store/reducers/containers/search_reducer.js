@@ -3,7 +3,10 @@ import { FETCH_CATCH } from "../../constants/action_types";
 const initState = {
   isLoading: false,
   listResult: [],
-  searchErorr: false
+  searchErorr: false,
+  valuesForm: {},
+  currentPage: 1,
+  pageSize: 10,
 };
 
 export default function (state = initState, action = {}) {
@@ -13,7 +16,9 @@ export default function (state = initState, action = {}) {
         ...state,
         listResult: action.data,
         isLoading: initState.isLoading,
-        searchErorr: initState.searchErorr
+        currentPage: initState.currentPage,
+        searchErorr: initState.searchErorr,
+        valuesForm: action.valuesForm
       };
     case types.SEARCHING:
       return {
@@ -41,9 +46,10 @@ export default function (state = initState, action = {}) {
     case types.SEARCH_LOAD_MORE:
       return {
         ...state,
-        listResult: [...state.listResult,...state.listResult],
+        listResult: [...state.listResult, ...action.data],
         isLoading: initState.isLoading,
-        searchErorr: initState.searchErorr
+        searchErorr: initState.searchErorr,
+        currentPage: state.currentPage + 1,
       };
     default:
       return state;

@@ -35,6 +35,7 @@ import ItemResult from "../../components/Item_result";
 import * as searchAction from "../../store/actions/containers/search_action";
 import Loading from "../../components/Loading";
 const blockAction = false;
+const blockLoadMoreAction = false;
 class search extends Component {
   static navigationOptions = {
     header: null
@@ -54,11 +55,11 @@ class search extends Component {
   componentDidMount() {
     const { searchAction } = this.props;
     const { user } = this.props.loginReducer;
-
+    const { currentPage, pageSize } = this.props.searchReducer;
     if (!blockAction) {
       blockAction = true;
       setTimeout(() => {
-        searchAction.search({}, user);
+        searchAction.search({}, currentPage, pageSize, user);
       });
       setTimeout(() => {
         blockAction = false;
@@ -69,7 +70,7 @@ class search extends Component {
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { listResult, isLoading, searchErorr } = this.props.searchReducer;
+    const { listResult, isLoading, searchErorr, valuesForm, currentPage, pageSize } = this.props.searchReducer;
     const { searchAction, handleSubmit } = this.props;
     const { user } = this.props.loginReducer;
     if (searchErorr == true) {
@@ -117,7 +118,8 @@ class search extends Component {
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
-                                searchAction.search(values, user);
+                                this.list.scrollToIndex({ index: 0 });
+                                searchAction.search(values, currentPage, pageSize, user);
                                 setTimeout(() => {
                                   blockAction = false;
                                 }, 800)
@@ -135,7 +137,8 @@ class search extends Component {
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
-                                searchAction.search(values, user);
+                                this.list.scrollToIndex({ index: 0 });
+                                searchAction.search(values, currentPage, pageSize, user);
                                 setTimeout(() => {
                                   blockAction = false;
                                 }, 800)
@@ -153,7 +156,8 @@ class search extends Component {
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
-                                searchAction.search(values, user);
+                                this.list.scrollToIndex({ index: 0 });
+                                searchAction.search(values, currentPage, pageSize, user);
                                 setTimeout(() => {
                                   blockAction = false;
                                 }, 800)
@@ -177,7 +181,8 @@ class search extends Component {
                           onSubmitEditing={handleSubmit(values => {
                             if (!blockAction) {
                               blockAction = true;
-                              searchAction.search(values, user);
+                              this.list.scrollToIndex({ index: 0 });
+                              searchAction.search(values, currentPage, pageSize, user);
                               setTimeout(() => {
                                 blockAction = false;
                               }, 800)
@@ -200,7 +205,8 @@ class search extends Component {
                           onSubmitEditing={handleSubmit(values => {
                             if (!blockAction) {
                               blockAction = true;
-                              searchAction.search(values, user);
+                              this.list.scrollToIndex({ index: 0 });
+                              searchAction.search(values, currentPage, pageSize, user);
                               setTimeout(() => {
                                 blockAction = false;
                               }, 800)
@@ -221,8 +227,8 @@ class search extends Component {
                     onPress={handleSubmit(values => {
                       if (!blockAction) {
                         blockAction = true;
-                        console.log('search')
-                        searchAction.search(values, user);
+                        this.list.scrollToIndex({ index: 0 });
+                        searchAction.search(values, currentPage, pageSize, user);
                         setTimeout(() => {
                           blockAction = false;
                         }, 800)
@@ -251,14 +257,21 @@ class search extends Component {
               <Container style={styles.listResult_container}>
                 <Loading isShow={isLoading} />
                 <FlatList
+                  ref={(ref) => { this.list = ref; }}
                   style={styles.listResult}
                   data={listResult ? listResult : []}
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={2}
                   onEndReached={({ distanceFromEnd }) => {
-                    if(distanceFromEnd>0){
-                      searchAction.loadMore()
+                    if (distanceFromEnd > 0) {
+                      if (!blockLoadMoreAction) {
+                        blockLoadMoreAction = true;
+                        searchAction.loadMore(valuesForm, currentPage, pageSize, user)
+                        setTimeout(() => {
+                          blockLoadMoreAction = false;
+                        }, 200)
+                      }
                     }
                   }}
                   onEndReachedThreshold={0.5}
