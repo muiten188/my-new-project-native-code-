@@ -514,8 +514,7 @@ class billDetail extends Component {
                 totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
                 paymentItemList: state.paymentItemList.filter((i, index) => {
                   return (
-                    i.invoiceDetailId != item.invoiceDetailId &&
-                    i.paymentMethod != item.paymentMethod
+                    i.invoiceDetailId != item.invoiceDetailId
                   );
                 })
               })

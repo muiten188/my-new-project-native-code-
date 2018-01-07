@@ -270,7 +270,7 @@ class search extends Component {
                         searchAction.loadMore(valuesForm, currentPage, pageSize, user)
                         setTimeout(() => {
                           blockLoadMoreAction = false;
-                        }, 200)
+                        }, 500)
                       }
                     }
                   }}
