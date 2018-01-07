@@ -238,6 +238,7 @@ class search extends Component {
                   </Grid>
                   <Button
                     full
+                    ref={(ref) => { this.btSearch = ref; }}
                     disabled={isLoading}
                     style={
                       isLoading
@@ -245,6 +246,10 @@ class search extends Component {
                         : styles.buttomSearch
                     }
                     onPress={handleSubmit(values => {
+                      this.btSearch.setNativeProps({
+                        style: styles.buttomSearchDisabled,
+                        disabled: true
+                      });
                       if (!blockAction) {
                         blockAction = true;
                         setTimeout(() => {
