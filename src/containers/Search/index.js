@@ -118,7 +118,9 @@ class search extends Component {
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
-                                this.list.scrollToIndex({ index: 0 });
+                                if (listResult.length > 0) {
+                                  this.list.scrollToIndex({ index: 0 });
+                                }
                                 searchAction.search(values, currentPage, pageSize, user);
                                 setTimeout(() => {
                                   blockAction = false;
@@ -137,7 +139,9 @@ class search extends Component {
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
-                                this.list.scrollToIndex({ index: 0 });
+                                if (listResult.length > 0) {
+                                  this.list.scrollToIndex({ index: 0 });
+                                }
                                 searchAction.search(values, currentPage, pageSize, user);
                                 setTimeout(() => {
                                   blockAction = false;
@@ -156,7 +160,9 @@ class search extends Component {
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
-                                this.list.scrollToIndex({ index: 0 });
+                                if (listResult.length > 0) {
+                                  this.list.scrollToIndex({ index: 0 });
+                                }
                                 searchAction.search(values, currentPage, pageSize, user);
                                 setTimeout(() => {
                                   blockAction = false;
@@ -181,7 +187,9 @@ class search extends Component {
                           onSubmitEditing={handleSubmit(values => {
                             if (!blockAction) {
                               blockAction = true;
-                              this.list.scrollToIndex({ index: 0 });
+                              if (listResult.length > 0) {
+                                this.list.scrollToIndex({ index: 0 });
+                              }
                               searchAction.search(values, currentPage, pageSize, user);
                               setTimeout(() => {
                                 blockAction = false;
@@ -205,7 +213,9 @@ class search extends Component {
                           onSubmitEditing={handleSubmit(values => {
                             if (!blockAction) {
                               blockAction = true;
-                              this.list.scrollToIndex({ index: 0 });
+                              if (listResult.length > 0) {
+                                this.list.scrollToIndex({ index: 0 });
+                              }
                               searchAction.search(values, currentPage, pageSize, user);
                               setTimeout(() => {
                                 blockAction = false;
@@ -227,7 +237,9 @@ class search extends Component {
                     onPress={handleSubmit(values => {
                       if (!blockAction) {
                         blockAction = true;
-                        this.list.scrollToIndex({ index: 0 });
+                        if (listResult.length > 0) {
+                          this.list.scrollToIndex({ index: 0 });
+                        }
                         searchAction.search(values, currentPage, pageSize, user);
                         setTimeout(() => {
                           blockAction = false;
