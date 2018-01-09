@@ -23,7 +23,6 @@ export function InputField({
   inputStyle,
   ...custom
 }) {
-  debugger;
   return (
     <Item
       style={{ ...styles.item, ...style }}

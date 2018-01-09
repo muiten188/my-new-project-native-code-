@@ -85,7 +85,7 @@ class billDetail extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -103,7 +103,7 @@ class billDetail extends Component {
     if (this.isNumeric(value)) {
       console.log(Number(value));
       console.log(Number(value).format());
-      this.setState({ totalCustomerPay: value});
+      this.setState({ totalCustomerPay: value });
     }
   }
 
@@ -462,34 +462,34 @@ class billDetail extends Component {
             (temp2["creditPay" + item.invoiceDetailId] = false);
           state["cashPay" + item.invoiceDetailId] == true
             ? this.setState({
-                ...temp,
-                creditAll: false,
-                cashAll: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return i.invoiceDetailId != item.invoiceDetailId;
-                })
+              ...temp,
+              creditAll: false,
+              cashAll: false,
+              totalPay: state.totalPay - item.invoiceDetailAmount,
+              totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+              paymentItemList: state.paymentItemList.filter((i, index) => {
+                return i.invoiceDetailId != item.invoiceDetailId;
               })
+            })
             : this.setState({
-                ...temp,
-                ...temp2,
-                creditAll: false,
-                cashAll: false,
-                totalPay:
-                  state["creditPay" + item.invoiceDetailId] != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state["creditPay" + item.invoiceDetailId] != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
+              ...temp,
+              ...temp2,
+              creditAll: false,
+              cashAll: false,
+              totalPay:
+                state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay,
+              totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+              totalCreditPay:
+                state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalCreditPay
+                  : state.totalCreditPay - item.invoiceDetailAmount,
+              paymentItemList:
+                state.paymentItemList.indexOf(item) == -1
+                  ? [...state.paymentItemList, item]
+                  : state.paymentItemList
+            });
         }}
       />
     );
@@ -523,34 +523,34 @@ class billDetail extends Component {
             (temp2["cashPay" + item.invoiceDetailId] = false);
           state["creditPay" + item.invoiceDetailId] == true
             ? this.setState({
-                ...temp,
-                creditAll: false,
-                cashAll: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return i.invoiceDetailId != item.invoiceDetailId;
-                })
+              ...temp,
+              creditAll: false,
+              cashAll: false,
+              totalPay: state.totalPay - item.invoiceDetailAmount,
+              totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
+              paymentItemList: state.paymentItemList.filter((i, index) => {
+                return i.invoiceDetailId != item.invoiceDetailId;
               })
+            })
             : this.setState({
-                ...temp,
-                ...temp2,
-                creditAll: false,
-                cashAll: false,
-                totalPay:
-                  state["cashPay" + item.invoiceDetailId] != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state["cashPay" + item.invoiceDetailId] != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
+              ...temp,
+              ...temp2,
+              creditAll: false,
+              cashAll: false,
+              totalPay:
+                state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay,
+              totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
+              totalCashPay:
+                state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalCashPay
+                  : state.totalCashPay - item.invoiceDetailAmount,
+              paymentItemList:
+                state.paymentItemList.indexOf(item) == -1
+                  ? [...state.paymentItemList, item]
+                  : state.paymentItemList
+            });
         }}
       />
     );
@@ -566,11 +566,11 @@ class billDetail extends Component {
     checkObj = {};
     for (var i = 0; i < bill.listInvoiceDetail.length; i++) {
       bill.listInvoiceDetail[i].paymentMethod = payMedthod;
-      if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
-        paymentItemList.push(bill.listInvoiceDetail[i]);
-      }
       if (payMedthod == "CASH") {
         if (state.cashAll == false) {
+          if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+            paymentItemList.push(bill.listInvoiceDetail[i]);
+          }
           totalCreditPay = 0;
           totalPay = totalPay + bill.listInvoiceDetail[i].invoiceDetailAmount;
           totalCashPay =
@@ -604,6 +604,9 @@ class billDetail extends Component {
         };
       } else if (payMedthod == "POS") {
         if (state.creditAll == false) {
+          if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+            paymentItemList.push(bill.listInvoiceDetail[i]);
+          }
           totalCashPay = 0;
           totalPay = totalPay + bill.listInvoiceDetail[i].invoiceDetailAmount;
           totalCreditPay =
@@ -902,7 +905,7 @@ class billDetail extends Component {
                   </Button>
                   <Item style={[styles.pay_item, styles.borderBottomNone]}>
                     <TextInputMask
-                      style={{width:'100%',fontSize:20}}
+                      style={{ width: '100%', fontSize: 20 }}
                       placeholder="Số tiền thanh toán"
                       value={state.totalCustomerPay.toString()}
                       onChangeText={value => this.payChange(value)}
@@ -912,7 +915,7 @@ class billDetail extends Component {
                         suffixUnit: " VNĐ",
                         precision: 0,
                         separator: " ",
-                        zeroCents:true
+                        zeroCents: true
                       }}
                     />
                   </Item>
