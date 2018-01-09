@@ -99,7 +99,6 @@ class search extends Component {
     if (searchErorr == true) {
       Alert.alert("Thông báo", "Tìm kiếm lỗi kiểm tra lại đường truyền.");
     }
-
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -139,6 +138,12 @@ class search extends Component {
                               locale: locale ? locale : "vi"
                             })}
                             component={InputField}
+                            onClear={()=>{
+                              this.props.change("buildingCode","")
+                            }}
+                            onFocus={()=>{
+                              this.props.change("buildingCode","")
+                            }}
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
@@ -167,6 +172,12 @@ class search extends Component {
                               locale: locale ? locale : "vi"
                             })}
                             component={InputField}
+                            onClear={()=>{
+                              this.props.change("floorCode","")
+                            }}
+                            onFocus={()=>{
+                              this.props.change("floorCode","")
+                            }}
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
@@ -195,6 +206,12 @@ class search extends Component {
                               locale: locale ? locale : "vi"
                             })}
                             component={InputField}
+                            onClear={()=>{
+                              this.props.change("aparmentName","")
+                            }}
+                            onFocus={()=>{
+                              this.props.change("aparmentName","")
+                            }}
                             onSubmitEditing={handleSubmit(values => {
                               if (!blockAction) {
                                 blockAction = true;
@@ -229,6 +246,12 @@ class search extends Component {
                             locale: locale ? locale : "vi"
                           })}
                           component={InputField}
+                          onClear={()=>{
+                            this.props.change("fullName","")
+                          }}
+                          onFocus={()=>{
+                            this.props.change("fullName","")
+                          }}
                           onSubmitEditing={handleSubmit(values => {
                             if (!blockAction) {
                               blockAction = true;
@@ -262,6 +285,12 @@ class search extends Component {
                             locale: locale ? locale : "vi"
                           })}
                           component={InputField}
+                          onClear={()=>{
+                            this.props.change("phoneNumber","")
+                          }}
+                          onFocus={()=>{
+                            this.props.change("phoneNumber","")
+                          }}
                           onSubmitEditing={handleSubmit(values => {
                             if (!blockAction) {
                               blockAction = true;

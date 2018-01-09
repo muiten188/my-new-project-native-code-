@@ -14,6 +14,7 @@ import DatePicker from "../../DatePicker";
 export function InputField({
   input,
   label,
+  onClear,
   meta: { touched, error, warning, active },
   icon,
   addon,
@@ -39,18 +40,16 @@ export function InputField({
         style={{ ...styles.input, ...inputStyle }}
       />
       {touched && error ? <Text style={{ width: 50 }}>{error}</Text> : <Text />}
-      {active ? (
+      {active && onClear ? (
         <Button
           transparent
-          onPress={() => {
-            input.value = "";
-          }}
+          onPress={onClear ? onClear : () => { }}
         >
           <Icon name="times" />
         </Button>
       ) : (
-        <Button />
-      )}
+          <Button />
+        )}
     </Item>
   );
 }
@@ -95,20 +94,20 @@ export const DateField = ({
   format = "MM/DD/YYYY",
   ...custom
 }) => (
-  <DatePicker
-    date={input.value}
-    mode="date"
-    placeholder={label}
-    onDateChange={date => input.onChange(date)}
-    customStyles={{
-      dateTouch: { ...styles.item, ...style },
-      dateInput: { ...styles.input, ...inputStyle },
-      dateIcon: { ...styles.inputIcon, ...iconStyle }
-    }}
-    format={format}
-    {...custom}
-  />
-);
+    <DatePicker
+      date={input.value}
+      mode="date"
+      placeholder={label}
+      onDateChange={date => input.onChange(date)}
+      customStyles={{
+        dateTouch: { ...styles.item, ...style },
+        dateInput: { ...styles.input, ...inputStyle },
+        dateIcon: { ...styles.inputIcon, ...iconStyle }
+      }}
+      format={format}
+      {...custom}
+    />
+  );
 
 // export const LockField = ({ input, label, meta: { touched, error, warning }, ...custom }) => (
 //   <Toggle
