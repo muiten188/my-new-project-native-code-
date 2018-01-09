@@ -4,7 +4,8 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Alert
+  Alert,
+  AsyncStorage
 } from "react-native";
 import {
   Container,
@@ -37,8 +38,10 @@ import PayModal from "../../components/PayModal";
 import * as billDetailAction from "../../store/actions/containers/billdetail_actions";
 import * as billListAction from "../../store/actions/containers/billList_actions";
 import Loading from "../../components/Loading";
-// import RNXprinter from "react-native-xprinter";
-// RNXprinter.initialize();
+import RNXprinter from "react-native-xprinter";
+import { TextInputMask } from "react-native-masked-text";
+
+RNXprinter.initialize();
 
 class billDetail extends Component {
   static navigationOptions = {
@@ -76,7 +79,8 @@ class billDetail extends Component {
       totalCashPay: 0,
       totalCreditPay: 0,
       payBalance: 0,
-      paymentItemList: []
+      paymentItemList: [],
+      totalCustomerPay: 0
     };
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
@@ -87,7 +91,21 @@ class billDetail extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    setTimeout(() => this.checkAll("CASH"), 0);
+  }
+
+  isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
+  payChange(value) {
+    if (this.isNumeric(value)) {
+      console.log(Number(value));
+      console.log(Number(value).format());
+      this.setState({ totalCustomerPay: value});
+    }
+  }
 
   buildRowBillDetail(item, locale) {
     const {
@@ -450,9 +468,7 @@ class billDetail extends Component {
                 totalPay: state.totalPay - item.invoiceDetailAmount,
                 totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
                 paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId 
-                  );
+                  return i.invoiceDetailId != item.invoiceDetailId;
                 })
               })
             : this.setState({
@@ -513,9 +529,7 @@ class billDetail extends Component {
                 totalPay: state.totalPay - item.invoiceDetailAmount,
                 totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
                 paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return (
-                    i.invoiceDetailId != item.invoiceDetailId
-                  );
+                  return i.invoiceDetailId != item.invoiceDetailId;
                 })
               })
             : this.setState({
@@ -875,7 +889,10 @@ class billDetail extends Component {
                         ? styles.buttomPay_disabled
                         : styles.buttomPay
                     }
-                    onPress={() => this.setState({ isModalConfirm: true })}
+                    onPress={() => {
+                      //this.printBill();
+                      this.setState({ isModalConfirm: true });
+                    }}
                   >
                     <Text uppercase={false}>
                       {I18n.t("pay", {
@@ -883,6 +900,22 @@ class billDetail extends Component {
                       })}
                     </Text>
                   </Button>
+                  <Item style={[styles.pay_item, styles.borderBottomNone]}>
+                    <TextInputMask
+                      style={{width:'100%',fontSize:20}}
+                      placeholder="Số tiền thanh toán"
+                      value={state.totalCustomerPay.toString()}
+                      onChangeText={value => this.payChange(value)}
+                      type={"money"}
+                      options={{
+                        unit: "",
+                        suffixUnit: " VNĐ",
+                        precision: 0,
+                        separator: " ",
+                        zeroCents:true
+                      }}
+                    />
+                  </Item>
                 </View>
               </Row>
             </Col>
@@ -900,7 +933,7 @@ class billDetail extends Component {
             }, 15);
           }}
           onPay={() => {
-            // this.printBill();
+            this.printBill();
           }}
         />
         <ConfirmModal
@@ -920,24 +953,33 @@ class billDetail extends Component {
     );
   }
 
-  printBill() {
+  async printBill() {
     try {
-      let printerList = RNXprinter.getDeviceList().then(printerList => {
-        RNXprinter.selectDevice(printerList[0].address);
-        // RNXprinter.pickPrinter();
-        RNXprinter.pushText("<h1>           bui dhtml              </h1>", 0);
-        RNXprinter.pushText("bui dinh bach2", 0);
-        RNXprinter.pushText("bui dinh bach3", 0);
-        RNXprinter.pushText("bui dinh bach4", 0);
-        RNXprinter.pushText("bui dinh bach5", 0);
-        RNXprinter.pushText("bui dinh bach6", 0);
-        RNXprinter.pushFlashImage(0);
-
-        // Push Cut Paper
-        RNXprinter.pushCutPaper();
-        RNXprinter.print();
-      });
+      await AsyncStorage.getItem("@ReactNativeXprinter:default_printer")
+        .then(address => {
+          if (address && address != "") {
+            RNXprinter.selectDevice(address);
+          } else {
+            RNXprinter.pickPrinter();
+          }
+        })
+        .catch(() => {
+          debugger;
+          RNXprinter.pickPrinter();
+        });
+      RNXprinter.pushText("text center", 0, 1);
+      RNXprinter.pushText("--------------------------------", 0, 1);
+      // RNXprinter.pushText("bui dinh bach2", 0);
+      // RNXprinter.pushText("bui dinh bach3", 0);
+      // RNXprinter.pushText("bui dinh bach4", 0);
+      // RNXprinter.pushText("bui dinh bach5", 0);
+      // RNXprinter.pushText("bui dinh bach6", 0);
+      // RNXprinter.pushFlashImage(0);
+      // // Push Cut Paper
+      // RNXprinter.pushCutPaper();
+      RNXprinter.print();
     } catch (e) {
+      debugger;
       Alert.alert(
         "Thông báo",
         "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"

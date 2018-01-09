@@ -36,7 +36,9 @@ import * as searchAction from "../../store/actions/containers/search_action";
 import Loading from "../../components/Loading";
 const blockAction = false;
 const blockLoadMoreAction = false;
+
 class search extends Component {
+  currentApartment = {};
   static navigationOptions = {
     header: null
   };
@@ -53,29 +55,51 @@ class search extends Component {
   }
 
   componentDidMount() {
-    const { searchAction } = this.props;
-    const { user } = this.props.loginReducer;
-    const { currentPage, pageSize } = this.props.searchReducer;
-    if (!blockAction) {
-      blockAction = true;
-      setTimeout(() => {
-        searchAction.search({}, currentPage, pageSize, user);
-      });
-      setTimeout(() => {
-        blockAction = false;
-      }, 500)
+    // const { searchAction } = this.props;
+    // const { user } = this.props.loginReducer;
+    // const { currentPage, pageSize } = this.props.searchReducer;
+    // if (!blockAction) {
+    //   blockAction = true;
+    //   setTimeout(() => {
+    //     searchAction.search({}, currentPage, pageSize, user);
+    //   });
+    //   setTimeout(() => {
+    //     blockAction = false;
+    //   }, 500)
+    // }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { dispatch } = this.props.navigation;
+    const { isLoading, listResult } = this.props.searchReducer;
+    if (
+      listResult.length == 1 &&
+      !isLoading &&
+      listResult[0].apartmentId != this.currentApartment.apartmentId
+    ) {
+      console.log("did push");
+      this.currentApartment = listResult[0];
+      dispatch.push({ id: "BillList", apartment: listResult[0] });
     }
   }
 
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { listResult, isLoading, searchErorr, valuesForm, currentPage, pageSize } = this.props.searchReducer;
+    const {
+      listResult,
+      isLoading,
+      searchErorr,
+      valuesForm,
+      currentPage,
+      pageSize
+    } = this.props.searchReducer;
     const { searchAction, handleSubmit } = this.props;
     const { user } = this.props.loginReducer;
     if (searchErorr == true) {
       Alert.alert("Thông báo", "Tìm kiếm lỗi kiểm tra lại đường truyền.");
     }
+
     return (
       <Container style={styles.container}>
         <KeyboardAvoidingView
@@ -93,7 +117,7 @@ class search extends Component {
                     dispatch.push({ id: "UserInfo" });
                     setTimeout(() => {
                       blockAction = false;
-                    }, 800)
+                    }, 700);
                   }
                 }}
                 headerTitle={I18n.t("searchInfo", {
@@ -122,11 +146,16 @@ class search extends Component {
                                   if (listResult.length > 0) {
                                     this.list.scrollToIndex({ index: 0 });
                                   }
-                                }, 0)
-                                searchAction.search(values, currentPage, pageSize, user);
+                                }, 0);
+                                searchAction.search(
+                                  values,
+                                  currentPage,
+                                  pageSize,
+                                  user
+                                );
                                 setTimeout(() => {
                                   blockAction = false;
-                                }, 800)
+                                }, 700);
                               }
                             })}
                           />
@@ -145,11 +174,16 @@ class search extends Component {
                                   if (listResult.length > 0) {
                                     this.list.scrollToIndex({ index: 0 });
                                   }
-                                }, 0)
-                                searchAction.search(values, currentPage, pageSize, user);
+                                }, 0);
+                                searchAction.search(
+                                  values,
+                                  currentPage,
+                                  pageSize,
+                                  user
+                                );
                                 setTimeout(() => {
                                   blockAction = false;
-                                }, 800)
+                                }, 700);
                               }
                             })}
                           />
@@ -168,11 +202,16 @@ class search extends Component {
                                   if (listResult.length > 0) {
                                     this.list.scrollToIndex({ index: 0 });
                                   }
-                                }, 0)
-                                searchAction.search(values, currentPage, pageSize, user);
+                                }, 0);
+                                searchAction.search(
+                                  values,
+                                  currentPage,
+                                  pageSize,
+                                  user
+                                );
                                 setTimeout(() => {
                                   blockAction = false;
-                                }, 800)
+                                }, 700);
                               }
                             })}
                           />
@@ -197,11 +236,16 @@ class search extends Component {
                                 if (listResult.length > 0) {
                                   this.list.scrollToIndex({ index: 0 });
                                 }
-                              }, 0)
-                              searchAction.search(values, currentPage, pageSize, user);
+                              }, 0);
+                              searchAction.search(
+                                values,
+                                currentPage,
+                                pageSize,
+                                user
+                              );
                               setTimeout(() => {
                                 blockAction = false;
-                              }, 800)
+                              }, 700);
                             }
                           })}
                         />
@@ -225,19 +269,31 @@ class search extends Component {
                                 if (listResult.length > 0) {
                                   this.list.scrollToIndex({ index: 0 });
                                 }
-                              }, 0)
-                              searchAction.search(values, currentPage, pageSize, user);
+                              }, 0);
+                              searchAction.search(
+                                values,
+                                currentPage,
+                                pageSize,
+                                user
+                              );
                               setTimeout(() => {
                                 blockAction = false;
-                              }, 800)
+                              }, 700);
                             }
                           })}
                         />
                       </Col>
                     </Row>
                   </Grid>
-                  <View ref={(ref) => { this.btSearch = ref; }}
-                    style={isLoading ? styles.buttomSearchDisabled : styles.conButtonSearch}
+                  <View
+                    ref={ref => {
+                      this.btSearch = ref;
+                    }}
+                    style={
+                      isLoading
+                        ? styles.buttomSearchDisabled
+                        : styles.conButtonSearch
+                    }
                   >
                     <Button
                       full
@@ -250,14 +306,19 @@ class search extends Component {
                             if (listResult.length > 0) {
                               this.list.scrollToIndex({ index: 0 });
                             }
-                          }, 0)
+                          }, 0);
                           this.btSearch.setNativeProps({
                             style: styles.buttomSearchDisabled
                           });
-                          searchAction.search(values, currentPage, pageSize, user);
+                          searchAction.search(
+                            values,
+                            currentPage,
+                            pageSize,
+                            user
+                          );
                           setTimeout(() => {
                             blockAction = false;
-                          }, 800)
+                          }, 500);
                         }
                       })}
                     >
@@ -284,7 +345,9 @@ class search extends Component {
               <Container style={styles.listResult_container}>
                 <Loading isShow={isLoading} />
                 <FlatList
-                  ref={(ref) => { this.list = ref; }}
+                  ref={ref => {
+                    this.list = ref;
+                  }}
                   style={styles.listResult}
                   data={listResult ? listResult : []}
                   keyExtractor={this._keyExtractor}
@@ -294,10 +357,15 @@ class search extends Component {
                     if (distanceFromEnd > 0) {
                       if (!blockLoadMoreAction) {
                         blockLoadMoreAction = true;
-                        searchAction.loadMore(valuesForm, currentPage, pageSize, user)
+                        searchAction.loadMore(
+                          valuesForm,
+                          currentPage,
+                          pageSize,
+                          user
+                        );
                         setTimeout(() => {
                           blockLoadMoreAction = false;
-                        }, 500)
+                        }, 500);
                       }
                     }
                   }}
@@ -326,10 +394,10 @@ class search extends Component {
         onPress={() => {
           if (!blockAction) {
             blockAction = true;
-            dispatch.push({ id: "BillList", apartment: item })
+            dispatch.push({ id: "BillList", apartment: item });
             setTimeout(() => {
               blockAction = false;
-            }, 800)
+            }, 800);
           }
         }}
       >

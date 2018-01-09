@@ -87,6 +87,7 @@ export default {
   buttomSearch: {
     backgroundColor:'transparent',
     borderRadius:5,
+    borderWidth:0
   },
   buttomSearchDisabled:{
     marginLeft: 50,

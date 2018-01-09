@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Item, Input, Text, Label, View, CheckBox } from "native-base";
+import { Item, Input, Text, Label, View, CheckBox, Button } from "native-base";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 // import Switch from '../Switch'
@@ -14,7 +14,7 @@ import DatePicker from "../../DatePicker";
 export function InputField({
   input,
   label,
-  meta: { touched, error, warning },
+  meta: { touched, error, warning, active },
   icon,
   addon,
   onPress,
@@ -22,6 +22,7 @@ export function InputField({
   inputStyle,
   ...custom
 }) {
+  debugger;
   return (
     <Item
       style={{ ...styles.item, ...style }}
@@ -38,6 +39,18 @@ export function InputField({
         style={{ ...styles.input, ...inputStyle }}
       />
       {touched && error ? <Text style={{ width: 50 }}>{error}</Text> : <Text />}
+      {active ? (
+        <Button
+          transparent
+          onPress={() => {
+            input.value = "";
+          }}
+        >
+          <Icon name="times" />
+        </Button>
+      ) : (
+        <Button />
+      )}
     </Item>
   );
 }
@@ -90,7 +103,7 @@ export const DateField = ({
     customStyles={{
       dateTouch: { ...styles.item, ...style },
       dateInput: { ...styles.input, ...inputStyle },
-      dateIcon: { ...styles.inputIcon,...iconStyle}
+      dateIcon: { ...styles.inputIcon, ...iconStyle }
     }}
     format={format}
     {...custom}
