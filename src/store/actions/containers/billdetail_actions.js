@@ -8,6 +8,7 @@ export function billPay(paymentItemList, bill, balance, user) {
   dataPost.accountBalance = balance;
   dataPost.apartmentId = bill.apartmentId;
   dataPost.invoiceId = bill.invoiceId;
+  
   for (var j = 0; j < bill.listInvoiceDetail.length; j++) {
     paymentItem = {};
     if (

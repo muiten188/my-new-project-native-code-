@@ -108,5 +108,11 @@ export default {
   },
   textPadding: {
     paddingBottom: 7
+  },
+  customer_pay_item: {
+    marginTop: 8
+  },
+  borderBottomNone: {
+    borderBottomWidth: 0
   }
 };

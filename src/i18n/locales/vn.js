@@ -64,5 +64,7 @@ export default {
     remainRent:'Dư nợ: ',
     payed:'Thanh toán',
     balancePeriod:'SD Đầu kỳ',
-    incresePeriod:'PS Trong kỳ'
+    incresePeriod:'PS Trong kỳ',
+    customerPay:'Khách hàng thanh toán',
+    customerRePay:'Trả lại',
   };

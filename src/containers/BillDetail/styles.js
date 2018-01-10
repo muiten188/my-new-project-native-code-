@@ -158,6 +158,9 @@ export default {
   pay_item: {
     marginBottom: 6
   },
+  customer_pay_item:{
+    marginTop: 10
+  },
   totalPay: {
     color: "#054f9a",
     fontWeight: "bold"

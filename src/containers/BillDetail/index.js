@@ -5,7 +5,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  Keyboard
 } from "react-native";
 import {
   Container,
@@ -28,7 +29,7 @@ import Header from "../../components/Header";
 import { connect } from "react-redux";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import I18n from "../../i18n/i18n";
-import { InputField } from "../../components/Element/Form/index";
+import { InputField } from "../../components/InputField";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Field, reduxForm } from "redux-form";
 import { DateField } from "../../components/Element/Form";
@@ -80,12 +81,14 @@ class billDetail extends Component {
       totalCreditPay: 0,
       payBalance: 0,
       paymentItemList: [],
-      totalCustomerPay: 0
+      totalCustomerPay: 0,
+      totalReturn: 0,
+      keyBoardShow: false
     };
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function (n, x) {
+    Number.prototype.format = function(n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -95,15 +98,42 @@ class billDetail extends Component {
     setTimeout(() => this.checkAll("CASH"), 0);
   }
 
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      this._keyboardDidShow.bind(this)
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide.bind(this)
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow() {
+    this.setState({ keyBoardShow: true });
+  }
+
+  _keyboardDidHide() {
+    this.setState({ keyBoardShow: false });
+  }
+
   isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }
 
   payChange(value) {
-    if (this.isNumeric(value)) {
-      console.log(Number(value));
-      console.log(Number(value).format());
-      this.setState({ totalCustomerPay: value });
+    const { state } = this;
+    let _value = this.refs["InputPay"].getRawValue();
+    if (this.isNumeric(_value)) {
+      this.setState({
+        totalCustomerPay: _value,
+        totalReturn: _value - state.totalPay
+      });
     }
   }
 
@@ -462,34 +492,34 @@ class billDetail extends Component {
             (temp2["creditPay" + item.invoiceDetailId] = false);
           state["cashPay" + item.invoiceDetailId] == true
             ? this.setState({
-              ...temp,
-              creditAll: false,
-              cashAll: false,
-              totalPay: state.totalPay - item.invoiceDetailAmount,
-              totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-              paymentItemList: state.paymentItemList.filter((i, index) => {
-                return i.invoiceDetailId != item.invoiceDetailId;
+                ...temp,
+                creditAll: false,
+                cashAll: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return i.invoiceDetailId != item.invoiceDetailId;
+                })
               })
-            })
             : this.setState({
-              ...temp,
-              ...temp2,
-              creditAll: false,
-              cashAll: false,
-              totalPay:
-                state["creditPay" + item.invoiceDetailId] != true
-                  ? state.totalPay + item.invoiceDetailAmount
-                  : state.totalPay,
-              totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-              totalCreditPay:
-                state["creditPay" + item.invoiceDetailId] != true
-                  ? state.totalCreditPay
-                  : state.totalCreditPay - item.invoiceDetailAmount,
-              paymentItemList:
-                state.paymentItemList.indexOf(item) == -1
-                  ? [...state.paymentItemList, item]
-                  : state.paymentItemList
-            });
+                ...temp,
+                ...temp2,
+                creditAll: false,
+                cashAll: false,
+                totalPay:
+                  state["creditPay" + item.invoiceDetailId] != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+                totalCreditPay:
+                  state["creditPay" + item.invoiceDetailId] != true
+                    ? state.totalCreditPay
+                    : state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
         }}
       />
     );
@@ -523,34 +553,34 @@ class billDetail extends Component {
             (temp2["cashPay" + item.invoiceDetailId] = false);
           state["creditPay" + item.invoiceDetailId] == true
             ? this.setState({
-              ...temp,
-              creditAll: false,
-              cashAll: false,
-              totalPay: state.totalPay - item.invoiceDetailAmount,
-              totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
-              paymentItemList: state.paymentItemList.filter((i, index) => {
-                return i.invoiceDetailId != item.invoiceDetailId;
+                ...temp,
+                creditAll: false,
+                cashAll: false,
+                totalPay: state.totalPay - item.invoiceDetailAmount,
+                totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
+                paymentItemList: state.paymentItemList.filter((i, index) => {
+                  return i.invoiceDetailId != item.invoiceDetailId;
+                })
               })
-            })
             : this.setState({
-              ...temp,
-              ...temp2,
-              creditAll: false,
-              cashAll: false,
-              totalPay:
-                state["cashPay" + item.invoiceDetailId] != true
-                  ? state.totalPay + item.invoiceDetailAmount
-                  : state.totalPay,
-              totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
-              totalCashPay:
-                state["cashPay" + item.invoiceDetailId] != true
-                  ? state.totalCashPay
-                  : state.totalCashPay - item.invoiceDetailAmount,
-              paymentItemList:
-                state.paymentItemList.indexOf(item) == -1
-                  ? [...state.paymentItemList, item]
-                  : state.paymentItemList
-            });
+                ...temp,
+                ...temp2,
+                creditAll: false,
+                cashAll: false,
+                totalPay:
+                  state["cashPay" + item.invoiceDetailId] != true
+                    ? state.totalPay + item.invoiceDetailAmount
+                    : state.totalPay,
+                totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
+                totalCashPay:
+                  state["cashPay" + item.invoiceDetailId] != true
+                    ? state.totalCashPay
+                    : state.totalCashPay - item.invoiceDetailAmount,
+                paymentItemList:
+                  state.paymentItemList.indexOf(item) == -1
+                    ? [...state.paymentItemList, item]
+                    : state.paymentItemList
+              });
         }}
       />
     );
@@ -864,51 +894,65 @@ class billDetail extends Component {
                       ? "0 VNĐ"
                       : state.totalPay.format() + " VNĐ"}
                   </H1>
-                  <Text style={styles.pay_item}>
-                    {I18n.t("inOf", {
+                  {!state.keyBoardShow ? (
+                    <View>
+                      <Text style={styles.pay_item}>
+                        {I18n.t("inOf", {
+                          locale: locale ? locale : "vn"
+                        })}
+                      </Text>
+                      <Item style={[styles.pay_item, styles.borderBottomNone]}>
+                        <Icon name="money" style={styles.icon} />
+                        <Text>
+                          {state.totalCashPay.format() + " VNĐ"}{" "}
+                          {state.payBalance > 0
+                            ? " - " + state.payBalance.format() + " VNĐ"
+                            : ""}
+                        </Text>
+                      </Item>
+                      <Item style={[styles.pay_item, styles.borderBottomNone]}>
+                        <Icon name="credit-card-alt" style={styles.icon} />
+                        <Text>{state.totalCreditPay.format() + " VNĐ"}</Text>
+                      </Item>
+                      <Button
+                        full
+                        disabled={
+                          state.paymentItemList &&
+                          state.paymentItemList.length <= 0
+                        }
+                        style={
+                          state.paymentItemList &&
+                          state.paymentItemList.length <= 0
+                            ? styles.buttomPay_disabled
+                            : styles.buttomPay
+                        }
+                        onPress={() => {
+                          //this.printBill();
+                          this.setState({ isModalConfirm: true });
+                        }}
+                      >
+                        <Text uppercase={false}>
+                          {I18n.t("pay", {
+                            locale: locale ? locale : "vn"
+                          })}
+                        </Text>
+                      </Button>
+                    </View>
+                  ) : null}
+
+                  <Text style={styles.customer_pay_item}>
+                    {I18n.t("customerPay", {
                       locale: locale ? locale : "vn"
                     })}
                   </Text>
-                  <Item style={[styles.pay_item, styles.borderBottomNone]}>
-                    <Icon name="money" style={styles.icon} />
-                    <Text>
-                      {state.totalCashPay.format() + " VNĐ"}{" "}
-                      {state.payBalance > 0
-                        ? " - " + state.payBalance.format() + " VNĐ"
-                        : ""}
-                    </Text>
-                  </Item>
-                  <Item style={[styles.pay_item, styles.borderBottomNone]}>
-                    <Icon name="credit-card-alt" style={styles.icon} />
-                    <Text>{state.totalCreditPay.format() + " VNĐ"}</Text>
-                  </Item>
-                  <Button
-                    full
-                    disabled={
-                      state.paymentItemList && state.paymentItemList.length <= 0
-                    }
-                    style={
-                      state.paymentItemList && state.paymentItemList.length <= 0
-                        ? styles.buttomPay_disabled
-                        : styles.buttomPay
-                    }
-                    onPress={() => {
-                      //this.printBill();
-                      this.setState({ isModalConfirm: true });
-                    }}
-                  >
-                    <Text uppercase={false}>
-                      {I18n.t("pay", {
-                        locale: locale ? locale : "vn"
-                      })}
-                    </Text>
-                  </Button>
-                  <Item style={[styles.pay_item, styles.borderBottomNone]}>
+                  <Item style={{}} inlineLabel>
                     <TextInputMask
-                      style={{ width: '100%', fontSize: 20 }}
+                      ref={"InputPay"}
+                      style={{ width: "100%", fontSize: 20 }}
                       placeholder="Số tiền thanh toán"
-                      value={state.totalCustomerPay.toString()}
+                      value={state.totalCustomerPay}
                       onChangeText={value => this.payChange(value)}
+                      customTextInput={Input}
                       type={"money"}
                       options={{
                         unit: "",
@@ -918,7 +962,37 @@ class billDetail extends Component {
                         zeroCents: true
                       }}
                     />
+                    {state.keyBoardShow ? (
+                      <Button
+                        transparent
+                        onPress={() => {
+                          this.setState({
+                            totalCustomerPay: 0,
+                            totalReturn: 0
+                          });
+                        }}
+                      >
+                        <Icon name="times" />
+                      </Button>
+                    ) : null}
                   </Item>
+                  {state.totalCustomerPay != 0 ? (
+                    <View style={{ width: "100%" }}>
+                      <Text style={styles.customer_pay_item}>
+                        {I18n.t("customerRePay", {
+                          locale: locale ? locale : "vn"
+                        })}
+                      </Text>
+                      <Item style={{}} inlineLabel>
+                        <Text
+                          style={{ width: "100%", fontSize: 20, marginTop: 6 }}
+                        >
+                          {this.state.totalReturn.format()}
+                          {" VNĐ"}
+                        </Text>
+                      </Item>
+                    </View>
+                  ) : null}
                 </View>
               </Row>
             </Col>

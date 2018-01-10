@@ -63,7 +63,15 @@ export default class extends Component {
 
   render() {
     const locale = "vn";
-    const { listInvoiceDetail, invoiceStatus, invoiceMonth } = this.props;
+    const {
+      bill,
+      listInvoiceDetail,
+      invoiceStatus,
+      invoiceMonth,
+      onTotal,
+      onPayCash,
+      onPayCredit
+    } = this.props;
     const { state } = this;
     let total = 0;
     let totalPaid = 0;
@@ -152,7 +160,14 @@ export default class extends Component {
                 </H3>
               </Col>
               <Col style={styles.center}>
-                <H3 style={styles.textPadding}>{total.format() + " VNĐ"}</H3>
+                <Item
+                  style={styles.itemBorderNone}
+                  onPress={() => {
+                    onTotal(total);
+                  }}
+                >
+                  <H3 style={styles.textPadding}>{total.format() + " VNĐ"}</H3>
+                </Item>
               </Col>
               <Col style={{ width: 160 }}>
                 <H3 style={[styles.primary, styles.textPadding]}>
@@ -160,6 +175,39 @@ export default class extends Component {
                 </H3>
               </Col>
             </Row>
+            {invoiceStatus == "INCOMPLETE" ? (
+              <Row style={[styles.itemPay]}>
+                <Col />
+                <Col>
+                  <Button
+                    style={[styles.right, styles.buttonPay]}
+                    onPress={() => {
+                      onPayCash(bill, listInvoiceDetail);
+                    }}
+                  >
+                    <Text>
+                      {I18n.t("totalCash", {
+                        locale: locale ? locale : "vn"
+                      })}
+                    </Text>
+                  </Button>
+                </Col>
+                <Col style={{ width: 160 }}>
+                  <Button
+                    style={[styles.right, styles.buttonPay]}
+                    onPress={() => {
+                      onPayCredit(bill, listInvoiceDetail);
+                    }}
+                  >
+                    <Text>
+                      {I18n.t("totalCredit", {
+                        locale: locale ? locale : "vn"
+                      })}
+                    </Text>
+                  </Button>
+                </Col>
+              </Row>
+            ) : null}
           </Grid>
         </View>
       </View>

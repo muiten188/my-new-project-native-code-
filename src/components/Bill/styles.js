@@ -23,6 +23,11 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
+  right: {
+    position: "absolute",
+    right: 10,
+    bottom:0
+  },
   billContent: {
     width: "100%",
     backgroundColor: "#fff",
@@ -38,6 +43,14 @@ export default {
   itemTotal: {
     paddingTop: 15,
     paddingBottom: 15,
+    borderTopWidth: 1,
+    borderColor: "#cecece",
+    borderStyle: "dashed"
+  },
+  itemPay: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    height:75,
     borderTopWidth: 1,
     borderColor: "#cecece",
     borderStyle: "dashed"
@@ -73,5 +86,8 @@ export default {
   },
   textPadding: {
     paddingBottom: 7
+  },
+  buttonPay:{
+    backgroundColor:"#054f9a"
   }
 };
