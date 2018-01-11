@@ -11,6 +11,7 @@ import {
 import { Button, Text, Thumbnail } from "native-base";
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as loginAction from "../../authen/actions/login_action";
+import * as appAction from '../../store/actions/app_action';
 import * as AppConfig from "../../config/app_config";
 import styles from "./styles";
 const resolveAssetSource = require("resolveAssetSource");
@@ -38,8 +39,11 @@ class user extends React.Component {
   }
 
   _onPress(e, i) {
-    const { loginAction } = this.props;
-    if (i == 1) {
+    const { loginAction,appAction } = this.props;
+    if(i==1){
+      appAction.showPayInfo();
+    }
+    else if (i == 2) {
       loginAction.logout();
     }
   }
@@ -49,7 +53,7 @@ class user extends React.Component {
 
     UIManager.showPopupMenu(
       findNodeHandle(this.refs.menu),
-      [this.state.fullName, ...actions],
+      [this.state.fullName,"Thanh toán trong ngày", ...actions],
       this.handleShowPopupError,
       this._onPress.bind(this)
     );
@@ -132,7 +136,8 @@ function mapStateToProps(state, props) {
 }
 function mapToDispatch(dispatch) {
   return {
-    loginAction: bindActionCreators(loginAction, dispatch)
+    loginAction: bindActionCreators(loginAction, dispatch),
+    appAction: bindActionCreators(appAction, dispatch)
   };
 }
 

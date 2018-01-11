@@ -46,6 +46,7 @@ import { TextInputMask } from "react-native-masked-text";
 const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
 const blockAction = false;
+const blockLoadMoreAction = false;
 class billList extends Component {
   static navigationOptions = {
     header: null
@@ -69,9 +70,12 @@ class billList extends Component {
   componentDidMount() {
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
+    const { currentPage, pageSize } = this.props.billListReducer;
     setTimeout(() => {
       billListAction.getBillList(
         navigation.state.params.apartment.apartmentId,
+        currentPage,
+        pageSize,
         user
       );
     });
@@ -120,7 +124,7 @@ class billList extends Component {
 
   render() {
     const locale = "vn";
-    const { transactionCode, billPayError } = this.props.billDetailReducer;
+    const { transactionCode } = this.props.billDetailReducer;
     const isLoading1 = this.props.billDetailReducer.isLoading;
     const isLoading2 = this.props.billListReducer.isLoading;
     const isLoading = isLoading1 || isLoading2;
@@ -129,7 +133,10 @@ class billList extends Component {
       listResult,
       balance,
       billError,
-      totalDebit
+      totalDebit,
+      currentPage,
+      pageSize,
+      billPayError
     } = this.props.billListReducer;
     const { key, userName, position, phone, avatarUrl } = this.props;
     const { billListAction, navigation } = this.props;
@@ -138,6 +145,12 @@ class billList extends Component {
       Alert.alert(
         "Thông Báo",
         "Lấy danh sách hóa đơn lỗi kiểm tra lại đường truyền"
+      );
+    }
+    if (billPayError == true) {
+      Alert.alert(
+        "Thông Báo",
+        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền."
       );
     }
     return (
@@ -353,7 +366,8 @@ class billList extends Component {
                         <Text
                           style={{ width: "100%", fontSize: 20, marginTop: 6 }}
                         >
-                          {this.state.totalReturn.format()}{" VNĐ"}
+                          {this.state.totalReturn.format()}
+                          {" VNĐ"}
                         </Text>
                       </Item>
                     </View>
@@ -371,7 +385,7 @@ class billList extends Component {
               />
               <Container style={styles.listResult_container}>
                 <Loading isShow={isLoading} />
-                <Item
+                {/* <Item
                   style={{
                     width: "100%",
                     height: 40
@@ -393,7 +407,7 @@ class billList extends Component {
                     <Item label="Thanh toán" value="payed" />
                     <Item label="Tất cả" value="all" />
                   </Picker>
-                </Item>
+                </Item> */}
 
                 <FlatList
                   refreshControl={
@@ -403,6 +417,8 @@ class billList extends Component {
                       onRefresh={() =>
                         billListAction.getBillList(
                           navigation.state.params.apartment.apartmentId,
+                          currentPage,
+                          pageSize,
                           user
                         )
                       }
@@ -413,6 +429,23 @@ class billList extends Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={1}
+                  onEndReached={({ distanceFromEnd }) => {
+                    if (distanceFromEnd > 0) {
+                      if (!blockLoadMoreAction) {
+                        blockLoadMoreAction = true;
+                        billListAction.loadMore(
+                          navigation.state.params.apartment.apartmentId,
+                          currentPage,
+                          pageSize,
+                          user
+                        );
+                        setTimeout(() => {
+                          blockLoadMoreAction = false;
+                        }, 350);
+                      }
+                    }
+                  }}
+                  onEndReachedThreshold={0.5}
                 />
               </Container>
             </Col>
@@ -424,13 +457,21 @@ class billList extends Component {
           onClose={() => {
             this.setState({ isModalVisible: false });
             setTimeout(() => {
-              billListAction.getBillList(this.state.bill.apartmentId, user);
+              billListAction.getBillFromId(
+                this.state.bill.apartmentId,
+                this.state.bill.invoiceId,
+                user
+              );
             }, 0);
           }}
           onPay={() => {
             this.setState({ isModalVisible: false });
             setTimeout(() => {
-              billListAction.getBillList(this.state.bill.apartmentId, user);
+              billListAction.getBillFromId(
+                this.state.bill.apartmentId,
+                this.state.bill.invoiceId,
+                user
+              );
             }, 0);
             // this.printBill();
           }}
@@ -455,9 +496,12 @@ class billList extends Component {
     this.setState({ billStatus: value });
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
+    const { currentPage, pageSize } = this.props.billListReducer;
     setTimeout(() => {
       billListAction.getBillList(
         navigation.state.params.apartment.apartmentId,
+        currentPage,
+        pageSize,
         user
       );
     });
@@ -528,7 +572,7 @@ class billList extends Component {
   _onPay(bill, listInvoiceDetail, payMethod) {
     const { apartment } = this.props.navigation.state.params;
     const { balance } = this.props.billListReducer;
-    const { billDetailAction } = this.props;
+    const { billDetailAction, billListAction } = this.props;
     const { user } = this.props.loginReducer;
     bill.accountBalance = balance;
     for (var i = 0; i < listInvoiceDetail.length; i++) {
@@ -537,7 +581,13 @@ class billList extends Component {
     listInvoiceDetail = listInvoiceDetail.filter((i, index) => {
       return i.invoiceDetailPaid <= 0;
     });
-    billDetailAction.billPay(listInvoiceDetail, bill, balance, user);
+    billDetailAction.billPay(
+      listInvoiceDetail,
+      bill,
+      balance,
+      user,
+      "LIST_INVOICE"
+    );
   }
 
   _keyExtractor(item, index) {

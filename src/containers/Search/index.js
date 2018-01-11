@@ -394,7 +394,7 @@ class search extends Component {
                         );
                         setTimeout(() => {
                           blockLoadMoreAction = false;
-                        }, 500);
+                        }, 350);
                       }
                     }
                   }}

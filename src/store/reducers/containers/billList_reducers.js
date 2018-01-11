@@ -4,17 +4,21 @@ const initState = {
   balance: 200000,
   totalDebit: 0,
   billError: false,
-  listResult:[]
+  listResult: [],
+  currentPage: 1,
+  pageSize: 5,
+  billPayError:false
 };
 
-export default function (state = initState, action = {}) {
+export default function(state = initState, action = {}) {
   switch (action.type) {
     case types.BILL_LIST:
       return {
         ...state,
         listResult: action.listResult,
         isLoading: false,
-        billError: initState.billError
+        billError: initState.billError,
+        currentPage: initState.currentPage
       };
     case types.BILL_LISTING:
       return {
@@ -47,6 +51,32 @@ export default function (state = initState, action = {}) {
       return {
         ...state,
         ...initState
+      };
+    case types.BILL_LIST_LOADMORE:
+      return {
+        ...state,
+        listResult: [...state.listResult, ...action.listResult],
+        isLoading: false,
+        billError: initState.billError,
+        currentPage: state.currentPage + 1
+      };
+    case types.BILL_FROM_ID:
+      for (var i = 0; i < state.listResult.length; i++) {
+        if (state.listResult[i].invoiceId == action.bill.invoiceId) {
+          state.listResult[i] = action.bill;
+        }
+      }
+      return {
+        ...state,
+        listResult: [...state.listResult],
+        isLoading: false,
+        billError: initState.billError
+      };
+    case types.LIST_BILL_PAY_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        billPayError: true
       };
     default:
       return state;

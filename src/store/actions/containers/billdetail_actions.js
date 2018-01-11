@@ -1,14 +1,14 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
 import { buildHeader, _logout } from "../../../helper";
-export function billPay(paymentItemList, bill, balance, user) {
+export function billPay(paymentItemList, bill, balance, user, callForm) {
   let dataPost = {};
   let _paymentItemList = [];
   let paymentItem = {};
   dataPost.accountBalance = balance;
   dataPost.apartmentId = bill.apartmentId;
   dataPost.invoiceId = bill.invoiceId;
-  
+
   for (var j = 0; j < bill.listInvoiceDetail.length; j++) {
     paymentItem = {};
     if (
@@ -35,7 +35,7 @@ export function billPay(paymentItemList, bill, balance, user) {
   }
   dataPost.paymentItemList = _paymentItemList;
   return dispatch => {
-    dispatch(_billPaying());
+    dispatch(_billPaying(callForm));
     fetch(`${AppConfig.API_HOST}tablet/payment`, {
       method: "POST",
       headers: Object.assign(
@@ -53,7 +53,7 @@ export function billPay(paymentItemList, bill, balance, user) {
           dispatch(_logout());
         }
         if (response.status != 200) {
-          dispatch(_billPayError());
+          dispatch(_billPayError(callForm));
         } else {
           return response.json();
         }
@@ -62,11 +62,11 @@ export function billPay(paymentItemList, bill, balance, user) {
         if (responseJson) {
           dispatch(_billPay(responseJson));
         } else {
-          dispatch(_billPayError());
+          dispatch(_billPayError(callForm));
         }
       })
       .catch(function(error) {
-        dispatch(_billPayError());
+        dispatch(_billPayError(callForm));
       });
   };
 }
@@ -78,14 +78,28 @@ function _billPay(data) {
   };
 }
 
-function _billPaying() {
-  return {
-    type: types.BILL_PAYING
-  };
+function _billPaying(callForm) {
+  if(callForm == "LIST_INVOICE"){
+    return {
+      type: types.BILL_LISTING,
+      isLoading: true
+    };
+  }
+  else{
+    return {
+      type: types.BILL_PAYING
+    };
+  }
 }
 
-function _billPayError() {
-  return {
-    type: types.BILL_PAY_ERROR
-  };
+function _billPayError(callForm) {
+  if (callForm == "LIST_INVOICE") {
+    return {
+      type: types.LIST_BILL_PAY_ERROR
+    };
+  } else {
+    return {
+      type: types.BILL_PAY_ERROR
+    };
+  }
 }

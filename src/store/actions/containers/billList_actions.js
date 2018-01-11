@@ -39,14 +39,16 @@ function getBalance(apartmentId, dispatch, user) {
     });
 }
 
-export function getBillList(apartmentId, user) {
+export function getBillList(apartmentId, currentPage, pageSize, user) {
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     dispatch(_billListing());
     getBalance(apartmentIdParam, dispatch, user);
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
-        aparmentId: apartmentIdParam
+        aparmentId: apartmentIdParam,
+        currentPage: 1,
+        pageSize: pageSize
       })}`,
       {
         headers: buildHeader(user),
@@ -121,8 +123,100 @@ function getQueryString(params) {
     .join("&");
 }
 
-export function reset(){
+export function reset() {
   return {
     type: types.LIST_RESET
+  };
+}
+
+export function getBillFromId(aparmentId, invoiceId, user) {
+  return dispatch => {
+    dispatch(_billListing());
+    fetch(
+      `${AppConfig.API_HOST}tablet/invoice/loadById?${getQueryString({
+        invoiceId: invoiceId
+      })}`,
+      {
+        headers: buildHeader(user),
+        method: "GET"
+      }
+    )
+      .then(function(response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
+        if (response.status != 200) {
+          dispatch(_billError());
+        } else {
+          return response.json();
+        }
+      })
+      .then(function(responseJson) {
+        if (responseJson) {
+          let bill = responseJson;
+          if (bill) {
+            dispatch(_bill(bill));
+          } else {
+            dispatch(_billError());
+          }
+        }
+      })
+      .catch(function(error) {
+        dispatch(_billError());
+      });
+  };
+}
+
+export function loadMore(apartmentId, currentPage, pageSize, user) {
+  let apartmentIdParam = apartmentId || -1;
+  return dispatch => {
+    dispatch(_billListing());
+    fetch(
+      `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
+        aparmentId: apartmentIdParam,
+        currentPage: currentPage + 1,
+        pageSize: pageSize
+      })}`,
+      {
+        headers: buildHeader(user),
+        method: "GET"
+      }
+    )
+      .then(function(response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
+        if (response.status != 200) {
+          dispatch(_billError());
+        } else {
+          return response.json();
+        }
+      })
+      .then(function(responseJson) {
+        if (responseJson) {
+          let billList = responseJson.data;
+          if (billList) {
+            dispatch(_dataMore(billList));
+          } else {
+            dispatch(_billError());
+          }
+        }
+      })
+      .catch(function(error) {
+        dispatch(_billError());
+      });
+  };
+}
+function _dataMore(listResult) {
+  return {
+    type: types.BILL_LIST_LOADMORE,
+    listResult: listResult
+  };
+}
+
+function _bill(bill) {
+  return {
+    type: types.BILL_FROM_ID,
+    bill: bill
   };
 }

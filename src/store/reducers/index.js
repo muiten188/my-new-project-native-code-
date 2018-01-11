@@ -8,7 +8,7 @@ import userInfoReducer from "../../store/reducers/containers/userInfo_reducer";
 import billListReducer from "../../store/reducers/containers/billList_reducers";
 import billDetailReducer from "../../store/reducers/containers/billDetail_reducers";
 import historyReducer from "../../store/reducers/containers/history_reducers";
-
+import app_Reducer from "../../store/reducers/app_reducer";
 import * as types from "../../store/constants/action_types";
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
@@ -33,6 +33,7 @@ const appReducer = combineReducers({
   billListReducer,
   billDetailReducer,
   historyReducer,
+  app_Reducer,
   form: formReducer
 });
 

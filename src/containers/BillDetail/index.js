@@ -689,6 +689,7 @@ class billDetail extends Component {
       billPayError,
       isLoading
     } = this.props.billDetailReducer;
+    const { currentPage, pageSize } = this.props.billListReducer;
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
     const state = this.state;
@@ -1006,7 +1007,12 @@ class billDetail extends Component {
 
             dispatch.pop();
             setTimeout(() => {
-              billListAction.getBillList(bill.apartmentId, user);
+              billListAction.getBillList(
+                bill.apartmentId,
+                currentPage,
+                pageSize,
+                user
+              );
             }, 15);
           }}
           onPay={() => {
@@ -1067,7 +1073,8 @@ class billDetail extends Component {
 function mapStateToProps(state, props) {
   return {
     billDetailReducer: state.billDetailReducer,
-    loginReducer: state.loginReducer
+    loginReducer: state.loginReducer,
+    billListReducer: state.billListReducer
   };
 }
 function mapToDispatch(dispatch) {
