@@ -8,8 +8,8 @@ export default {
     alignItems: "center"
   },
   modalContainer: {
-    width: 350,
-    height: 220,
+    width: 450,
+    height: 300,
     borderRadius: 4,
     borderColor: "#cecece",
     backgroundColor: "#fff",

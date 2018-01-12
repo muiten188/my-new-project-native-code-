@@ -55,7 +55,8 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
               params: {
                 bill: action.route.bill,
                 balance: action.route.balance,
-                totalDebit: action.route.totalDebit
+                totalDebit: action.route.totalDebit,
+                apartment:action.route.apartment
               },
               action: NavigationActions.navigate({ routeName: action.route.id })
             }),

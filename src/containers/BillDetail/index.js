@@ -39,10 +39,8 @@ import PayModal from "../../components/PayModal";
 import * as billDetailAction from "../../store/actions/containers/billdetail_actions";
 import * as billListAction from "../../store/actions/containers/billList_actions";
 import Loading from "../../components/Loading";
-import RNXprinter from "react-native-xprinter";
+import { printBill } from "../../helper";
 import { TextInputMask } from "react-native-masked-text";
-
-RNXprinter.initialize();
 
 class billDetail extends Component {
   static navigationOptions = {
@@ -682,7 +680,12 @@ class billDetail extends Component {
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
-    const { bill, balance, totalDebit } = this.props.navigation.state.params;
+    const {
+      bill,
+      balance,
+      totalDebit,
+      apartment
+    } = this.props.navigation.state.params;
     const { billDetailAction } = this.props;
     const {
       transactionCode,
@@ -704,6 +707,7 @@ class billDetail extends Component {
         "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền."
       );
     }
+
     return (
       <Container style={styles.container}>
         <Header
@@ -928,7 +932,6 @@ class billDetail extends Component {
                             : styles.buttomPay
                         }
                         onPress={() => {
-                          //this.printBill();
                           this.setState({ isModalConfirm: true });
                         }}
                       >
@@ -1015,8 +1018,15 @@ class billDetail extends Component {
               );
             }, 15);
           }}
-          onPay={() => {
-            this.printBill();
+          onPay={async () => {
+            await printBill(
+              bill.listInvoiceDetail,
+              state.paymentItemList,
+              apartment.ownerName,
+              user.fullName,
+              transactionCode,
+              bill.invoiceMonth
+            );
           }}
         />
         <ConfirmModal

@@ -43,6 +43,7 @@ import Loading from "../../components/Loading";
 import ConfirmModal from "../../components/ConfirmModal";
 import PayModal from "../../components/PayModal";
 import { TextInputMask } from "react-native-masked-text";
+import { printBill } from "../../helper";
 const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
 const blockAction = false;
@@ -464,7 +465,7 @@ class billList extends Component {
               );
             }, 0);
           }}
-          onPay={() => {
+          onPay={async () => {
             this.setState({ isModalVisible: false });
             setTimeout(() => {
               billListAction.getBillFromId(
@@ -473,7 +474,14 @@ class billList extends Component {
                 user
               );
             }, 0);
-            // this.printBill();
+            await printBill(
+              this.state.listInvoiceDetail,
+              this.state.listInvoiceDetail,
+              state.params.apartment.ownerName,
+              user.fullName,
+              transactionCode,
+              this.state.bill.invoiceMonth
+            );
           }}
         />
         <ConfirmModal
@@ -511,6 +519,7 @@ class billList extends Component {
     const item = dataItem.item;
     const { dispatch } = this.props.navigation;
     const { balance, totalDebit } = this.props.billListReducer;
+    const { apartment } = this.props.navigation.state.params;
     return (
       <TouchableOpacity
         key={item.index}
@@ -523,7 +532,8 @@ class billList extends Component {
                 id: "BillDetail",
                 bill: item,
                 balance: balance,
-                totalDebit: totalDebit
+                totalDebit: totalDebit,
+                apartment: apartment
               });
             }
             setTimeout(() => {

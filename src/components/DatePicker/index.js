@@ -15,8 +15,8 @@ import { View, Text, Button, Item, Input } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const FORMATS = {
-  date: "YYYY-MM-DD",
-  datetime: "YYYY-MM-DD HH:mm",
+  date: "DD-MM-YYYY",
+  datetime: "DD-MM-YYYY HH:mm",
   time: "HH:mm"
 };
 
@@ -282,10 +282,12 @@ class DatePicker extends Component {
 
     disabled &&
       Object.assign(dateInputStyle, styles.disabled, customStyles.disabled);
-
     return (
       <Item
-        style={{ ...styles.dateTouch, ...customStyles.dateTouch }}
+        style={[
+          { ...styles.dateTouch, ...customStyles.dateTouch },
+          { borderBottomWidth: 0 }
+        ]}
         onPress={this.onPressDate}
       >
         {icon && (
@@ -402,7 +404,7 @@ DatePicker.defaultProps = {
   customStyles: {},
 
   // whether or not show the icon
-  icon: "date-range",
+  icon: "calendar",
   disabled: false,
   placeholder: "",
   modalOnResponderTerminationRequest: e => true

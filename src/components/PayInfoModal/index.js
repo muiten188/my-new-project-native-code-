@@ -12,10 +12,27 @@ import {
 } from "native-base";
 import styles from "./styles";
 import Modal from "react-native-modal";
-
+import DatePicker from "../../components/DatePicker";
 export default class extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      payDate: this.formatDate(new Date())
+    };
+  }
+
+  formatDate(date) {
+    // var monthNames = [
+    //   "January", "February", "March",
+    //   "April", "May", "June", "July",
+    //   "August", "September", "October",
+    //   "November", "December"
+    // ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+    return day + "-" + monthIndex + 1 + "-" + year;
   }
 
   render() {
@@ -26,8 +43,16 @@ export default class extends Component {
           <Content>
             <View style={styles.modalContent}>
               <H3 style={[styles.item_content, styles.textPadding]}>
-                cai vu ma 
+                Thanh toán trong ngày
               </H3>
+              <DatePicker
+                date={this.state.payDate}
+                mode="date"
+                placeholder="Chọn ngày thanh toán"
+                onDateChange={date => {
+                  this.setState({ payDate: date });
+                }}
+              />
               <H1
                 style={[
                   styles.item_content,
@@ -53,9 +78,7 @@ export default class extends Component {
                 </Text>
               </Button> */}
               <Button onPress={onOk} style={styles.buttonCancel}>
-                <Text style={[styles.textSize, styles.textOk]}>
-                  OK
-                </Text>
+                <Text style={[styles.textSize, styles.textOk]}>OK</Text>
               </Button>
             </Item>
           </Footer>
