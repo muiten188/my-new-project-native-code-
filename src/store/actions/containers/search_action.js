@@ -115,9 +115,17 @@ export function loadMore(values, currentPage, pageSize, user) {
       });
   };
 }
+
 function _dataMore(data) {
   return {
     type: types.SEARCH_LOAD_MORE,
     data: data,
+  };
+}
+
+
+export function clearError() {
+  return {
+    type: types.SEARCH_CLEAR_ERROR,
   };
 }

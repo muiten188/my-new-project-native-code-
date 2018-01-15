@@ -75,3 +75,8 @@ function getQueryString(params) {
     })
     .join("&");
 }
+export function clearError() {
+  return {
+    type: types.HISTORY_CLEAR_ERROR,
+  };
+}

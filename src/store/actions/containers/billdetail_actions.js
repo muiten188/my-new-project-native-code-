@@ -103,3 +103,9 @@ function _billPayError(callForm) {
     };
   }
 }
+
+export function clearError() {
+  return {
+    type: types.BILL_DETAIL_CLEAR_ERROR,
+  };
+}

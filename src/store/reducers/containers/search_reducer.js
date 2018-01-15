@@ -51,6 +51,11 @@ export default function (state = initState, action = {}) {
         searchErorr: initState.searchErorr,
         currentPage: state.currentPage + 1,
       };
+    case types.SEARCH_CLEAR_ERROR:
+      return {
+        ...state,
+        searchErorr: initState.searchErorr
+      };
     default:
       return state;
   }

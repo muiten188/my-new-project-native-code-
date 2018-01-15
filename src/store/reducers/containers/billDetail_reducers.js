@@ -5,7 +5,7 @@ const initState = {
   billPayError: false
 };
 
-export default function(state = initState, action = {}) {
+export default function (state = initState, action = {}) {
   switch (action.type) {
     case types.BILL_PAY:
       return {
@@ -33,7 +33,11 @@ export default function(state = initState, action = {}) {
         isLoading: false,
         billPayError: true
       };
-
+    case types.BILL_DETAIL_CLEAR_ERROR:
+      return {
+        ...state,
+        billPayError: initState.billPayError,
+      };
     default:
       return state;
   }

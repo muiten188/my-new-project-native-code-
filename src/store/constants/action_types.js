@@ -1,8 +1,8 @@
 //APP
-export const CLOSE_PAYINFO="CLOSE_PAYINFO";
-export const SHOW_PAYINFO="SHOW_PAYINFO";
-export const LIST_PAY_INFO="LIST_PAY_INFO"
-export const LISTING_PAY_INFO="LISTING_PAY_INFO";
+export const CLOSE_PAYINFO = "CLOSE_PAYINFO";
+export const SHOW_PAYINFO = "SHOW_PAYINFO";
+export const LIST_PAY_INFO = "LIST_PAY_INFO"
+export const LISTING_PAY_INFO = "LISTING_PAY_INFO";
 //Fetch API
 export const FETCH_CATCH = "FETCH_CATCH";
 //authen
@@ -29,7 +29,7 @@ export const SEARCH_ERROR = "SEARCH_ERROR";
 export const SEARCH_FETCH_ERROR = "SEARCH_FETCH_ERROR";
 export const SEARCH_RESET = "SEARCH_RESET";
 export const SEARCH_LOAD_MORE = "SEARCH_LOAD_MORE";
-
+export const SEARCH_CLEAR_ERROR = "SEARCH_CLEAR_ERROR";
 //user info
 export const USER_INFO = "USER_INFO";
 //bill list
@@ -42,13 +42,16 @@ export const LIST_RESET = "LIST_RESET";
 export const BILL_LIST_LOADMORE = "BILL_LIST_LOADMORE";
 export const BILL_FROM_ID = "BILL_FROM_ID";
 export const LIST_BILL_PAY_ERROR = "LIST_BILL_PAY_ERROR";
+export const BILL_LIST_CLEAR_ERROR = "BILL_LIST_CLEAR_ERROR"
 //bill detail
 export const BILL_PAY = "BILL_PAY";
 export const BILL_PAYING = "BILL_PAYING";
 export const BILL_PAY_ERROR = "BILL_PAY_ERROR";
 export const BILL_DETAIL_FETCH_CATCH = "BILL_DETAIL_FETCH_CATCH";
+export const BILL_DETAIL_CLEAR_ERROR = "BILL_DETAIL_CLEAR_ERROR";
 //history
 export const HISTORYING = "HISTORYING";
 export const HISTORY = "HISTORY";
 export const HISTORY_ERROR = "HISTORY_ERROR";
 export const HISTORY_FETCH_CATCH = "HISTORY_FETCH_CATCH";
+export const HISTORY_CLEAR_ERROR = "HISTORY_CLEAR_ERROR";

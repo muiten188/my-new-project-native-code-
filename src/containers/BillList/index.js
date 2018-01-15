@@ -145,17 +145,29 @@ class billList extends Component {
     if (billError == true) {
       Alert.alert(
         "Thông Báo",
-        "Lấy danh sách hóa đơn lỗi kiểm tra lại đường truyền"
+        "Lấy danh sách hóa đơn lỗi kiểm tra lại đường truyền", [{
+          text: 'Ok',
+          onPress: (e) => {
+            billListAction.clearError();
+          }
+        }],
+        { cancelable: false }
       );
     }
     if (billPayError == true) {
       Alert.alert(
         "Thông Báo",
-        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền."
+        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền.", [{
+          text: 'Ok',
+          onPress: (e) => {
+            billListAction.clearError();
+          }
+        }],
+        { cancelable: false }
       );
     }
     return (
-      <Container style={styles.container}>
+      <Container style={styles.container} >
         <KeyboardAvoidingView
           behavior="padding"
           style={styles.container_outer}
@@ -185,8 +197,8 @@ class billList extends Component {
                       source={
                         state.params.apartment.avatarUrl
                           ? {
-                              uri: state.params.apartment.avatarUrl
-                            }
+                            uri: state.params.apartment.avatarUrl
+                          }
                           : userAvar
                       }
                       ref={thumbnail => {

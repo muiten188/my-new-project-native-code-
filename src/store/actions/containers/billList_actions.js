@@ -6,14 +6,14 @@ function getBalance(apartmentId, dispatch, user) {
   let apartmentIdParam = apartmentId || -1;
   fetch(
     `${
-      AppConfig.API_HOST
+    AppConfig.API_HOST
     }tablet/apartment/${apartmentIdParam}/account-balance/`,
     {
       headers: buildHeader(user),
       method: "GET"
     }
   )
-    .then(function(response) {
+    .then(function (response) {
       if (response.status == 401) {
         dispatch(_logout());
       }
@@ -23,7 +23,7 @@ function getBalance(apartmentId, dispatch, user) {
         return response.json();
       }
     })
-    .then(function(responseJson) {
+    .then(function (responseJson) {
       if (responseJson) {
         let balance = responseJson.accountBalance;
         let totalDebit = responseJson.totalDebit;
@@ -34,7 +34,7 @@ function getBalance(apartmentId, dispatch, user) {
         }
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       dispatch(_billError());
     });
 }
@@ -55,7 +55,7 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
         method: "GET"
       }
     )
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         }
@@ -65,7 +65,7 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           let billList = responseJson.data;
           if (billList) {
@@ -75,7 +75,7 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
           }
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_billError());
       });
   };
@@ -141,7 +141,7 @@ export function getBillFromId(aparmentId, invoiceId, user) {
         method: "GET"
       }
     )
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         }
@@ -151,7 +151,7 @@ export function getBillFromId(aparmentId, invoiceId, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           let bill = responseJson;
           if (bill) {
@@ -161,7 +161,7 @@ export function getBillFromId(aparmentId, invoiceId, user) {
           }
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_billError());
       });
   };
@@ -182,7 +182,7 @@ export function loadMore(apartmentId, currentPage, pageSize, user) {
         method: "GET"
       }
     )
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         }
@@ -192,7 +192,7 @@ export function loadMore(apartmentId, currentPage, pageSize, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           let billList = responseJson.data;
           if (billList) {
@@ -202,7 +202,7 @@ export function loadMore(apartmentId, currentPage, pageSize, user) {
           }
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_billError());
       });
   };
@@ -218,5 +218,11 @@ function _bill(bill) {
   return {
     type: types.BILL_FROM_ID,
     bill: bill
+  };
+}
+
+export function clearError() {
+  return {
+    type: types.BILL_LIST_CLEAR_ERROR,
   };
 }

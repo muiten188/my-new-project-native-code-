@@ -86,7 +86,7 @@ class billDetail extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -490,34 +490,34 @@ class billDetail extends Component {
             (temp2["creditPay" + item.invoiceDetailId] = false);
           state["cashPay" + item.invoiceDetailId] == true
             ? this.setState({
-                ...temp,
-                creditAll: false,
-                cashAll: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return i.invoiceDetailId != item.invoiceDetailId;
-                })
+              ...temp,
+              creditAll: false,
+              cashAll: false,
+              totalPay: state.totalPay - item.invoiceDetailAmount,
+              totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+              paymentItemList: state.paymentItemList.filter((i, index) => {
+                return i.invoiceDetailId != item.invoiceDetailId;
               })
+            })
             : this.setState({
-                ...temp,
-                ...temp2,
-                creditAll: false,
-                cashAll: false,
-                totalPay:
-                  state["creditPay" + item.invoiceDetailId] != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state["creditPay" + item.invoiceDetailId] != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
+              ...temp,
+              ...temp2,
+              creditAll: false,
+              cashAll: false,
+              totalPay:
+                state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay,
+              totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+              totalCreditPay:
+                state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalCreditPay
+                  : state.totalCreditPay - item.invoiceDetailAmount,
+              paymentItemList:
+                state.paymentItemList.indexOf(item) == -1
+                  ? [...state.paymentItemList, item]
+                  : state.paymentItemList
+            });
         }}
       />
     );
@@ -551,34 +551,34 @@ class billDetail extends Component {
             (temp2["cashPay" + item.invoiceDetailId] = false);
           state["creditPay" + item.invoiceDetailId] == true
             ? this.setState({
-                ...temp,
-                creditAll: false,
-                cashAll: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return i.invoiceDetailId != item.invoiceDetailId;
-                })
+              ...temp,
+              creditAll: false,
+              cashAll: false,
+              totalPay: state.totalPay - item.invoiceDetailAmount,
+              totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
+              paymentItemList: state.paymentItemList.filter((i, index) => {
+                return i.invoiceDetailId != item.invoiceDetailId;
               })
+            })
             : this.setState({
-                ...temp,
-                ...temp2,
-                creditAll: false,
-                cashAll: false,
-                totalPay:
-                  state["cashPay" + item.invoiceDetailId] != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state["cashPay" + item.invoiceDetailId] != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
+              ...temp,
+              ...temp2,
+              creditAll: false,
+              cashAll: false,
+              totalPay:
+                state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay,
+              totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
+              totalCashPay:
+                state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalCashPay
+                  : state.totalCashPay - item.invoiceDetailAmount,
+              paymentItemList:
+                state.paymentItemList.indexOf(item) == -1
+                  ? [...state.paymentItemList, item]
+                  : state.paymentItemList
+            });
         }}
       />
     );
@@ -704,7 +704,13 @@ class billDetail extends Component {
     if (billPayError == true) {
       Alert.alert(
         "Thông Báo",
-        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền."
+        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền.", [{
+          text: 'Ok',
+          onPress: (e) => {
+            billDetailAction.clearError();
+          }
+        }],
+        { cancelable: false }
       );
     }
 
@@ -927,7 +933,7 @@ class billDetail extends Component {
                         }
                         style={
                           state.paymentItemList &&
-                          state.paymentItemList.length <= 0
+                            state.paymentItemList.length <= 0
                             ? styles.buttomPay_disabled
                             : styles.buttomPay
                         }

@@ -51,7 +51,7 @@ class history extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -87,10 +87,17 @@ class history extends Component {
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
+    const { historyAction, navigation } = this.props;
     const state = this.state;
-    const { listResult, isLoading,historyError } = this.props.historyReducer;
-    if(historyError==true){
-      Alert.alert("Thông báo","Lấy danh sách lịch sử giao dịch thất bại kiểm tra lại đường truyền.")
+    const { listResult, isLoading, historyError } = this.props.historyReducer;
+    if (historyError == true) {
+      Alert.alert("Thông báo", "Lấy danh sách lịch sử giao dịch thất bại kiểm tra lại đường truyền.", [{
+        text: 'Ok',
+        onPress: (e) => {
+          historyAction.clearError();
+        }
+      }],
+        { cancelable: false });
     }
     return (
       <Container style={styles.container}>
@@ -131,7 +138,7 @@ class history extends Component {
             ? styles.item_container_half
             : styles.item_container_full
         }
-        // onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
+      // onPress={() => dispatch.push({ id: "HistoryDetail", userId: 1 })}
       >
         <ItemHistory
           tranCode={item.paymentCode}

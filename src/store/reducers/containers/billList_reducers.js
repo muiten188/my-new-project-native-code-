@@ -7,10 +7,10 @@ const initState = {
   listResult: [],
   currentPage: 1,
   pageSize: 5,
-  billPayError:false
+  billPayError: false
 };
 
-export default function(state = initState, action = {}) {
+export default function (state = initState, action = {}) {
   switch (action.type) {
     case types.BILL_LIST:
       return {
@@ -77,6 +77,12 @@ export default function(state = initState, action = {}) {
         ...state,
         isLoading: false,
         billPayError: true
+      };
+    case types.BILL_LIST_CLEAR_ERROR:
+      return {
+        ...state,
+        billPayError: initState.billPayError,
+        billError: initState.billError
       };
     default:
       return state;
