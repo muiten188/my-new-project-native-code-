@@ -19,3 +19,23 @@ export function showPayInfo() {
     type: types.SHOW_PAYINFO
   };
 }
+
+export function getPayInfo(startDate,endDate,user){
+  return dispatch=>{
+    dispatch(_getingPayInfo());
+    setTimeout(()=>dispatch(_listPayInfo([])),700)
+  }
+}
+
+function _getingPayInfo(){
+  return {
+    type: types.LISTING_PAY_INFO
+  };
+}
+
+function _listPayInfo(listPayInfo){
+  return {
+    type: types.LIST_PAY_INFO,
+    listPayInfo:listPayInfo,
+  };
+}

@@ -67,4 +67,5 @@ export default {
     incresePeriod:'PS Trong kỳ',
     customerPay:'Khách hàng thanh toán',
     customerRePay:'Trả lại',
+    payOfDay:"Thanh toán trong ngày"
   };

@@ -6,17 +6,19 @@ import {
   TouchableOpacity,
   UIManager,
   findNodeHandle,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from "react-native";
 import { Button, Text, Thumbnail } from "native-base";
 import Icon from "react-native-vector-icons/EvilIcons";
 import * as loginAction from "../../authen/actions/login_action";
-import * as appAction from '../../store/actions/app_action';
+import * as appAction from "../../store/actions/app_action";
 import * as AppConfig from "../../config/app_config";
 import styles from "./styles";
 const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
 const ICON_SIZE = 24;
+import RNXprinter from "react-native-xprinter";
 
 class user extends React.Component {
   handleShowPopupError = () => {
@@ -39,11 +41,18 @@ class user extends React.Component {
   }
 
   _onPress(e, i) {
-    const { loginAction,appAction } = this.props;
-    if(i==1){
+    const { loginAction, appAction } = this.props;
+    if (i == 1) {
       appAction.showPayInfo();
-    }
-    else if (i == 2) {
+    } else if (i == 2) {
+      RNXprinter.pickPrinter();
+    } else if (i == 3) {
+      RNXprinter.printDemoPage()
+        .then((value, mes) => {})
+        .catch(e => {
+          Alert.alert("Thông báo", "Vui lòng kết nối máy in trước khi in thử!");
+        });
+    } else if (i == 4) {
       loginAction.logout();
     }
   }
@@ -53,7 +62,13 @@ class user extends React.Component {
 
     UIManager.showPopupMenu(
       findNodeHandle(this.refs.menu),
-      [this.state.fullName,"Thanh toán trong ngày", ...actions],
+      [
+        this.state.fullName,
+        "Thanh toán trong ngày",
+        "Chọn máy in mặc định",
+        "In thử",
+        ...actions
+      ],
       this.handleShowPopupError,
       this._onPress.bind(this)
     );

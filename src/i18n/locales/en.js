@@ -66,6 +66,7 @@ export default {
     balancePeriod:'SD Đầu kỳ',
     incresePeriod:'PS Trong kỳ',
     customerPay:"Khánh hàng thánh toán",
-    customerRePay:'Trả lại'
+    customerRePay:'Trả lại',
+    payOfDay:"Thanh toán trong ngày"
   };
   

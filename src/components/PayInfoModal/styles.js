@@ -1,3 +1,5 @@
+import { POP_ROUTE } from "../../store/constants/action_types";
+
 export default {
   header: {
     width: "100%",
@@ -8,7 +10,7 @@ export default {
     alignItems: "center"
   },
   modalContainer: {
-    width: 450,
+    width: 460,
     height: 300,
     borderRadius: 4,
     borderColor: "#cecece",
@@ -58,8 +60,6 @@ export default {
   },
   modalContent: {
     paddingTop: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -72,5 +72,10 @@ export default {
   },
   textPadding:{
     paddingBottom:7
+  },
+  itemPayInfo:{
+    borderBottomWidth:0,
+    height:30,
+    paddingLeft:20
   }
 };

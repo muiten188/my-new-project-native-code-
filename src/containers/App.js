@@ -52,7 +52,9 @@ class App extends Component {
     return (
       <Container>
         <RootNavigaion />
-        <PayInfoModal show={showPayInfo} onOk={this._closePayInfo.bind(this)} />
+        {showPayInfo ? (
+          <PayInfoModal show={true} onOk={this._closePayInfo.bind(this)} />
+        ) : null}
       </Container>
     );
   }

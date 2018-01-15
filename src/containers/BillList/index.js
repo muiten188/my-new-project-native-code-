@@ -432,7 +432,10 @@ class billList extends Component {
                   numColumns={1}
                   onEndReached={({ distanceFromEnd }) => {
                     if (distanceFromEnd > 0) {
-                      if (!blockLoadMoreAction) {
+                      if (
+                        !blockLoadMoreAction &&
+                        !(listResult.length < pageSize)
+                      ) {
                         blockLoadMoreAction = true;
                         billListAction.loadMore(
                           navigation.state.params.apartment.apartmentId,

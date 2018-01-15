@@ -71,14 +71,15 @@ export async function printBill(
     await AsyncStorage.getItem("@ReactNativeXprinter:default_printer")
       .then(address => {
         if (address && address != "") {
-          RNXprinter.selectDevice(address).then((value)=>{
-          }).catch((e)=>{
-            Alert.alert(
-              "Thông báo",
-              "Vui lòng bật bluetooth và kết nối với máy In trước khi in."
-            );
-            return
-          })
+          RNXprinter.selectDevice(address)
+            .then(value => {})
+            .catch(e => {
+              Alert.alert(
+                "Thông báo",
+                "Vui lòng bật bluetooth và kết nối với máy In trước khi in."
+              );
+              return;
+            });
         } else {
           RNXprinter.pickPrinter();
         }
@@ -150,10 +151,10 @@ export async function printBill(
               );
             });
         } else {
-          // Alert.alert(
-          //   "Thông báo",
-          //   "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"
-          // );
+          Alert.alert(
+            "Thông báo",
+            "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"
+          );
         }
       })
       .catch(() => {

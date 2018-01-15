@@ -1,6 +1,8 @@
 //APP
 export const CLOSE_PAYINFO="CLOSE_PAYINFO";
 export const SHOW_PAYINFO="SHOW_PAYINFO";
+export const LIST_PAY_INFO="LIST_PAY_INFO"
+export const LISTING_PAY_INFO="LISTING_PAY_INFO";
 //Fetch API
 export const FETCH_CATCH = "FETCH_CATCH";
 //authen

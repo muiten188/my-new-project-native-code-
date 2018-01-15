@@ -93,7 +93,7 @@ class billDetail extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => this.checkAll("CASH"), 0);
+    // setTimeout(() => this.checkAll("CASH"), 0);
   }
 
   componentWillMount() {
