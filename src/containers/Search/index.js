@@ -336,6 +336,7 @@ class search extends Component {
                             this.list.scrollToIndex({ index: 0 });
                           }
                         }, 0);
+                        this.loading.tempShow();
                         searchAction.search(
                           values,
                           currentPage,
@@ -368,7 +369,10 @@ class search extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading isShow={isLoading} />
+                <Loading ref={ref => {
+                  this.loading = ref;
+                }}
+                isShow={isLoading} />
                 <FlatList
                   ref={ref => {
                     this.list = ref;
