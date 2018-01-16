@@ -150,10 +150,10 @@ class userInfo extends Component {
                   {/* <Icon size={27} name="edit" /> */}
                 </Button>
               </Item>
-              <Item style={[styles.item_margin, styles.borderBottomNone]}>
+              <Item style={[styles.item_margin, styles.borderBottomNone, styles.center]}>
                 <H3 style={styles.textPadding}>{this.props.user.fullName}</H3>
               </Item>
-              <Item style={[styles.item_margin, styles.borderBottomNone]}>
+              <Item style={[styles.item_margin, styles.borderBottomNone, styles.center]}>
                 <H3 style={styles.textPadding}>
                   {"CMTND: "}
                   {this.props.user.identification

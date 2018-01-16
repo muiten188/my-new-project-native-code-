@@ -12,6 +12,10 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
+  center:{
+    justifyContent: "center",
+    alignItems: "center"
+  },
   container_info_inter: {
     width: 400,
     // marginTop: -50,
