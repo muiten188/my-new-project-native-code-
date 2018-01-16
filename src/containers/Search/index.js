@@ -69,8 +69,7 @@ class search extends Component {
     //   }, 500)
     // }
   }
-
-  componentDidUpdate(prevProps, prevState) {
+componentDidUpdate(prevProps, prevState) {
     const { dispatch } = this.props.navigation;
     const { isLoading, listResult } = this.props.searchReducer;
     if (
@@ -78,11 +77,16 @@ class search extends Component {
       !isLoading &&
       listResult[0].apartmentId != this.currentApartment.apartmentId
     ) {
-      this.currentApartment = listResult[0];
-      dispatch.push({ id: "BillList", apartment: listResult[0] });
+      if (!blockAction) {
+         blockAction = true;
+         this.currentApartment = listResult[0];
+         dispatch.push({ id: "BillList", apartment: listResult[0] });
+         setTimeout(() => {
+           blockAction = false;
+         }, 700)
+       } 
     }
   }
-
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
