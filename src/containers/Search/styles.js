@@ -78,14 +78,10 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
-  conButtonSearch:{
+  buttomSearch: {
     marginLeft: 50,
     marginRight: 50,
     backgroundColor:'#054f9a',
-    borderRadius:5,
-  },
-  buttomSearch: {
-    backgroundColor:'transparent',
     borderRadius:5,
     borderWidth:0
   },

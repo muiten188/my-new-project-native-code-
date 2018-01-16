@@ -14,17 +14,17 @@ export default {
   },
   container_info_inter: {
     width: 400,
-    marginTop: -50,
+    // marginTop: -50,
     height: "100%",
     justifyContent: "center",
     alignItems: "center"
   },
   thumbnail_avatar: {
-    marginTop:6,
+    marginTop: 6,
     width: 105,
     height: 105,
     borderRadius: 100,
-    marginLeft: 150,
+    marginLeft: 100,
     borderWidth: 1,
     borderColor: "#cecece"
   },
@@ -39,7 +39,7 @@ export default {
     borderColor: "#d6d5d5"
   },
   item_margin: {
-    marginBottom: 20
+    marginBottom: 10
   },
   itemAvatar: {
     borderBottomWidth: 0,

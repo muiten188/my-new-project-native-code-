@@ -245,11 +245,11 @@ function formatDate(date) {
   //   "November", "December"
   // ];
   var hour = date.getHours();
-  var second = date.getSeconds();
+  var minutes = date.getMinutes();
   var day = date.getDate();
   var monthIndex = date.getMonth();
   var year = date.getFullYear();
-  return hour + ":" + second + " - " + day + "/" + monthIndex + 1 + "/" + year;
+  return hour + ":" + minutes + " - " + day + "/" + monthIndex + 1 + "/" + year;
 }
 
 function change_alias(alias) {

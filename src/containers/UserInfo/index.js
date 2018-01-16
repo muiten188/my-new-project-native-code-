@@ -59,9 +59,9 @@ class userInfo extends Component {
     I18n.currentLocale();
   }
   componentDidMount() {
-    setTimeout(()=>{
+    setTimeout(() => {
       this.getUser();
-    },0)
+    }, 0)
   }
 
   getUser() {
@@ -116,108 +116,110 @@ class userInfo extends Component {
           keyboardVerticalOffset={-100}
         >
           <View style={styles.container_info_inter}>
-            <Item
-              style={[
-                styles.itemAvatar,
-                styles.item_margin,
-                styles.borderBottomNone
-              ]}
-            >
-              <Thumbnail
-                style={styles.thumbnail_avatar}
-                source={
-                  this.props.user.avatar
-                    ? {
+            <Content>
+              <Item
+                style={[
+                  styles.itemAvatar,
+                  styles.item_margin,
+                  styles.borderBottomNone
+                ]}
+              >
+                <Thumbnail
+                  style={styles.thumbnail_avatar}
+                  source={
+                    this.props.user.avatar
+                      ? {
                         uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
                       }
-                    : userAvar
-                }
-                ref={thumbnail => {
-                  this.thumbnail = thumbnail;
-                }}
-                onError={e => {
-                  this.thumbnail.setNativeProps({
-                    src: [resolveAssetSource(userAvar)]
-                  });
-                }}
-              />
-              <Button
-                style={styles.button_edit}
-                onPress={() => this.setState({ isEdit: true })}
-                transparent
-              >
-                {/* <Icon size={27} name="edit" /> */}
-              </Button>
-            </Item>
-            <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3 style={styles.textPadding}>{this.props.user.fullName}</H3>
-            </Item>
-            <Item style={[styles.item_margin, styles.borderBottomNone]}>
-              <H3 style={styles.textPadding}>
-                {"CMTND: "}
-                {this.props.user.identification
-                  ? this.props.user.identification
-                  : ""}
-              </H3>
-            </Item>
-            <Form>
-              <Field
-                name="birthday"
-                disabled={!this.state.isEdit}
-                style={styles.infoField}
-                placeholder={I18n.t("birthday", {
-                  locale: locale ? locale : "vi"
-                })}
-                component={DateField}
-                icon="calendar"
-              />
-              <Field
-                name="phoneNumber"
-                disabled={!this.state.isEdit}
-                style={styles.infoField}
-                placeholder={I18n.t("mobile", {
-                  locale: locale ? locale : "vi"
-                })}
-                type="text"
-                component={InputField}
-                icon="volume-control-phone"
-              />
-              <Field
-                name="email"
-                disabled={!this.state.isEdit}
-                style={styles.infoField}
-                placeholder={I18n.t("email", {
-                  locale: locale ? locale : "vi"
-                })}
-                component={InputField}
-                icon="comment"
-              />
-              <Field
-                name="username"
-                disabled={!this.state.isEdit}
-                style={styles.infoField}
-                placeholder={I18n.t("user", {
-                  locale: locale ? locale : "vi"
-                })}
-                component={InputField}
-                icon="user-o"
-              />
-              <Item
-                style={[styles.borderBottomNone, styles.itemButton_changepw]}
-              >
+                      : userAvar
+                  }
+                  ref={thumbnail => {
+                    this.thumbnail = thumbnail;
+                  }}
+                  onError={e => {
+                    this.thumbnail.setNativeProps({
+                      src: [resolveAssetSource(userAvar)]
+                    });
+                  }}
+                />
                 <Button
-                  full
-                  style={styles.button_changepassword}
-                  onPress={() => alert("Đổi mật khẩu")}
+                  style={styles.button_edit}
+                  onPress={() => this.setState({ isEdit: true })}
+                  transparent
                 >
-                  <Text>
-                    {I18n.t("changePassword", {
-                      locale: locale ? locale : "vi"
-                    })}
-                  </Text>
+                  {/* <Icon size={27} name="edit" /> */}
                 </Button>
               </Item>
-            </Form>
+              <Item style={[styles.item_margin, styles.borderBottomNone]}>
+                <H3 style={styles.textPadding}>{this.props.user.fullName}</H3>
+              </Item>
+              <Item style={[styles.item_margin, styles.borderBottomNone]}>
+                <H3 style={styles.textPadding}>
+                  {"CMTND: "}
+                  {this.props.user.identification
+                    ? this.props.user.identification
+                    : ""}
+                </H3>
+              </Item>
+              <Form>
+                <Field
+                  name="birthday"
+                  // disabled={!this.state.isEdit}
+                  style={styles.infoField}
+                  placeholder={I18n.t("birthday", {
+                    locale: locale ? locale : "vi"
+                  })}
+                  component={DateField}
+                  icon="calendar"
+                />
+                <Field
+                  name="phoneNumber"
+                  disabled={!this.state.isEdit}
+                  style={styles.infoField}
+                  placeholder={I18n.t("mobile", {
+                    locale: locale ? locale : "vi"
+                  })}
+                  type="text"
+                  component={InputField}
+                  icon="volume-control-phone"
+                />
+                <Field
+                  name="email"
+                  disabled={!this.state.isEdit}
+                  style={styles.infoField}
+                  placeholder={I18n.t("email", {
+                    locale: locale ? locale : "vi"
+                  })}
+                  component={InputField}
+                  icon="comment"
+                />
+                <Field
+                  name="username"
+                  disabled={!this.state.isEdit}
+                  style={styles.infoField}
+                  placeholder={I18n.t("user", {
+                    locale: locale ? locale : "vi"
+                  })}
+                  component={InputField}
+                  icon="user-o"
+                />
+                <Item
+                  style={[styles.borderBottomNone, styles.itemButton_changepw]}
+                >
+                  <Button
+                    full
+                    style={styles.button_changepassword}
+                    onPress={() => alert("Đổi mật khẩu")}
+                  >
+                    <Text>
+                      {I18n.t("changePassword", {
+                        locale: locale ? locale : "vi"
+                      })}
+                    </Text>
+                  </Button>
+                </Item>
+              </Form>
+            </Content>
           </View>
         </KeyboardAvoidingView>
       </Container>

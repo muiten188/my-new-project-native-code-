@@ -320,50 +320,40 @@ class search extends Component {
                       </Col>
                     </Row>
                   </Grid>
-                  <View
+                  <Button
                     ref={ref => {
                       this.btSearch = ref;
                     }}
-                    style={
-                      isLoading
-                        ? styles.buttomSearchDisabled
-                        : styles.conButtonSearch
-                    }
+                    style={styles.buttomSearch}
+                    full
+                    // disabled={isLoading}
+                    style={styles.buttomSearch}
+                    onPress={handleSubmit(values => {
+                      if (!blockAction) {
+                        blockAction = true;
+                        setTimeout(() => {
+                          if (listResult.length > 0) {
+                            this.list.scrollToIndex({ index: 0 });
+                          }
+                        }, 0);
+                        searchAction.search(
+                          values,
+                          currentPage,
+                          pageSize,
+                          user
+                        );
+                        setTimeout(() => {
+                          blockAction = false;
+                        }, 500);
+                      }
+                    })}
                   >
-                    <Button
-                      full
-                      disabled={isLoading}
-                      style={styles.buttomSearch}
-                      onPress={handleSubmit(values => {
-                        if (!blockAction) {
-                          blockAction = true;
-                          setTimeout(() => {
-                            if (listResult.length > 0) {
-                              this.list.scrollToIndex({ index: 0 });
-                            }
-                          }, 0);
-                          this.btSearch.setNativeProps({
-                            style: styles.buttomSearchDisabled
-                          });
-                          searchAction.search(
-                            values,
-                            currentPage,
-                            pageSize,
-                            user
-                          );
-                          setTimeout(() => {
-                            blockAction = false;
-                          }, 500);
-                        }
+                    <Text>
+                      {I18n.t("search", {
+                        locale: locale ? locale : "vi"
                       })}
-                    >
-                      <Text>
-                        {I18n.t("search", {
-                          locale: locale ? locale : "vi"
-                        })}
-                      </Text>
-                    </Button>
-                  </View>
+                    </Text>
+                  </Button>
                 </Form>
               </Content>
             </Col>
