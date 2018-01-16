@@ -34,6 +34,7 @@ import { DateField } from "../../components/Element/Form";
 import ItemResult from "../../components/Item_result";
 import * as searchAction from "../../store/actions/containers/search_action";
 import Loading from "../../components/Loading";
+import FormSearch from "./form_search";
 const blockAction = false;
 const blockLoadMoreAction = false;
 
@@ -77,7 +78,6 @@ class search extends Component {
       !isLoading &&
       listResult[0].apartmentId != this.currentApartment.apartmentId
     ) {
-      console.log("did push");
       this.currentApartment = listResult[0];
       dispatch.push({ id: "BillList", apartment: listResult[0] });
     }
@@ -130,232 +130,7 @@ class search extends Component {
                 })}
               />
               <Content>
-                <Form style={styles.formContainer}>
-                  <Grid>
-                    <Row style={styles.x3Row}>
-                      <Col style={styles.icon_col}>
-                        <Icon style={styles.icon} name="map-marker" />
-                      </Col>
-                      <Col style={styles.border}>
-                        <Row style={[styles.border, styles.fieldForm]}>
-                          <Field
-                            name="buildingCode"
-                            placeholder={I18n.t("building", {
-                              locale: locale ? locale : "vi"
-                            })}
-                            component={InputField}
-                            onClear={() => {
-                              this.props.change("buildingCode", "");
-                            }}
-                            onFocus={() => {
-                              this.props.change("buildingCode", "");
-                            }}
-                            onSubmitEditing={handleSubmit(values => {
-                              if (!blockAction) {
-                                blockAction = true;
-                                setTimeout(() => {
-                                  if (listResult.length > 0) {
-                                    this.list.scrollToIndex({ index: 0 });
-                                  }
-                                }, 0);
-                                searchAction.search(
-                                  values,
-                                  currentPage,
-                                  pageSize,
-                                  user
-                                );
-                                setTimeout(() => {
-                                  blockAction = false;
-                                }, 700);
-                              }
-                            })}
-                          />
-                        </Row>
-                        <Row style={[styles.border, styles.fieldForm]}>
-                          <Field
-                            name="floorCode"
-                            placeholder={I18n.t("floor", {
-                              locale: locale ? locale : "vi"
-                            })}
-                            component={InputField}
-                            onClear={() => {
-                              this.props.change("floorCode", "");
-                            }}
-                            onFocus={() => {
-                              this.props.change("floorCode", "");
-                            }}
-                            onSubmitEditing={handleSubmit(values => {
-                              if (!blockAction) {
-                                blockAction = true;
-                                setTimeout(() => {
-                                  if (listResult.length > 0) {
-                                    this.list.scrollToIndex({ index: 0 });
-                                  }
-                                }, 0);
-                                searchAction.search(
-                                  values,
-                                  currentPage,
-                                  pageSize,
-                                  user
-                                );
-                                setTimeout(() => {
-                                  blockAction = false;
-                                }, 700);
-                              }
-                            })}
-                          />
-                        </Row>
-                        <Row style={[styles.border, styles.fieldForm]}>
-                          <Field
-                            name="aparmentName"
-                            placeholder={I18n.t("apartmentNo", {
-                              locale: locale ? locale : "vi"
-                            })}
-                            component={InputField}
-                            onClear={() => {
-                              this.props.change("aparmentName", "");
-                            }}
-                            onFocus={() => {
-                              this.props.change("aparmentName", "");
-                            }}
-                            onSubmitEditing={handleSubmit(values => {
-                              if (!blockAction) {
-                                blockAction = true;
-                                setTimeout(() => {
-                                  if (listResult.length > 0) {
-                                    this.list.scrollToIndex({ index: 0 });
-                                  }
-                                }, 0);
-                                searchAction.search(
-                                  values,
-                                  currentPage,
-                                  pageSize,
-                                  user
-                                );
-                                setTimeout(() => {
-                                  blockAction = false;
-                                }, 700);
-                              }
-                            })}
-                          />
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row style={styles.normalRow}>
-                      <Col style={styles.icon_col}>
-                        <Icon style={styles.icon} name="user-circle-o" />
-                      </Col>
-                      <Col style={[styles.border, styles.fieldForm]}>
-                        <Field
-                          name="fullName"
-                          placeholder={I18n.t("homeName", {
-                            locale: locale ? locale : "vi"
-                          })}
-                          component={InputField}
-                          onClear={() => {
-                            this.props.change("fullName", "");
-                          }}
-                          onFocus={() => {
-                            this.props.change("fullName", "");
-                          }}
-                          onSubmitEditing={handleSubmit(values => {
-                            if (!blockAction) {
-                              blockAction = true;
-                              setTimeout(() => {
-                                if (listResult.length > 0) {
-                                  this.list.scrollToIndex({ index: 0 });
-                                }
-                              }, 0);
-                              searchAction.search(
-                                values,
-                                currentPage,
-                                pageSize,
-                                user
-                              );
-                              setTimeout(() => {
-                                blockAction = false;
-                              }, 700);
-                            }
-                          })}
-                        />
-                      </Col>
-                    </Row>
-                    <Row style={styles.normalRow}>
-                      <Col style={styles.icon_col}>
-                        <Icon style={styles.icon} name="phone" />
-                      </Col>
-                      <Col style={[styles.border, styles.fieldForm]}>
-                        <Field
-                          name="phoneNumber"
-                          placeholder={I18n.t("mobile", {
-                            locale: locale ? locale : "vi"
-                          })}
-                          component={InputField}
-                          onClear={() => {
-                            this.props.change("phoneNumber", "");
-                          }}
-                          onFocus={() => {
-                            this.props.change("phoneNumber", "");
-                          }}
-                          onSubmitEditing={handleSubmit(values => {
-                            if (!blockAction) {
-                              blockAction = true;
-                              setTimeout(() => {
-                                if (listResult.length > 0) {
-                                  this.list.scrollToIndex({ index: 0 });
-                                }
-                              }, 0);
-                              searchAction.search(
-                                values,
-                                currentPage,
-                                pageSize,
-                                user
-                              );
-                              setTimeout(() => {
-                                blockAction = false;
-                              }, 700);
-                            }
-                          })}
-                        />
-                      </Col>
-                    </Row>
-                  </Grid>
-                  <Button
-                    ref={ref => {
-                      this.btSearch = ref;
-                    }}
-                    style={styles.buttomSearch}
-                    full
-                    // disabled={isLoading}
-                    style={styles.buttomSearch}
-                    onPress={handleSubmit(values => {
-                      if (!blockAction) {
-                        blockAction = true;
-                        setTimeout(() => {
-                          if (listResult.length > 0) {
-                            this.list.scrollToIndex({ index: 0 });
-                          }
-                        }, 0);
-                        this.loading.tempShow();
-                        searchAction.search(
-                          values,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
-                        setTimeout(() => {
-                          blockAction = false;
-                        }, 500);
-                      }
-                    })}
-                  >
-                    <Text>
-                      {I18n.t("search", {
-                        locale: locale ? locale : "vi"
-                      })}
-                    </Text>
-                  </Button>
-                </Form>
+                <FormSearch {...this.props} temshow={() => this.loading.tempShow()} scrollUp={() => this.list.scrollToIndex({ index: 0 })} />
               </Content>
             </Col>
             <Col size={68} style={[styles.grid_col, styles.col_content]}>
@@ -369,10 +144,7 @@ class search extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading ref={ref => {
-                  this.loading = ref;
-                }}
-                isShow={isLoading} />
+
                 <FlatList
                   ref={ref => {
                     this.list = ref;
@@ -389,12 +161,13 @@ class search extends Component {
                         !(listResult.length < pageSize)
                       ) {
                         blockLoadMoreAction = true;
-                        searchAction.loadMore(
+                        setTimeout(() => searchAction.loadMore(
                           valuesForm,
                           currentPage,
                           pageSize,
                           user
-                        );
+                        ), 0)
+
                         setTimeout(() => {
                           blockLoadMoreAction = false;
                         }, 350);
@@ -403,6 +176,10 @@ class search extends Component {
                   }}
                   onEndReachedThreshold={0.5}
                 />
+                <Loading ref={ref => {
+                  this.loading = ref;
+                }}
+                  isShow={isLoading} />
               </Container>
             </Col>
           </Grid>
@@ -462,9 +239,9 @@ function mapToDispatch(dispatch) {
 //   form: "search"
 // })(connect(mapStateToProps, mapToDispatch)(search));
 
-search = reduxForm({
-  form: "search"
-  // enableReinitialize: true
-})(search);
+// search = reduxForm({
+//   form: "search"
+//   // enableReinitialize: true
+// })(search);
 search = connect(mapStateToProps, mapToDispatch)(search);
 export default search;
