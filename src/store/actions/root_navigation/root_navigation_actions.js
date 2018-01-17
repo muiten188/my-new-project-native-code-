@@ -10,3 +10,9 @@ export function pop() {
     type: types.POP_ROUTE
   };
 }
+export function reset(routeName) {
+  return {
+    type: types.RESET_ROUTE,
+    routeName:routeName
+  };
+}

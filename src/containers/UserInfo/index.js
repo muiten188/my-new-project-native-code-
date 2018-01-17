@@ -61,7 +61,7 @@ class userInfo extends Component {
   componentDidMount() {
     setTimeout(() => {
       this.getUser();
-    }, 0)
+    }, 0);
   }
 
   getUser() {
@@ -86,10 +86,10 @@ class userInfo extends Component {
     const { dispatch } = this.props.navigation;
     if (!blockAction) {
       blockAction = true;
-      dispatch.push({ id: "Search" });
+      dispatch.reset("Search");
       setTimeout(() => {
         blockAction = false;
-      }, 800)
+      }, 800);
     }
   }
   /**
@@ -129,8 +129,8 @@ class userInfo extends Component {
                   source={
                     this.props.user.avatar
                       ? {
-                        uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
-                      }
+                          uri: `${AppConfig.API_HOST}${this.props.user.avatar}`
+                        }
                       : userAvar
                   }
                   ref={thumbnail => {
@@ -150,10 +150,22 @@ class userInfo extends Component {
                   {/* <Icon size={27} name="edit" /> */}
                 </Button>
               </Item>
-              <Item style={[styles.item_margin, styles.borderBottomNone, styles.center]}>
+              <Item
+                style={[
+                  styles.item_margin,
+                  styles.borderBottomNone,
+                  styles.center
+                ]}
+              >
                 <H3 style={styles.textPadding}>{this.props.user.fullName}</H3>
               </Item>
-              <Item style={[styles.item_margin, styles.borderBottomNone, styles.center]}>
+              <Item
+                style={[
+                  styles.item_margin,
+                  styles.borderBottomNone,
+                  styles.center
+                ]}
+              >
                 <H3 style={styles.textPadding}>
                   {"CMTND: "}
                   {this.props.user.identification

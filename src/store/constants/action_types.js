@@ -1,7 +1,7 @@
 //APP
 export const CLOSE_PAYINFO = "CLOSE_PAYINFO";
 export const SHOW_PAYINFO = "SHOW_PAYINFO";
-export const LIST_PAY_INFO = "LIST_PAY_INFO"
+export const LIST_PAY_INFO = "LIST_PAY_INFO";
 export const LISTING_PAY_INFO = "LISTING_PAY_INFO";
 //Fetch API
 export const FETCH_CATCH = "FETCH_CATCH";
@@ -17,6 +17,7 @@ export const AUTHEN_EXPRI = "AUTHEN_EXPRI";
 //navigation
 export const PUSH_ROUTE = "PUSH_ROUTE";
 export const POP_ROUTE = "POP_ROUTE";
+export const RESET_ROUTE = "RESET_ROUTE";
 //drawer navigation
 export const DRAWEROPEN = "DRAWEROPEN";
 export const DRAWERCLOSE = "DRAWERCLOSE";
@@ -42,7 +43,7 @@ export const LIST_RESET = "LIST_RESET";
 export const BILL_LIST_LOADMORE = "BILL_LIST_LOADMORE";
 export const BILL_FROM_ID = "BILL_FROM_ID";
 export const LIST_BILL_PAY_ERROR = "LIST_BILL_PAY_ERROR";
-export const BILL_LIST_CLEAR_ERROR = "BILL_LIST_CLEAR_ERROR"
+export const BILL_LIST_CLEAR_ERROR = "BILL_LIST_CLEAR_ERROR";
 //bill detail
 export const BILL_PAY = "BILL_PAY";
 export const BILL_PAYING = "BILL_PAYING";
