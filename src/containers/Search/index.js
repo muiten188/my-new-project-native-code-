@@ -72,9 +72,11 @@ class search extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { dispatch } = this.props.navigation;
     const { isLoading, listResult } = this.props.searchReducer;
+    if (this.loading.getState() == true) {
+      this.loading.hide();
+    }
     if (
       listResult.length == 1 &&
-      !isLoading &&
       listResult[0].apartmentId != this.currentApartment.apartmentId
     ) {
       if (!blockAction) {
@@ -87,6 +89,7 @@ class search extends Component {
       }
     }
   }
+
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
@@ -100,7 +103,7 @@ class search extends Component {
       loadEnd
     } = this.props.searchReducer;
     blockLoadMoreAction = loadEnd;
-    const { searchAction, handleSubmit } = this.props;
+    const { searchAction } = this.props;
     const { user } = this.props.loginReducer;
     if (searchErorr == true) {
       Alert.alert(
@@ -143,9 +146,19 @@ class search extends Component {
               />
               <Content>
                 <FormSearch
-                  {...this.props}
-                  temshow={() => this.loading.tempShow()}
-                  scrollUp={() => this.list.scrollToIndex({ index: 0 })}
+                  searchAction={values => {
+                    this.loading.show();
+
+                    searchAction.search(values, currentPage, pageSize, user);
+                    //this.setState({ a: 1 }, () => this.loading.hide());
+                  }}
+                  temshow={() => {}}
+                  scrollUp={() => {
+                    if (listResult.length > 0) {
+                      this.list.scrollToIndex({ index: 0 });
+                    }
+                  }}
+                  // user={user}
                 />
               </Content>
             </Col>
@@ -176,7 +189,8 @@ class search extends Component {
                         !(listResult.length < pageSize)
                       ) {
                         blockLoadMoreAction = true;
-                        this.loading.tempShow();
+                        this.loading.show();
+
                         setTimeout(
                           () =>
                             searchAction.loadMore(
@@ -189,8 +203,10 @@ class search extends Component {
                         );
 
                         setTimeout(() => {
-                          blockLoadMoreAction = false;
-                        }, 350);
+                          if (loadEnd != true) {
+                            blockLoadMoreAction = false;
+                          }
+                        }, 700);
                       }
                     }
                   }}

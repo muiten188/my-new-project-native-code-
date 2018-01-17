@@ -1,18 +1,20 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
 import { buildHeader, fetchCatch, _logout } from "../../../helper";
+
 export function search(values, currentPage, pageSize, user) {
   let data = [];
   let dataPost = values || {};
-  dataPost = { ...dataPost, currentPage: 1, pageSize: pageSize }
+  dataPost = { ...dataPost, currentPage: 1, pageSize: pageSize };
   return dispatch => {
-    dispatch(_searching());
+    //dispatch(_searching());
+
     fetch(`${AppConfig.API_HOST}tablet/apartment?${getQueryString(dataPost)}`, {
       headers: buildHeader(user),
       method: "GET",
       qs: dataPost
     })
-      .then(function (response) {
+      .then(function(response) {
         if (response.status == 401) {
           dispatch(_logout());
         } else if (response.status != 200) {
@@ -21,7 +23,7 @@ export function search(values, currentPage, pageSize, user) {
           return response.json();
         }
       })
-      .then(function (responseJson) {
+      .then(function(responseJson) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
@@ -31,7 +33,7 @@ export function search(values, currentPage, pageSize, user) {
           }
         }
       })
-      .catch(function (error) {
+      .catch(function(error) {
         dispatch(_seachError());
       });
   };
@@ -76,22 +78,22 @@ function getQueryString(params) {
 
 export function searchReset() {
   return {
-    type: types.SEARCH_RESET,
+    type: types.SEARCH_RESET
   };
 }
 
 export function loadMore(values, currentPage, pageSize, user) {
   let data = [];
   let dataPost = values || {};
-  dataPost = { ...dataPost, currentPage: currentPage + 1, pageSize: pageSize }
+  dataPost = { ...dataPost, currentPage: currentPage + 1, pageSize: pageSize };
   return dispatch => {
-    dispatch(_searching());
+    // dispatch(_searching());
     fetch(`${AppConfig.API_HOST}tablet/apartment?${getQueryString(dataPost)}`, {
       headers: buildHeader(user),
       method: "GET",
       qs: dataPost
     })
-      .then(function (response) {
+      .then(function(response) {
         if (response.status == 401) {
           dispatch(_logout());
         } else if (response.status != 200) {
@@ -100,17 +102,17 @@ export function loadMore(values, currentPage, pageSize, user) {
           return response.json();
         }
       })
-      .then(function (responseJson) {
+      .then(function(responseJson) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
-            dispatch(_dataMore(data))
+            dispatch(_dataMore(data));
           } else {
             dispatch(_seachError());
           }
         }
       })
-      .catch(function (error) {
+      .catch(function(error) {
         dispatch(_seachError());
       });
   };
@@ -119,13 +121,12 @@ export function loadMore(values, currentPage, pageSize, user) {
 function _dataMore(data) {
   return {
     type: types.SEARCH_LOAD_MORE,
-    data: data,
+    data: data
   };
 }
 
-
 export function clearError() {
   return {
-    type: types.SEARCH_CLEAR_ERROR,
+    type: types.SEARCH_CLEAR_ERROR
   };
 }

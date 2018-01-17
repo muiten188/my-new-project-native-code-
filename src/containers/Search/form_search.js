@@ -1,77 +1,27 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
+
 import {
-  View,
-  KeyboardAvoidingView,
-  FlatList,
-  TouchableOpacity,
-  Alert
-} from "react-native";
-import {
-  Container,
   Text,
   Button,
-  Content,
-  Body,
-  Thumbnail,
   Form,
-  Item,
-  Input,
-  H1,
-  H2,
-  H3
 } from "native-base";
 import styles from "./styles";
-import HeaderForm from "../../components/Header_form";
-import HeaderContent from "../../components/Header_content";
-import { connect } from "react-redux";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import I18n from "../../i18n/i18n";
 import { InputField } from "../../components/Element/Form/index";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Field, reduxForm } from "redux-form";
-import { DateField } from "../../components/Element/Form";
-import ItemResult from "../../components/Item_result";
-import * as searchAction from "../../store/actions/containers/search_action";
-import Loading from "../../components/Loading";
 const blockAction = false;
 const blockLoadMoreAction = false;
-
 class FormSearch extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {}
   render() {
     const locale = "vn";
-    const { dispatch } = this.props.navigation;
-    const {
-      listResult,
-      isLoading,
-      searchErorr,
-      valuesForm,
-      currentPage,
-      pageSize
-    } = this.props.searchReducer;
-    const { searchAction, handleSubmit, temshow, scrollUp } = this.props;
-    const { user } = this.props.loginReducer;
-    if (searchErorr == true) {
-      Alert.alert(
-        "Thông báo",
-        "Tìm kiếm lỗi kiểm tra lại đường truyền.",
-        [
-          {
-            text: "Ok",
-            onPress: e => {
-              searchAction.clearError();
-            }
-          }
-        ],
-        { cancelable: false }
-      );
-    }
-
+    isLoading = false;
+    const { searchAction, handleSubmit, temshow, scrollUp, user } = this.props;
     return (
       <Form style={styles.formContainer}>
         <Grid>
@@ -98,17 +48,10 @@ class FormSearch extends Component {
                       blockAction = true;
                       temshow();
                       setTimeout(() => {
-                        searchAction.search(
-                          values,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
+                        searchAction(values);
                       }, 0);
                       setTimeout(() => {
-                        if (listResult.length > 0) {
-                          scrollUp();
-                        }
+                        scrollUp();
                       }, 0);
                       setTimeout(() => {
                         blockAction = false;
@@ -135,17 +78,10 @@ class FormSearch extends Component {
                       blockAction = true;
                       temshow();
                       setTimeout(() => {
-                        searchAction.search(
-                          values,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
+                        searchAction(values);
                       }, 0);
                       setTimeout(() => {
-                        if (listResult.length > 0) {
-                          scrollUp();
-                        }
+                        scrollUp();
                       }, 0);
                       setTimeout(() => {
                         blockAction = false;
@@ -172,17 +108,10 @@ class FormSearch extends Component {
                       blockAction = true;
                       temshow();
                       setTimeout(() => {
-                        searchAction.search(
-                          values,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
+                        searchAction(values);
                       }, 0);
                       setTimeout(() => {
-                        if (listResult.length > 0) {
-                          scrollUp();
-                        }
+                        scrollUp();
                       }, 0);
                       setTimeout(() => {
                         blockAction = false;
@@ -215,12 +144,10 @@ class FormSearch extends Component {
                     blockAction = true;
                     temshow();
                     setTimeout(() => {
-                      searchAction.search(values, currentPage, pageSize, user);
+                      searchAction(values);
                     }, 0);
                     setTimeout(() => {
-                      if (listResult.length > 0) {
-                        scrollUp();
-                      }
+                      scrollUp();
                     }, 0);
                     setTimeout(() => {
                       blockAction = false;
@@ -252,12 +179,10 @@ class FormSearch extends Component {
                     blockAction = true;
                     temshow();
                     setTimeout(() => {
-                      searchAction.search(values, currentPage, pageSize, user);
+                      searchAction(values);
                     }, 0);
                     setTimeout(() => {
-                      if (listResult.length > 0) {
-                        scrollUp();
-                      }
+                      scrollUp();
                     }, 0);
                     setTimeout(() => {
                       blockAction = false;
@@ -281,12 +206,10 @@ class FormSearch extends Component {
               blockAction = true;
               temshow();
               setTimeout(() => {
-                searchAction.search(values, currentPage, pageSize, user);
+                searchAction(values);
               }, 0);
               setTimeout(() => {
-                if (listResult.length > 0) {
-                  scrollUp();
-                }
+                scrollUp();
               }, 0);
               setTimeout(() => {
                 blockAction = false;

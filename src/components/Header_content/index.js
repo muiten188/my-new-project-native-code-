@@ -45,7 +45,7 @@ export default class extends Component {
             <Col style={styles.itemHeader}>
               <User
                 actions={["Đăng xuất"]}
-                onPress={(e, i) => console.log(i)}
+                onPress={(e, i) =>{}}
               />
             </Col>
           ) : null}

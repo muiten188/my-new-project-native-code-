@@ -457,7 +457,7 @@ class billList extends Component {
                         );
                         setTimeout(() => {
                           blockLoadMoreAction = false;
-                        }, 350);
+                        }, 600);
                       }
                     }
                   }}
