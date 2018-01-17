@@ -208,7 +208,7 @@ class search extends Component {
                       }
                     }
                   }}
-                  onEndReachedThreshold={10}
+                  onEndReachedThreshold={1}
                 />
                 <Loading
                   ref={ref => {
