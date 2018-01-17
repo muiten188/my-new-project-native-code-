@@ -63,7 +63,8 @@ export async function printBill(
   customerName,
   cashier,
   transactionCode,
-  month
+  month,
+  apartmentName
 ) {
   try {
     let nowDate = new Date();
@@ -110,6 +111,14 @@ export async function printBill(
             1,
             46
           );
+
+          RNXprinter.pushText(
+            _buildColBill("Toa nha:", apartmentName),
+            0,
+            1,
+            46
+          );
+
           RNXprinter.pushText(_buildColBill("NV Thu ngan:", cashier), 0, 1, 46);
           RNXprinter.pushText(
             _buildColBill("Hoa don so:", transactionCode),

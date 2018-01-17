@@ -495,7 +495,8 @@ class billList extends Component {
               state.params.apartment.ownerName,
               user.fullName,
               transactionCode,
-              this.state.bill.invoiceMonth
+              this.state.bill.invoiceMonth,
+              state.params.apartment.apartmentName
             );
           }}
         />
@@ -553,7 +554,7 @@ class billList extends Component {
             }
             setTimeout(() => {
               blockAction = false;
-            }, 1000);
+            }, 1200);
           }
         }}
       >

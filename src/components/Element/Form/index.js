@@ -42,9 +42,10 @@ export function InputField({
       {active && onClear ? (
         <Button
           transparent
+          style={{width:24,marginRight:-10}}
           onPress={onClear ? onClear : () => { }}
         >
-          <Icon name="times" />
+          <Icon name="times" style={{paddingLeft:5}} />
         </Button>
       ) : (
           <Button />

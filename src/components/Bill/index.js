@@ -139,7 +139,7 @@ export default class extends Component {
                   <Col style={styles.center}>
                     <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>
                   </Col>
-                  <Col style={{ width: 160 }}>
+                  <Col style={[styles.center, { width: 160 }]}>
                     <Text style={styles.primary}>
                       {item.invoiceDetailPaid != null &&
                       item.invoiceDetailPaid > 0
@@ -152,7 +152,7 @@ export default class extends Component {
             })}
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
-              <Col>
+              <Col style={styles.center}>
                 <H3 style={styles.textPadding}>
                   {I18n.t("billTotal", {
                     locale: locale ? locale : "vn"
@@ -161,7 +161,10 @@ export default class extends Component {
               </Col>
               <Col style={styles.center}>
                 <Item
-                  style={styles.itemBorderNone}
+                  style={[
+                    styles.itemBorderNone,
+                    { height: 50 }
+                  ]}
                   onPress={() => {
                     onTotal(total);
                   }}
@@ -169,7 +172,7 @@ export default class extends Component {
                   <H3 style={styles.textPadding}>{total.format() + " VNĐ"}</H3>
                 </Item>
               </Col>
-              <Col style={{ width: 160 }}>
+              <Col style={[styles.center, { width: 160 }]}>
                 <H3 style={[styles.primary, styles.textPadding]}>
                   {totalPaid.format() + " VNĐ"}
                 </H3>
@@ -218,7 +221,7 @@ export default class extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="building" />
+          <Icon style={{marginRight:4}} name="building" />
           <Label>
             {I18n.t("buildingCost", {
               locale: locale ? locale : "vn"
@@ -229,7 +232,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="plug" />
+          <Icon style={{marginRight:4}} name="plug" />
           <Label>
             {I18n.t("billElectric", {
               locale: locale ? locale : "vn"
@@ -240,7 +243,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="tint" />
+          <Icon style={{marginRight:4}} name="tint" />
           <Label>
             {I18n.t("billWater", {
               locale: locale ? locale : "vn"
@@ -251,7 +254,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="motorcycle" />
+          <Icon style={{marginRight:4}} name="motorcycle" />
           <Label>
             {I18n.t("motobike", {
               locale: locale ? locale : "vn"
@@ -262,7 +265,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="car" />
+          <Icon style={{marginRight:4}} name="car" />
           <Label>
             {I18n.t("car", {
               locale: locale ? locale : "vn"

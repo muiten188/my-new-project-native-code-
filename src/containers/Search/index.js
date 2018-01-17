@@ -69,7 +69,7 @@ class search extends Component {
     //   }, 500)
     // }
   }
-componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { dispatch } = this.props.navigation;
     const { isLoading, listResult } = this.props.searchReducer;
     if (
@@ -78,13 +78,13 @@ componentDidUpdate(prevProps, prevState) {
       listResult[0].apartmentId != this.currentApartment.apartmentId
     ) {
       if (!blockAction) {
-         blockAction = true;
-         this.currentApartment = listResult[0];
-         dispatch.push({ id: "BillList", apartment: listResult[0] });
-         setTimeout(() => {
-           blockAction = false;
-         }, 700)
-       } 
+        blockAction = true;
+        this.currentApartment = listResult[0];
+        dispatch.push({ id: "BillList", apartment: listResult[0] });
+        setTimeout(() => {
+          blockAction = false;
+        }, 700);
+      }
     }
   }
   render() {
@@ -96,18 +96,26 @@ componentDidUpdate(prevProps, prevState) {
       searchErorr,
       valuesForm,
       currentPage,
-      pageSize
+      pageSize,
+      loadEnd
     } = this.props.searchReducer;
+    blockLoadMoreAction = loadEnd;
     const { searchAction, handleSubmit } = this.props;
     const { user } = this.props.loginReducer;
     if (searchErorr == true) {
-      Alert.alert("Thông báo", "Tìm kiếm lỗi kiểm tra lại đường truyền.", [{
-        text: 'Ok',
-        onPress: (e) => {
-          searchAction.clearError();
-        }
-      }],
-        { cancelable: false });
+      Alert.alert(
+        "Thông báo",
+        "Tìm kiếm lỗi kiểm tra lại đường truyền.",
+        [
+          {
+            text: "Ok",
+            onPress: e => {
+              searchAction.clearError();
+            }
+          }
+        ],
+        { cancelable: false }
+      );
     }
     return (
       <Container style={styles.container}>
@@ -134,7 +142,11 @@ componentDidUpdate(prevProps, prevState) {
                 })}
               />
               <Content>
-                <FormSearch {...this.props} temshow={() => this.loading.tempShow()} scrollUp={() => this.list.scrollToIndex({ index: 0 })} />
+                <FormSearch
+                  {...this.props}
+                  temshow={() => this.loading.tempShow()}
+                  scrollUp={() => this.list.scrollToIndex({ index: 0 })}
+                />
               </Content>
             </Col>
             <Col size={68} style={[styles.grid_col, styles.col_content]}>
@@ -148,7 +160,6 @@ componentDidUpdate(prevProps, prevState) {
                 })}
               />
               <Container style={styles.listResult_container}>
-
                 <FlatList
                   ref={ref => {
                     this.list = ref;
@@ -165,12 +176,17 @@ componentDidUpdate(prevProps, prevState) {
                         !(listResult.length < pageSize)
                       ) {
                         blockLoadMoreAction = true;
-                        setTimeout(() => searchAction.loadMore(
-                          valuesForm,
-                          currentPage,
-                          pageSize,
-                          user
-                        ), 0)
+                        this.loading.tempShow();
+                        setTimeout(
+                          () =>
+                            searchAction.loadMore(
+                              valuesForm,
+                              currentPage,
+                              pageSize,
+                              user
+                            ),
+                          0
+                        );
 
                         setTimeout(() => {
                           blockLoadMoreAction = false;
@@ -180,10 +196,12 @@ componentDidUpdate(prevProps, prevState) {
                   }}
                   onEndReachedThreshold={0.5}
                 />
-                <Loading ref={ref => {
-                  this.loading = ref;
-                }}
-                  isShow={isLoading} />
+                <Loading
+                  ref={ref => {
+                    this.loading = ref;
+                  }}
+                  isShow={isLoading}
+                />
               </Container>
             </Col>
           </Grid>
