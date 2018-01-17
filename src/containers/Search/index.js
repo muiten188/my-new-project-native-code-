@@ -148,17 +148,16 @@ class search extends Component {
                 <FormSearch
                   searchAction={values => {
                     this.loading.show();
-
                     searchAction.search(values, currentPage, pageSize, user);
                     //this.setState({ a: 1 }, () => this.loading.hide());
                   }}
-                  temshow={() => {}}
+                  temshow={() => { }}
                   scrollUp={() => {
                     if (listResult.length > 0) {
                       this.list.scrollToIndex({ index: 0 });
                     }
                   }}
-                  // user={user}
+                // user={user}
                 />
               </Content>
             </Col>
@@ -182,25 +181,24 @@ class search extends Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={2}
+                  onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   onEndReached={({ distanceFromEnd }) => {
-                    if (distanceFromEnd > 0) {
+                    if (distanceFromEnd > 0 && !this.onEndReachedCalledDuringMomentum) {
+                      this.onEndReachedCalledDuringMomentum = true;
                       if (
                         !blockLoadMoreAction &&
                         !(listResult.length < pageSize)
                       ) {
                         blockLoadMoreAction = true;
-                        this.loading.show();
-
-                        setTimeout(
-                          () =>
-                            searchAction.loadMore(
-                              valuesForm,
-                              currentPage,
-                              pageSize,
-                              user
-                            ),
-                          0
-                        );
+                        // this.loading.show(),
+                        setTimeout(() => {
+                          searchAction.loadMore(
+                            valuesForm,
+                            currentPage,
+                            pageSize,
+                            user
+                          )
+                        }, 0);
 
                         setTimeout(() => {
                           if (loadEnd != true) {
@@ -210,7 +208,7 @@ class search extends Component {
                       }
                     }
                   }}
-                  onEndReachedThreshold={0.5}
+                  onEndReachedThreshold={10}
                 />
                 <Loading
                   ref={ref => {
