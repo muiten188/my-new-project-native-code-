@@ -75,6 +75,9 @@ class search extends Component {
     if (this.loading.getState() == true) {
       this.loading.hide();
     }
+    if (this.smallLoading.getState() == true) {
+      this.smallLoading.hide();
+    }
     if (
       listResult.length == 1 &&
       listResult[0].apartmentId != this.currentApartment.apartmentId
@@ -159,7 +162,15 @@ class search extends Component {
                   }}
                 // user={user}
                 />
+
+
+
               </Content>
+              <View style={{ position: 'absolute', bottom: 4, left: 4, width: 34, height: 34 }}>
+                <Loading ref={ref => {
+                  this.smallLoading = ref;
+                }} />
+              </View>
             </Col>
             <Col size={68} style={[styles.grid_col, styles.col_content]}>
               <HeaderContent
@@ -183,22 +194,24 @@ class search extends Component {
                   numColumns={2}
                   onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   onEndReached={({ distanceFromEnd }) => {
+
                     if (distanceFromEnd > 0 && !this.onEndReachedCalledDuringMomentum) {
                       this.onEndReachedCalledDuringMomentum = true;
                       if (
                         !blockLoadMoreAction &&
                         !(listResult.length < pageSize)
                       ) {
+
                         blockLoadMoreAction = true;
-                        // this.loading.show(),
-                        setTimeout(() => {
-                          searchAction.loadMore(
-                            valuesForm,
-                            currentPage,
-                            pageSize,
-                            user
-                          )
-                        }, 0);
+                        this.smallLoading.show(),
+                          setTimeout(() => {
+                            searchAction.loadMore(
+                              valuesForm,
+                              currentPage,
+                              pageSize,
+                              user
+                            )
+                          }, 0);
 
                         setTimeout(() => {
                           if (loadEnd != true) {
@@ -208,7 +221,7 @@ class search extends Component {
                       }
                     }
                   }}
-                  onEndReachedThreshold={1}
+                  onEndReachedThreshold={0.7}
                 />
                 <Loading
                   ref={ref => {

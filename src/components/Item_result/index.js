@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {PureComponent, Component } from "react";
 import {
   Container,
   Content,
@@ -23,7 +23,8 @@ import User from "../User";
 import * as AppConfig from "../../config/app_config";
 const resolveAssetSource = require('resolveAssetSource');
 const userAvar = require("../../resources/assets/user.jpg")
-export default class extends Component {
+export default class extends PureComponent
+ {
   static navigationOptions = {
     header: null
   };
