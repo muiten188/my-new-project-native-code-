@@ -194,9 +194,8 @@ class search extends Component {
                   numColumns={2}
                   onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   onEndReached={({ distanceFromEnd }) => {
-
-                    if (distanceFromEnd > 0 && !this.onEndReachedCalledDuringMomentum) {
-                      this.onEndReachedCalledDuringMomentum = true;
+                    if (distanceFromEnd > 0) {
+                      // this.onEndReachedCalledDuringMomentum = true;
                       if (
                         !blockLoadMoreAction &&
                         !(listResult.length < pageSize)
