@@ -42,7 +42,7 @@ function getBalance(apartmentId, dispatch, user) {
 export function getBillList(apartmentId, currentPage, pageSize, user) {
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
-    dispatch(_billListing());
+    // dispatch(_billListing());
     getBalance(apartmentIdParam, dispatch, user);
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
@@ -131,7 +131,7 @@ export function reset() {
 
 export function getBillFromId(aparmentId, invoiceId, user) {
   return dispatch => {
-    dispatch(_billListing());
+    // dispatch(_billListing());
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/loadById?${getQueryString({
         invoiceId: invoiceId
@@ -170,7 +170,7 @@ export function getBillFromId(aparmentId, invoiceId, user) {
 export function loadMore(apartmentId, currentPage, pageSize, user) {
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
-    dispatch(_billListing());
+    // dispatch(_billListing());
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
         aparmentId: apartmentIdParam,

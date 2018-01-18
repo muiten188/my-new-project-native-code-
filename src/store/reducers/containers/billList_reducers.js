@@ -6,7 +6,7 @@ const initState = {
   billError: false,
   listResult: [],
   currentPage: 1,
-  pageSize: 5,
+  pageSize: 4,
   billPayError: false
 };
 

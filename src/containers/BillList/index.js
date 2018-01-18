@@ -73,6 +73,7 @@ class billList extends Component {
     const { user } = this.props.loginReducer;
     const { currentPage, pageSize } = this.props.billListReducer;
     setTimeout(() => {
+      this.loading.show();
       billListAction.getBillList(
         navigation.state.params.apartment.apartmentId,
         currentPage,
@@ -120,6 +121,16 @@ class billList extends Component {
         totalCustomerPay: _value,
         totalReturn: _value - state.totalPay
       });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (this.loading.getState() == true) {
+      this.loading.hide();
+    }
+    if (this.smallLoading.getState() == true) {
+      this.smallLoading.hide();
     }
   }
 
@@ -387,6 +398,11 @@ class billList extends Component {
                   ) : null}
                 </View>
               </Content>
+              <View style={{ position: 'absolute', bottom: 4, left: 4, width: 34, height: 34 }}>
+                <Loading ref={ref => {
+                  this.smallLoading = ref;
+                }} />
+              </View>
             </Col>
             <Col size={65} style={[styles.grid_col, styles.col_content]}>
               <HeaderContent
@@ -397,7 +413,7 @@ class billList extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading isShow={isLoading} />
+
                 {/* <Item
                   style={{
                     width: "100%",
@@ -427,13 +443,15 @@ class billList extends Component {
                     <RefreshControl
                       colors={["#9Bd35A", "#689F38"]}
                       refreshing={isLoading}
-                      onRefresh={() =>
+                      onRefresh={() => {
+                        this.loading.show();
                         billListAction.getBillList(
                           navigation.state.params.apartment.apartmentId,
                           currentPage,
                           pageSize,
                           user
                         )
+                      }
                       }
                     />
                   }
@@ -449,20 +467,27 @@ class billList extends Component {
                         !(listResult.length < pageSize)
                       ) {
                         blockLoadMoreAction = true;
-                        billListAction.loadMore(
-                          navigation.state.params.apartment.apartmentId,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
+                        this.smallLoading.show();
+                        setTimeout(() => {
+                          billListAction.loadMore(
+                            navigation.state.params.apartment.apartmentId,
+                            currentPage,
+                            pageSize,
+                            user
+                          );
+                        }, 0);
+
                         setTimeout(() => {
                           blockLoadMoreAction = false;
                         }, 600);
                       }
                     }
                   }}
-                  onEndReachedThreshold={0.5}
+                  onEndReachedThreshold={0.7}
                 />
+                <Loading ref={ref => {
+                  this.loading = ref;
+                }} isShow={isLoading} />
               </Container>
             </Col>
           </Grid>
@@ -521,6 +546,7 @@ class billList extends Component {
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
     const { currentPage, pageSize } = this.props.billListReducer;
+    this.loading.show();
     setTimeout(() => {
       billListAction.getBillList(
         navigation.state.params.apartment.apartmentId,

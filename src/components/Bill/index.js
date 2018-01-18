@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent, Component } from "react";
 import {
   Container,
   Content,
@@ -22,7 +22,7 @@ import { Grid, Col, Row } from "react-native-easy-grid";
 import I18n from "../../i18n/i18n";
 import styles from "./styles";
 import User from "../User";
-export default class extends Component {
+export default class extends PureComponent {
   static navigationOptions = {
     header: null
   };
@@ -33,7 +33,7 @@ export default class extends Component {
     this.state = {
       total: 0
     };
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -142,7 +142,7 @@ export default class extends Component {
                   <Col style={[styles.center, { width: 160 }]}>
                     <Text style={styles.primary}>
                       {item.invoiceDetailPaid != null &&
-                      item.invoiceDetailPaid > 0
+                        item.invoiceDetailPaid > 0
                         ? item.invoiceDetailPaid.format() + " VNĐ"
                         : ""}
                     </Text>
@@ -221,7 +221,7 @@ export default class extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon style={{marginRight:4}} name="building" />
+          <Icon style={{ marginRight: 4 }} name="building" />
           <Label>
             {I18n.t("buildingCost", {
               locale: locale ? locale : "vn"
@@ -232,7 +232,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon style={{marginRight:4}} name="plug" />
+          <Icon style={{ marginRight: 4 }} name="plug" />
           <Label>
             {I18n.t("billElectric", {
               locale: locale ? locale : "vn"
@@ -243,7 +243,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon style={{marginRight:4}} name="tint" />
+          <Icon style={{ marginRight: 4 }} name="tint" />
           <Label>
             {I18n.t("billWater", {
               locale: locale ? locale : "vn"
@@ -254,7 +254,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon style={{marginRight:4}} name="motorcycle" />
+          <Icon style={{ marginRight: 4 }} name="motorcycle" />
           <Label>
             {I18n.t("motobike", {
               locale: locale ? locale : "vn"
@@ -265,7 +265,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon style={{marginRight:4}} name="car" />
+          <Icon style={{ marginRight: 4 }} name="car" />
           <Label>
             {I18n.t("car", {
               locale: locale ? locale : "vn"
