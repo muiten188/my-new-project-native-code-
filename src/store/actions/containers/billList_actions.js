@@ -81,6 +81,48 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
   };
 }
 
+export function refreshBillList(apartmentId, currentPage, pageSize, user) {
+  let apartmentIdParam = apartmentId || -1;
+  return dispatch => {
+    dispatch(_billListing());
+    getBalance(apartmentIdParam, dispatch, user);
+    fetch(
+      `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
+        aparmentId: apartmentIdParam,
+        currentPage: 1,
+        pageSize: pageSize
+      })}`,
+      {
+        headers: buildHeader(user),
+        method: "GET"
+      }
+    )
+      .then(function (response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
+        if (response.status != 200) {
+          dispatch(_billError());
+        } else {
+          return response.json();
+        }
+      })
+      .then(function (responseJson) {
+        if (responseJson) {
+          let billList = responseJson.data;
+          if (billList) {
+            dispatch(_billList(billList));
+          } else {
+            dispatch(_billError());
+          }
+        }
+      })
+      .catch(function (error) {
+        dispatch(_billError());
+      });
+  };
+}
+
 function _balance(balance, totalDebit) {
   return {
     type: types.BALANCE,

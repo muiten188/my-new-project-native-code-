@@ -445,12 +445,15 @@ class billList extends Component {
                       refreshing={isLoading}
                       onRefresh={() => {
                         this.loading.show();
-                        billListAction.getBillList(
-                          navigation.state.params.apartment.apartmentId,
-                          currentPage,
-                          pageSize,
-                          user
-                        )
+                        setTimeout(() => {
+                          billListAction.refreshBillList(
+                            navigation.state.params.apartment.apartmentId,
+                            currentPage,
+                            pageSize,
+                            user
+                          )
+                        }, 0);
+
                       }
                       }
                     />
