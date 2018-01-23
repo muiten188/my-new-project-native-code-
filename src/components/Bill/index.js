@@ -78,7 +78,7 @@ export default class extends PureComponent {
     for (var i = 0; i < listInvoiceDetail.length; i++) {
       total =
         total +
-        (listInvoiceDetail[i].invoiceDetailAmount == null
+        (listInvoiceDetail[i].invoiceDetailAmount == null || listInvoiceDetail[i].invoiceDetailAmount < 0
           ? 0
           : listInvoiceDetail[i].invoiceDetailAmount);
       totalPaid =
@@ -131,25 +131,23 @@ export default class extends PureComponent {
           </Grid>
         </View>
         <View style={styles.billContent}>
+
+          {listInvoiceDetail.map((item, index) => {
+            return (
+              <View key={index} style={{ flexDirection: 'row' }}>
+                <View style={[styles.center,{ flex: 1, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
+                <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text></View>
+                <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.primary}>
+                  {item.invoiceDetailPaid != null &&
+                    item.invoiceDetailPaid > 0
+                    ? item.invoiceDetailPaid.format() + " VNĐ"
+                    : ""}
+                </Text>
+                </View>
+              </View>
+            );
+          })}
           <Grid>
-            {listInvoiceDetail.map((item, index) => {
-              return (
-                <Row key={index} style={{ marginTop: 5, marginBottom: 5 }}>
-                  <Col>{this.buildRowBillDetail(item, locale)}</Col>
-                  <Col style={styles.center}>
-                    <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>
-                  </Col>
-                  <Col style={[styles.center, { width: 160 }]}>
-                    <Text style={styles.primary}>
-                      {item.invoiceDetailPaid != null &&
-                        item.invoiceDetailPaid > 0
-                        ? item.invoiceDetailPaid.format() + " VNĐ"
-                        : ""}
-                    </Text>
-                  </Col>
-                </Row>
-              );
-            })}
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
               <Col style={styles.center}>

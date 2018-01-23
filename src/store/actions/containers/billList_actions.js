@@ -173,7 +173,7 @@ export function reset() {
 
 export function getBillFromId(aparmentId, invoiceId, user) {
   return dispatch => {
-    // dispatch(_billListing());
+    dispatch(_billListing());
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/loadById?${getQueryString({
         invoiceId: invoiceId
