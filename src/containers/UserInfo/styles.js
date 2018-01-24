@@ -12,7 +12,7 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
-  center:{
+  center: {
     justifyContent: "center",
     alignItems: "center"
   },
@@ -47,7 +47,7 @@ export default {
   },
   itemAvatar: {
     borderBottomWidth: 0,
-    width: "100%"
+    width: 300
   },
   borderBottomNone: {
     borderBottomWidth: 0
@@ -55,6 +55,18 @@ export default {
   button_changepassword: {
     marginLeft: 70,
     marginRight: 30,
+    backgroundColor: "#054f9a",
+    borderRadius: 5
+  },
+  button_changepassword_save: {
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: "#054f9a",
+    borderRadius: 5
+  },
+  button_cancel: {
+    marginLeft: 15,
+    marginRight: 0,
     backgroundColor: "#054f9a",
     borderRadius: 5
   },

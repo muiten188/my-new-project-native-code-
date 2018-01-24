@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Text, TouchableOpacity, View, FlatList } from "react-native";
+import { Text, TouchableOpacity, View, FlatList, Alert } from "react-native";
 import {
   Button,
   Item,
@@ -20,7 +20,7 @@ import DatePicker from "../../components/DatePicker";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import * as appAction from "../../store/actions/app_action";
 import Loading from "../../components/Loading";
-const dateNow=new Date()
+const dateNow = new Date()
 class PayInfoModal extends Component {
   constructor(props) {
     super(props);
@@ -28,10 +28,14 @@ class PayInfoModal extends Component {
       payStartDate: dateNow,
       payEndDate: dateNow
     };
+    Number.prototype.format = function (n, x) {
+      var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
+      return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
+    };
   }
 
-  componentDidMount(){
-    this.loadData(dateNow,dateNow)
+  componentDidMount() {
+    this.loadData(dateNow, dateNow)
   }
 
   formatDate(date) {
@@ -49,10 +53,23 @@ class PayInfoModal extends Component {
   }
 
   render() {
-    const { show, onClose, transactionCode, onOk } = this.props;
+    const { show, onClose, transactionCode, onOk, onClearError } = this.props;
     const { user } = this.props.loginReducer;
-    let { listPayInfo,isLoading } = this.props.app_Reducer;
+    let { payInfo, isLoading, listPayError } = this.props.app_Reducer;
     const locale = "vn";
+    if (listPayError == true) {
+      Alert.alert(
+        "Thông báo",
+        "Lấy danh sách thanh toán thất bại vui lòng kiểm tra lại đường truyền.",
+        [
+          {
+            text: "Ok",
+            onPress: onClearError
+          }
+        ],
+        { cancelable: false }
+      );
+    }
     return (
       <Modal isVisible={show} style={styles.modal}>
         <View style={styles.modalContainer}>
@@ -130,7 +147,7 @@ class PayInfoModal extends Component {
                   }}
                   keyExtractor={this._keyExtractor}
                   style={{}}
-                  data={listPayInfo ? this.buildList(listPayInfo) : []}
+                  data={payInfo ? [payInfo] : []}
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={1}
@@ -158,28 +175,41 @@ class PayInfoModal extends Component {
     );
   }
 
-  buildList(listPayInfo) {
+  buildList(payInfo) {
     var arrResult = [];
     total = 0;
-    for (var i = 0; i < listPayInfo.length; i++) {
-      total = total + listPayInfo[i];
+    for (var i = 0; i < payInfo.length; i++) {
+      total = total + payInfo[i];
     }
-    arrResult = [...listPayInfo, total];
+    arrResult = [...payInfo, total];
     return arrResult;
   }
 
   renderFlatListItem(dataItem) {
     const item = dataItem.item;
-    const { listPayInfo } = this.props.app_Reducer;
+    const { payInfo } = this.props.app_Reducer;
+    debugger;
     return (
-      <Item key={dataItem.index} style={styles.itemPayInfo}>
-        <Label>
-          {dataItem.index == listPayInfo.length
-            ? "Tổng cộng"
-            : "Thu ngày: 15-1-2018"}
+      <View key={dataItem.index}>
+        <Item style={styles.itemPayInfo}>
+          <Label>
+            Tiền mặt:
         </Label>
-        <Text>{"0 VNĐ "}</Text>
-      </Item>
+          <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalCash ? 0 : item.totalCash.format()}{" VNĐ"}</Text>
+        </Item>
+        <Item style={styles.itemPayInfo}>
+          <Label>
+            Quẹt thẻ:
+        </Label>
+          <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalPos ? 0 : item.totalPos.format()}{" VNĐ"}</Text>
+        </Item>
+        <Item style={styles.itemPayInfo}>
+          <Label>
+            Tổng tiền:
+        </Label>
+          <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.total ? 0 : item.total.format()}{" VNĐ"}</Text>
+        </Item>
+      </View>
     );
   }
 

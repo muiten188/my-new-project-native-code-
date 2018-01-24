@@ -3,6 +3,8 @@ export const CLOSE_PAYINFO = "CLOSE_PAYINFO";
 export const SHOW_PAYINFO = "SHOW_PAYINFO";
 export const LIST_PAY_INFO = "LIST_PAY_INFO";
 export const LISTING_PAY_INFO = "LISTING_PAY_INFO";
+export const LIST_PAY_ERROR = "LIST_PAY_ERROR";
+export const LISTPAYINFO_CLEAR_ERROR="LISTPAYINFO_CLEAR_ERROR";
 //Fetch API
 export const FETCH_CATCH = "FETCH_CATCH";
 //authen
