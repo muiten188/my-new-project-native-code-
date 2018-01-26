@@ -113,7 +113,7 @@ export async function printBill(
           );
 
           RNXprinter.pushText(
-            _buildColBill("Toa nha:", apartmentName),
+            _buildColBill("Can ho:", apartmentName),
             0,
             1,
             46
