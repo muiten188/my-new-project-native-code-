@@ -73,7 +73,7 @@ export async function printBill(
       .then(address => {
         if (address && address != "") {
           RNXprinter.selectDevice(address)
-            .then(value => {})
+            .then(value => { })
             .catch(e => {
               Alert.alert(
                 "Thông báo",
@@ -152,7 +152,7 @@ export async function printBill(
           RNXprinter.pushText("Xin cam on!", 0, 1, 46);
           RNXprinter.pushCutPaper();
           RNXprinter.print()
-            .then((value, mes) => {})
+            .then((value, mes) => { })
             .catch(e => {
               Alert.alert(
                 "Thông báo",
@@ -202,8 +202,11 @@ function _buildPaymentList(allPaymentItemList, paymentItemList) {
   let billPayment = "";
   let total = 0;
   let totalPay = 0;
-  for (var i = 0; i < allPaymentItemList.length; i++) {
-    let paymentItem = allPaymentItemList[i];
+  for (var i = 0; i < paymentItemList.length; i++) {
+    let paymentItem = paymentItemList[i];
+    if (paymentItem.invoiceDetailPaid > 0 || paymentItem.invoiceDetailAmount <= 0) {
+      continue;
+    }
     let text = "";
     let title = "";
     let value = "";
@@ -233,9 +236,6 @@ function _buildPaymentList(allPaymentItemList, paymentItemList) {
     total = total + paymentItem.invoiceDetailAmount;
     text = _buildColBill(title, value);
     billPayment = billPayment + text + "\n";
-  }
-  for (var i = 0; i < paymentItemList.length; i++) {
-    let paymentItem = paymentItemList[i];
     totalPay = totalPay + paymentItem.invoiceDetailAmount;
   }
   billPayment = billPayment + "                 ---------------" + "\n";
