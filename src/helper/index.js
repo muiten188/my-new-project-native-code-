@@ -104,16 +104,15 @@ export async function printBill(
             46
           );
 
-          RNXprinter.pushText(`HOA DON THANG ${month}\n`, 0, 1, 45);
+          RNXprinter.pushText(`HOA DON THANG ${month}`, 0, 1, 45);
           RNXprinter.pushText(
-            _buildColBill("Khach hang:", customerName),
+            `Can ho: ${apartmentName}\n`,
             0,
             1,
             46
           );
-
           RNXprinter.pushText(
-            _buildColBill("Can ho:", apartmentName),
+            _buildColBill("Khach hang:", customerName),
             0,
             1,
             46
@@ -138,13 +137,14 @@ export async function printBill(
             1,
             45
           );
-          RNXprinter.pushText(
-            _buildPaymentList(allPaymentItemList, paymentItemList),
-            0,
-            1,
-            46
-          );
-          RNXprinter.pushText("", 0, 1, 46);
+          _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList),
+            // RNXprinter.pushText(
+            //   _buildPaymentList(allPaymentItemList, paymentItemList),
+            //   0,
+            //   1,
+            //   46
+            // );
+            RNXprinter.pushText("", 0, 1, 46);
           // RNXprinter.pushText(_buildColBill("", "NV Thu ngan  "), 0, 1, 46);
           // RNXprinter.pushText("\n\n",0,1,46);
           // RNXprinter.pushText(_buildColBill("", "LUU QUYNH HUONG"), 0, 1, 46);
@@ -198,7 +198,7 @@ function _buildColBill(title, value) {
   return text;
 }
 
-function _buildPaymentList(allPaymentItemList, paymentItemList) {
+function _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList) {
   let billPayment = "";
   let total = 0;
   let totalPay = 0;
@@ -238,12 +238,25 @@ function _buildPaymentList(allPaymentItemList, paymentItemList) {
     billPayment = billPayment + text + "\n";
     totalPay = totalPay + paymentItem.invoiceDetailAmount;
   }
-  billPayment = billPayment + "                 ---------------" + "\n";
-  billPayment =
-    billPayment + _buildColBill("Tong cong:", total.format() + " VND");
-  billPayment =
-    billPayment + _buildColBill("Da thanh toan:", totalPay.format() + " VND");
-  return billPayment;
+  billPayment = billPayment + "                 ---------------";
+  RNXprinter.pushText(
+    billPayment,
+    0,
+    1,
+    46
+  );
+  RNXprinter.pushText(
+    _buildColBill("Tong cong:", total.format() + " VND"),
+    0,
+    1,
+    45
+  );
+  RNXprinter.pushText(
+    _buildColBill("Da thanh toan:", totalPay.format() + " VND"),
+    0,
+    1,
+    46
+  );
 }
 
 function formatDate(date) {
