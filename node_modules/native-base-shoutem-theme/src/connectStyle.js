@@ -322,7 +322,7 @@ export default (
 
           return themeCache[path.join(">")];
         } else {
-          resolvedStyle = this.resolveStyle(context, props, styleNames);
+          const resolvedStyle = this.resolveStyle(context, props, styleNames);
           if (Object.keys(themeCache).length < 10000) {
             themeCache[path.join(">")] = resolvedStyle;
           }
