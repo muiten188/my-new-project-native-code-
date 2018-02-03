@@ -22,7 +22,7 @@ import { Grid, Col, Row } from "react-native-easy-grid";
 import I18n from "../../i18n/i18n";
 import styles from "./styles";
 import User from "../User";
-export default class extends PureComponent {
+export default class extends Component {
   static navigationOptions = {
     header: null
   };
