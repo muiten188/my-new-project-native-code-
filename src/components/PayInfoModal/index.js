@@ -96,6 +96,7 @@ class PayInfoModal extends Component {
                       mode="date"
                       placeholder="Chọn ngày thanh toán"
                       onDateChange={(date, rawDate) => {
+                        rawDate.setHours(7);
                         if (rawDate > this.state.payEndDate) {
                           this.setState({
                             payStartDate: rawDate,
@@ -121,6 +122,7 @@ class PayInfoModal extends Component {
                       mode="date"
                       placeholder="Chọn ngày thanh toán"
                       onDateChange={(date, rawDate) => {
+                        rawDate.setHours(7);
                         this.setState({ payEndDate: rawDate });
                         if (rawDate < this.state.payStartDate) {
                           this.setState({
@@ -188,7 +190,6 @@ class PayInfoModal extends Component {
   renderFlatListItem(dataItem) {
     const item = dataItem.item;
     const { payInfo } = this.props.app_Reducer;
-    debugger;
     return (
       <View key={dataItem.index}>
         <Item style={styles.itemPayInfo}>
