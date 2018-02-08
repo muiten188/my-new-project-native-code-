@@ -269,9 +269,9 @@ function formatDate(date) {
   var hour = date.getHours();
   var minutes = date.getMinutes();
   var day = date.getDate();
-  var monthIndex = date.getMonth();
+  var monthIndex = date.getMonth() + 1;
   var year = date.getFullYear();
-  return hour + ":" + minutes + " - " + day + "/" + monthIndex + 1 + "/" + year;
+  return hour + ":" + minutes + " - " + day + "/" + monthIndex + "/" + year;
 }
 
 function change_alias(alias) {
