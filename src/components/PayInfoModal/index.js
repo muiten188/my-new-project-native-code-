@@ -47,9 +47,9 @@ class PayInfoModal extends Component {
     // ];
 
     var day = date.getDate();
-    var monthIndex = date.getMonth();
+    var monthIndex = date.getMonth()+1;
     var year = date.getFullYear();
-    return day + "-" + monthIndex + 1 + "-" + year;
+    return day + "-" + monthIndex + "-" + year;
   }
 
   render() {
