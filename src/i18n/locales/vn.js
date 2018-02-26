@@ -71,5 +71,7 @@ export default {
     password:"Mật khẩu",
     newpassword:"Mật khẩu mới",
     repassword:"Nhập lại mật khẩu",
-    cancel:'Hủy bỏ'
+    cancel:'Hủy bỏ',
+    didPay:"Đã thanh toán",
+    printBill:"In hóa đơn"
   };
