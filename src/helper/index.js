@@ -64,7 +64,8 @@ export async function printBill(
   cashier,
   transactionCode,
   month,
-  apartmentName
+  apartmentName,
+  isRePrint
 ) {
   try {
     let nowDate = new Date();
@@ -137,14 +138,14 @@ export async function printBill(
             1,
             45
           );
-          _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList),
-            // RNXprinter.pushText(
-            //   _buildPaymentList(allPaymentItemList, paymentItemList),
-            //   0,
-            //   1,
-            //   46
-            // );
-            RNXprinter.pushText("", 0, 1, 46);
+          if (isRePrint) {
+            _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemList);
+          }
+          else {
+            _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList);
+          }
+
+          RNXprinter.pushText("", 0, 1, 46);
           // RNXprinter.pushText(_buildColBill("", "NV Thu ngan  "), 0, 1, 46);
           // RNXprinter.pushText("\n\n",0,1,46);
           // RNXprinter.pushText(_buildColBill("", "LUU QUYNH HUONG"), 0, 1, 46);
@@ -237,6 +238,68 @@ function _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList) {
     text = _buildColBill(title, value);
     billPayment = billPayment + text + "\n";
     totalPay = totalPay + paymentItem.invoiceDetailAmount;
+  }
+  billPayment = billPayment + "                 ---------------";
+  RNXprinter.pushText(
+    billPayment,
+    0,
+    1,
+    46
+  );
+  RNXprinter.pushText(
+    _buildColBill("Tong cong:", total.format() + " VND"),
+    0,
+    1,
+    45
+  );
+  RNXprinter.pushText(
+    _buildColBill("Da thanh toan:", totalPay.format() + " VND"),
+    0,
+    1,
+    46
+  );
+}
+
+function _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemList) {
+  let billPayment = "";
+  let total = 0;
+  let totalPay = 0;
+  debugger;
+  for (var i = 0; i < paymentItemList.length; i++) {
+    let paymentItem = paymentItemList[i];
+    if (paymentItem.paymentAmount <= 0) {
+      continue;
+    }
+    let text = "";
+    let title = "";
+    let value = "";
+    switch (paymentItem.serviceName) {
+      case "BUILDING_SERVICE":
+        title = "DV Toa nha:";
+        break;
+      case "CAR":
+        title = "Oto:";
+        break;
+      case "MOTORBIKE":
+        title = "Xe may:";
+        break;
+      case "ELECTRIC":
+        title = "Dien:";
+        break;
+      case "WATER":
+        title = "Nuoc:";
+        break;
+      case "OTHERS":
+        title = "DV Khac";
+      default:
+        title = "DV Khac";
+        break;
+    }
+    value = paymentItem.paymentAmount.format() + " VND";
+    total = total + paymentItem.paymentAmount;
+    text = _buildColBill(title, value);
+    billPayment = billPayment + text + "\n";
+    totalPay = totalPay + paymentItem.paymentAmount;
   }
   billPayment = billPayment + "                 ---------------";
   RNXprinter.pushText(

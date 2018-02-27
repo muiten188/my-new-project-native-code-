@@ -37,6 +37,7 @@ import Loading from "../../components/Loading";
 import * as navigationAction from "../../store/actions/root_navigation/root_navigation_actions";
 import HistoryPicker from "../../components/Historypicker";
 import * as historyAction from "../../store/actions/containers/history_action";
+import { printBill } from "../../helper";
 const currentDate = new Date();
 const currentListResult = null;
 class history extends Component {
@@ -102,8 +103,9 @@ class history extends Component {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
     const { historyAction, navigation } = this.props;
+    const { user } = this.props.loginReducer;
     const state = this.state;
-    console.log('aaa: ' + state.totalPay);
+    const { apartment } = this.props.navigation.state.params;
     const { listResult, isLoading, historyError } = this.props.historyReducer;
     if (historyError == true) {
       Alert.alert("Thông báo", "Lấy danh sách lịch sử giao dịch thất bại kiểm tra lại đường truyền.", [{
@@ -158,7 +160,7 @@ class history extends Component {
                   </Col>
                   <Col style={styles.col}>
                     <H3 style={styles.textPadding}>
-                      {I18n.t("didPay", {
+                      {I18n.t("didCheck", {
                         locale: locale ? locale : "vn"
                       })}
                     </H3>
@@ -262,8 +264,17 @@ class history extends Component {
                           ? styles.buttomPay_disabled
                           : styles.buttomPay
                       }
-                      onPress={() => {
-
+                      onPress={async () => {
+                        await printBill(
+                          listResult,
+                          state.arrCheck,
+                          apartment.ownerName,
+                          user.fullName,
+                          listResult[0].transactionCode,
+                          listResult[0].invoiceMonth,
+                          apartment.apartmentName,
+                          true
+                        );
                       }}
                     >
                       <Text uppercase={false}>
@@ -286,7 +297,7 @@ class history extends Component {
             numColumns={2}
           /> */}
         </View>
-      </Container>
+      </Container >
     );
   }
 
@@ -315,7 +326,6 @@ class history extends Component {
       carEmpty
     } = this.state;
     if (item.serviceName.indexOf("BUILDING") > -1) {
-      console.log('building')
       return (
         <Item style={styles.borderBottomNone}>
           <Icon
@@ -332,7 +342,6 @@ class history extends Component {
         </Item>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
-      console.log('ELECTRIC')
       return (
         <Item style={styles.borderBottomNone}>
           <Icon
@@ -349,7 +358,6 @@ class history extends Component {
         </Item>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
-      console.log('WATER')
       return (
         <Item style={styles.borderBottomNone}>
           <Icon
@@ -366,7 +374,6 @@ class history extends Component {
         </Item>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
-      console.log('MOTORBIKE')
       return (
         <Item style={styles.borderBottomNone}>
           <Icon
@@ -381,7 +388,6 @@ class history extends Component {
         </Item>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
-      console.log('CAR')
       return (
         <Item style={styles.borderBottomNone}>
           <Icon
@@ -396,7 +402,6 @@ class history extends Component {
         </Item>
       );
     } else {
-      console.log('serviceOther')
       return (
         <Item style={styles.itemBorderNone}>
           <Label style={styles.text}>
@@ -521,7 +526,6 @@ class history extends Component {
       arrCheck
     } = this.state;
     const { state } = this;
-    debugger;
     return (
       <CheckBox
         style={styles.checkBox}

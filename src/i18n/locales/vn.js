@@ -73,5 +73,6 @@ export default {
     repassword:"Nhập lại mật khẩu",
     cancel:'Hủy bỏ',
     didPay:"Đã thanh toán",
-    printBill:"In hóa đơn"
+    printBill:"In hóa đơn",
+    didCheck:"Đã chọn"
   };
