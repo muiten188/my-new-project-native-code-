@@ -47,7 +47,7 @@ class PayInfoModal extends Component {
     // ];
 
     var day = date.getDate();
-    var monthIndex = date.getMonth()+1;
+    var monthIndex = date.getMonth() + 1;
     var year = date.getFullYear();
     return day + "-" + monthIndex + "-" + year;
   }
@@ -79,7 +79,7 @@ class PayInfoModal extends Component {
                 locale: locale ? locale : "vn"
               })}
             </H3>
-            <Grid style={{ width: 460 }}>
+            <Grid style={{ width: 600, height: '100%' }}>
               <Row style={{ height: 50 }}>
                 <Col>
                   <Item
@@ -141,9 +141,9 @@ class PayInfoModal extends Component {
                   </Item>
                 </Col>
               </Row>
-              <Row style={{ marginBottom: 60 }}>
+              <Row style={{}}>
                 <Loading isShow={isLoading} />
-                <FlatList
+                {/* <FlatList
                   ref={ref => {
                     this.list = ref;
                   }}
@@ -153,27 +153,72 @@ class PayInfoModal extends Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={1}
-                />
+                /> */}
               </Row>
+              {/* <Row style={{ minHeight: 90 }}>
+
+                <Col style={styles.center}>
+                  <Item style={styles.itemPayInfo}>
+                    <Label>
+                      Tiền mặt:
+                      </Label>
+                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalCash ? 0 : payInfo.totalCash.format()}{" VNĐ"}</Text>
+                  </Item>
+                </Col>
+                <Col style={styles.center}>
+                  <Item style={styles.itemPayInfo}>
+                    <Label>
+                      Quẹt thẻ:
+                </Label>
+                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalPos ? 0 : payInfo.totalPos.format()}{" VNĐ"}</Text>
+                  </Item>
+                </Col>
+                <Col style={styles.center}>
+                  <Item style={styles.itemPayInfo}>
+                    <Label>
+                      Tổng tiền:
+                </Label>
+                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.total ? 0 : payInfo.total.format()}{" VNĐ"}</Text>
+                  </Item>
+                </Col>
+              </Row> */}
             </Grid>
+            <View style={{ width: 600, minHeight: 70, flexDirection: 'row', marginBottom: 50 }}>
+              <View style={{ flex: 1 }}>
+                <View style={[{ flex: 1, minHeight: 70, flexDirection: 'row' }, styles.center]} >
+                  <View style={[styles.center, { width: 80}]}><Label>Tiền mặt:</Label></View>
+                  <View style={[styles.center, { flex: 1 }]}><Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalCash ? 0 : payInfo.totalCash.format()}</Text></View>
+                </View>
+              </View>
+              <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, minHeight: 70, flexDirection: 'row', }}>
+                  <View style={[styles.center, { width: 80 }]}><Label> Quẹt thẻ:</Label></View>
+                  <View style={[styles.center, { flex: 1 }]}>
+                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalPos ? 0 : payInfo.totalPos.format()}</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, minHeight: 70, flexDirection: 'row', }}>
+                  <View style={[styles.center, { width: 80 }]}><Label>Tổng tiền:</Label></View>
+                  <View style={[styles.center, { flex: 1 }]}>
+                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.total ? 0 : payInfo.total.format()}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+
+
           </View>
           <Footer style={styles.Footer}>
             <Item style={styles.border_bottomNone}>
-              {/* <Button
-                onPress={onClose}
-                style={[styles.buttonOk, styles.button_margin]}
-              >
-                <Text style={[styles.textSize, styles.textCancel]}>
-                  Quay lại
-                </Text>
-              </Button> */}
               <Button onPress={onOk} style={styles.buttonCancel}>
                 <Text style={[styles.textSize, styles.textOk]}>OK</Text>
               </Button>
             </Item>
           </Footer>
         </View>
-      </Modal>
+      </Modal >
     );
   }
 
@@ -192,24 +237,36 @@ class PayInfoModal extends Component {
     const { payInfo } = this.props.app_Reducer;
     return (
       <View key={dataItem.index}>
-        <Item style={styles.itemPayInfo}>
-          <Label>
-            Tiền mặt:
-        </Label>
-          <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalCash ? 0 : item.totalCash.format()}{" VNĐ"}</Text>
-        </Item>
-        <Item style={styles.itemPayInfo}>
-          <Label>
-            Quẹt thẻ:
-        </Label>
-          <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalPos ? 0 : item.totalPos.format()}{" VNĐ"}</Text>
-        </Item>
-        <Item style={styles.itemPayInfo}>
-          <Label>
-            Tổng tiền:
-        </Label>
-          <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.total ? 0 : item.total.format()}{" VNĐ"}</Text>
-        </Item>
+        <Grid>
+          <Row>
+            <Col>
+              <Item style={styles.itemPayInfo}>
+                <Label>
+                  Tiền mặt:
+                </Label>
+                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalCash ? 0 : item.totalCash.format()}{" VNĐ"}</Text>
+              </Item>
+            </Col>
+            <Col>
+              <Item style={styles.itemPayInfo}>
+                <Label>
+                  Quẹt thẻ:
+                </Label>
+                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalPos ? 0 : item.totalPos.format()}{" VNĐ"}</Text>
+              </Item>
+            </Col>
+            <Col>
+              <Item style={styles.itemPayInfo}>
+                <Label>
+                  Tổng tiền:
+                </Label>
+                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.total ? 0 : item.total.format()}{" VNĐ"}</Text>
+              </Item>
+            </Col>
+
+          </Row>
+        </Grid>
+
       </View>
     );
   }

@@ -67,7 +67,7 @@ export default {
     incresePeriod:'PS Trong kỳ',
     customerPay:'Khách hàng thanh toán',
     customerRePay:'Trả lại',
-    payOfDay:"Thanh toán trong ngày",
+    payOfDay:"Thanh toán trong ngày (VNĐ)",
     password:"Mật khẩu",
     newpassword:"Mật khẩu mới",
     repassword:"Nhập lại mật khẩu",

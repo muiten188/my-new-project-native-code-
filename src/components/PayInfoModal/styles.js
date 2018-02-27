@@ -9,9 +9,13 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
+  center: {
+    alignItems: "center", 
+    justifyContent:'center'
+  },
   modalContainer: {
-    width: 460,
-    height: 300,
+    width: 600,
+    height: 370,
     borderRadius: 4,
     borderColor: "#cecece",
     backgroundColor: "#fff",
@@ -63,19 +67,20 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
-  item_content:{
-      marginTop:10
+  item_content: {
+    marginTop: 10
   },
-  codeText:{
+  codeText: {
     color: "#054f9a",
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
-  textPadding:{
-    paddingBottom:7
+  textPadding: {
+    paddingBottom: 7
   },
-  itemPayInfo:{
-    borderBottomWidth:0,
-    height:30,
-    paddingLeft:20
+  itemPayInfo: {
+    borderBottomWidth: 0,
+    height: 30,
+    paddingLeft: 5,
+    paddingRight: 5
   }
 };
