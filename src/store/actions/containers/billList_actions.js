@@ -33,6 +33,9 @@ function getBalance(apartmentId, dispatch, user) {
           dispatch(_billError());
         }
       }
+      else {
+        dispatch(_billError());
+      }
     })
     .catch(function (error) {
       dispatch(_billError());
@@ -73,6 +76,9 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
           } else {
             dispatch(_billError());
           }
+        }
+        else {
+          dispatch(_billError());
         }
       })
       .catch(function (error) {
@@ -115,6 +121,9 @@ export function refreshBillList(apartmentId, currentPage, pageSize, user) {
           } else {
             dispatch(_billError());
           }
+        }
+        else {
+          dispatch(_billError());
         }
       })
       .catch(function (error) {
@@ -202,6 +211,9 @@ export function getBillFromId(aparmentId, invoiceId, user) {
             dispatch(_billError());
           }
         }
+        else {
+          dispatch(_billError());
+        }
       })
       .catch(function (error) {
         dispatch(_billError());
@@ -242,6 +254,9 @@ export function loadMore(apartmentId, currentPage, pageSize, user) {
           } else {
             dispatch(_billError());
           }
+        }
+        else {
+          dispatch(_billError());
         }
       })
       .catch(function (error) {

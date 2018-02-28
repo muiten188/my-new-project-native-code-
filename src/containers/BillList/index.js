@@ -509,7 +509,7 @@ class billList extends Component {
             }, 0);
           }}
           onPay={async () => {
-            this.setState({ isModalVisible: false });
+            //this.setState({ isModalVisible: false });
             setTimeout(() => {
               billListAction.getBillFromId(
                 this.state.bill.apartmentId,

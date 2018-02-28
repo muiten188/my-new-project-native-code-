@@ -18,7 +18,7 @@ export function getHistory(apartmentId, currentTime, user) {
         method: "GET"
       }
     )
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         }
@@ -28,7 +28,7 @@ export function getHistory(apartmentId, currentTime, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           let historyList = responseJson.data;
           if (historyList) {
@@ -37,8 +37,11 @@ export function getHistory(apartmentId, currentTime, user) {
             dispatch(_historyError());
           }
         }
+        else {
+          dispatch(_historyError());
+        }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_historyError());
       });
   };

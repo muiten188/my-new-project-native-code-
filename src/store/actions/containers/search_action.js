@@ -14,7 +14,7 @@ export function search(values, currentPage, pageSize, user) {
       method: "GET",
       qs: dataPost
     })
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         } else if (response.status != 200) {
@@ -23,7 +23,7 @@ export function search(values, currentPage, pageSize, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
@@ -32,8 +32,11 @@ export function search(values, currentPage, pageSize, user) {
             dispatch(_seachError());
           }
         }
+        else {
+          dispatch(_seachError());
+        }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_seachError());
       });
   };
@@ -93,7 +96,7 @@ export function loadMore(values, currentPage, pageSize, user) {
       method: "GET",
       qs: dataPost
     })
-      .then(function(response) {
+      .then(function (response) {
         if (response.status == 401) {
           dispatch(_logout());
         } else if (response.status != 200) {
@@ -102,7 +105,7 @@ export function loadMore(values, currentPage, pageSize, user) {
           return response.json();
         }
       })
-      .then(function(responseJson) {
+      .then(function (responseJson) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
@@ -112,7 +115,7 @@ export function loadMore(values, currentPage, pageSize, user) {
           }
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         dispatch(_seachError());
       });
   };

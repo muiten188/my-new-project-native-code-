@@ -39,7 +39,7 @@ const userAvar = require("../../resources/assets/user.jpg");
 const blockAction = false;
 const validate = values => {
   const error = {};
-  // debugger;
+  // 
   error.password = "";
   error.newPassword = "";
   error.rePassword = "";
@@ -381,7 +381,7 @@ function mapStateToProps(state, props) {
   } catch (error) {
 
   }
-  debugger;
+  
   return {
     initialValues: state.userInfoReducer.user,
     user: state.userInfoReducer.user

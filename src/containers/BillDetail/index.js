@@ -1078,7 +1078,7 @@ class billDetail extends Component {
           }
         })
         .catch(() => {
-          debugger;
+          
           RNXprinter.pickPrinter();
         });
       RNXprinter.pushText("text center", 0, 1);
@@ -1093,7 +1093,7 @@ class billDetail extends Component {
       // RNXprinter.pushCutPaper();
       RNXprinter.print();
     } catch (e) {
-      debugger;
+      
       Alert.alert(
         "Thông báo",
         "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"

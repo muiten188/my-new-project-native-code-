@@ -264,7 +264,7 @@ function _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemLis
   let billPayment = "";
   let total = 0;
   let totalPay = 0;
-  debugger;
+  
   for (var i = 0; i < paymentItemList.length; i++) {
     let paymentItem = paymentItemList[i];
     if (paymentItem.paymentAmount <= 0) {

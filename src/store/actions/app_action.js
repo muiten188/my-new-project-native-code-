@@ -23,7 +23,7 @@ export function showPayInfo() {
 
 export function getPayInfo(startDate, endDate, user) {
   return dispatch => {
-    dispatch(_getingPayInfo());
+    // dispatch(_getingPayInfo());
     fetch(
       `${AppConfig.API_HOST}tablet/sumaryPayment?${getQueryString({
         fromDate: startDate.toISOString(),
@@ -60,9 +60,120 @@ export function getPayInfo(startDate, endDate, user) {
   }
 }
 
+export function searchPayInfo(values, currentPage, pageSize, user) {
+  let data = [];
+  let dataPost = values || {};
+  dataPost = { ...dataPost, currentPage: 1, pageSize: pageSize };
+  return dispatch => {
+    //dispatch(_searching());
+
+    fetch(`${AppConfig.API_HOST}tablet/pagingPaymentReport?${getQueryString(dataPost)}`, {
+      headers: buildHeader(user),
+      method: "GET",
+      qs: dataPost
+    })
+      .then(function (response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        } else if (response.status != 200) {
+          dispatch(_seachPayInfoError());
+        } else {
+          return response.json();
+        }
+      })
+      .then(function (responseJson) {
+        if (responseJson) {
+          if (responseJson.data) {
+            data = responseJson.data;
+            dispatch(_searchPayInfo(data, dataPost));
+          } else {
+            dispatch(_seachPayInfoError());
+          }
+        }
+        else {
+          dispatch(_seachPayInfoError());
+        }
+      })
+      .catch(function (error) {
+        dispatch(_seachPayInfoError());
+      });
+  };
+}
+
+function _searchPayInfo(data, valuesForm) {
+  return {
+    type: types.LISTPAYINFO,
+    data: data,
+    isLoading: false,
+    valuesForm: valuesForm
+  };
+}
+
+function _seachPayInfoError() {
+  return {
+    type: types.SEARCH_PAYINFO_ERROR,
+    isLoading: false
+  };
+}
+
+export function loadPayInfoMore(values, currentPage, pageSize, user) {
+  let data = [];
+  let dataPost = values || {};
+  dataPost = { ...dataPost, currentPage: currentPage + 1, pageSize: pageSize };
+  debugger;
+  return dispatch => {
+    // dispatch(_searching());
+    fetch(`${AppConfig.API_HOST}tablet/pagingPaymentReport?${getQueryString(dataPost)}`, {
+      headers: buildHeader(user),
+      method: "GET",
+      qs: dataPost
+    })
+      .then(function (response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        } else if (response.status != 200) {
+          dispatch(_seachPayInfoError());
+        } else {
+          return response.json();
+        }
+      })
+      .then(function (responseJson) {
+        if (responseJson) {
+          if (responseJson.data) {
+            data = responseJson.data;
+
+            dispatch(_dataPayInfoMore(data));
+          } else {
+            dispatch(_seachPayInfoError());
+          }
+        }
+        else {
+          dispatch(_seachPayInfoError());
+        }
+      })
+      .catch(function (error) {
+        dispatch(_seachPayInfoError());
+      });
+  };
+}
+
+function _dataPayInfoMore(data) {
+  return {
+    type: types.SEARCH_PAYINFO_LOAD_MORE,
+    data: data
+  };
+}
+
+
 export function clearPayListError() {
   return {
     type: types.LISTPAYINFO_CLEAR_ERROR,
+  };
+}
+
+export function resetState() {
+  return {
+    type: types.RESET_APPSTATE
   };
 }
 
@@ -84,6 +195,7 @@ function _listPayError() {
     type: types.LIST_PAY_ERROR
   };
 }
+
 
 function getQueryString(params) {
   return Object.keys(params)

@@ -14,8 +14,8 @@ export default {
     justifyContent:'center'
   },
   modalContainer: {
-    width: 600,
-    height: 370,
+    // width: 600,
+    // height: 420,
     borderRadius: 4,
     borderColor: "#cecece",
     backgroundColor: "#fff",
@@ -27,7 +27,7 @@ export default {
   },
   Footer: {
     position: "absolute",
-    bottom: 0,
+    bottom: 30,
     backgroundColor: "#fff",
     borderTopWidth: 1,
     borderColor: "#cecece"
@@ -63,7 +63,7 @@ export default {
     color: "#054f9a"
   },
   modalContent: {
-    paddingTop: 10,
+    paddingTop: 30,
     justifyContent: "center",
     alignItems: "center"
   },

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Text, TouchableOpacity, View, FlatList, Alert } from "react-native";
+import { Text, TouchableOpacity, View, FlatList, Alert, Dimensions } from "react-native";
 import {
   Button,
   Item,
@@ -21,6 +21,10 @@ import { Grid, Col, Row } from "react-native-easy-grid";
 import * as appAction from "../../store/actions/app_action";
 import Loading from "../../components/Loading";
 const dateNow = new Date()
+const blockAction = false;
+const blockLoadMoreAction = false;
+const wd_width = Dimensions.get('window').width;
+const wd_height = Dimensions.get('window').height;
 class PayInfoModal extends Component {
   constructor(props) {
     super(props);
@@ -36,6 +40,16 @@ class PayInfoModal extends Component {
 
   componentDidMount() {
     this.loadData(dateNow, dateNow)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.smallLoading.getState() == true) {
+      this.smallLoading.hide();
+    }
+  }
+  componentWillUnmount() {
+    const { appAction } = this.props;
+    appAction.resetState();
   }
 
   formatDate(date) {
@@ -55,7 +69,8 @@ class PayInfoModal extends Component {
   render() {
     const { show, onClose, transactionCode, onOk, onClearError } = this.props;
     const { user } = this.props.loginReducer;
-    let { payInfo, isLoading, listPayError } = this.props.app_Reducer;
+    const { payInfo, isLoading, listPayError, listResult, pageSize, currentPage, loadEnd } = this.props.app_Reducer;
+    const { appAction } = this.props;
     const locale = "vn";
     if (listPayError == true) {
       Alert.alert(
@@ -72,14 +87,14 @@ class PayInfoModal extends Component {
     }
     return (
       <Modal isVisible={show} style={styles.modal}>
-        <View style={styles.modalContainer}>
+        <View style={[styles.modalContainer, { width: wd_width * 0.9, height: wd_height * 0.9 }]}>
           <View style={styles.modalContent}>
             <H3 style={[styles.item_content, styles.textPadding]}>
               {I18n.t("payOfDay", {
                 locale: locale ? locale : "vn"
               })}
             </H3>
-            <Grid style={{ width: 600, height: '100%' }}>
+            <Grid style={{ width: wd_width * 0.9, height: 200, paddingLeft: 6, paddingRight: 6 }}>
               <Row style={{ height: 50 }}>
                 <Col>
                   <Item
@@ -141,57 +156,74 @@ class PayInfoModal extends Component {
                   </Item>
                 </Col>
               </Row>
+              <Row style={{ height: 35 }}>
+                <View style={{ width: wd_width * 0.9, flexDirection: 'row' }}>
+                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+                    <Label>Tiền mặt:</Label>
+                  </View>
+                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+                    <Label>Tiền đất:</Label>
+                  </View>
+                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+                    <Label>Tiền quýt:</Label>
+                  </View>
+                </View>
+              </Row>
               <Row style={{}}>
-                <Loading isShow={isLoading} />
-                {/* <FlatList
+                <Loading ref={ref => {
+                  this.smallLoading = ref;
+                }} isShow={isLoading} />
+
+                <FlatList
                   ref={ref => {
                     this.list = ref;
                   }}
                   keyExtractor={this._keyExtractor}
                   style={{}}
-                  data={payInfo ? [payInfo] : []}
+                  data={listResult ? listResult : []}
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={1}
-                /> */}
-              </Row>
-              {/* <Row style={{ minHeight: 90 }}>
+                  onEndReached={({ distanceFromEnd }) => {
+                    if (distanceFromEnd > 0) {
+                      // this.onEndReachedCalledDuringMomentum = true;
+                      if (
+                        !blockLoadMoreAction &&
+                        !(listResult.length < pageSize)
+                      ) {
 
-                <Col style={styles.center}>
-                  <Item style={styles.itemPayInfo}>
-                    <Label>
-                      Tiền mặt:
-                      </Label>
-                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalCash ? 0 : payInfo.totalCash.format()}{" VNĐ"}</Text>
-                  </Item>
-                </Col>
-                <Col style={styles.center}>
-                  <Item style={styles.itemPayInfo}>
-                    <Label>
-                      Quẹt thẻ:
-                </Label>
-                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalPos ? 0 : payInfo.totalPos.format()}{" VNĐ"}</Text>
-                  </Item>
-                </Col>
-                <Col style={styles.center}>
-                  <Item style={styles.itemPayInfo}>
-                    <Label>
-                      Tổng tiền:
-                </Label>
-                    <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.total ? 0 : payInfo.total.format()}{" VNĐ"}</Text>
-                  </Item>
-                </Col>
-              </Row> */}
+                        blockLoadMoreAction = true;
+                        this.smallLoading.show();
+                          setTimeout(() => {
+                            appAction.loadPayInfoMore(
+                              { startDate: this.state.payStartDate.toISOString(), endDate: this.state.payEndDate.toISOString() },
+                              currentPage,
+                              pageSize,
+                              user
+                            )
+                          }, 0);
+
+                        setTimeout(() => {
+                          if (loadEnd != true) {
+                            blockLoadMoreAction = false;
+                          }
+                        }, 700);
+                      }
+                    }
+                  }}
+                  onEndReachedThreshold={0.7}
+                />
+              </Row>
             </Grid>
-            <View style={{ width: 600, minHeight: 70, flexDirection: 'row', marginBottom: 50 }}>
+            <View style={{ width: wd_width * 0.9, paddingLeft: 6, paddingRight: 6, minHeight: 45, flexDirection: 'row', marginBottom: 90, borderTopWidth: 1, borderTopColor: '#cecece' }}>
               <View style={{ flex: 1 }}>
-                <View style={[{ flex: 1, minHeight: 70, flexDirection: 'row' }, styles.center]} >
-                  <View style={[styles.center, { width: 80}]}><Label>Tiền mặt:</Label></View>
+                <View style={[{ flex: 1, minHeight: 45, flexDirection: 'row' }, styles.center]} >
+                  <View style={[styles.center, { width: 80 }]}><Label>Tiền mặt:</Label></View>
                   <View style={[styles.center, { flex: 1 }]}><Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalCash ? 0 : payInfo.totalCash.format()}</Text></View>
                 </View>
               </View>
               <View style={{ flex: 1 }}>
-                <View style={{ flex: 1, minHeight: 70, flexDirection: 'row', }}>
+                <View style={{ flex: 1, minHeight: 45, flexDirection: 'row', }}>
                   <View style={[styles.center, { width: 80 }]}><Label> Quẹt thẻ:</Label></View>
                   <View style={[styles.center, { flex: 1 }]}>
                     <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalPos ? 0 : payInfo.totalPos.format()}</Text>
@@ -199,7 +231,7 @@ class PayInfoModal extends Component {
                 </View>
               </View>
               <View style={{ flex: 1 }}>
-                <View style={{ flex: 1, minHeight: 70, flexDirection: 'row', }}>
+                <View style={{ flex: 1, minHeight: 45, flexDirection: 'row', }}>
                   <View style={[styles.center, { width: 80 }]}><Label>Tổng tiền:</Label></View>
                   <View style={[styles.center, { flex: 1 }]}>
                     <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.total ? 0 : payInfo.total.format()}</Text>
@@ -207,8 +239,6 @@ class PayInfoModal extends Component {
                 </View>
               </View>
             </View>
-
-
           </View>
           <Footer style={styles.Footer}>
             <Item style={styles.border_bottomNone}>
@@ -237,36 +267,30 @@ class PayInfoModal extends Component {
     const { payInfo } = this.props.app_Reducer;
     return (
       <View key={dataItem.index}>
-        <Grid>
-          <Row>
-            <Col>
-              <Item style={styles.itemPayInfo}>
-                <Label>
-                  Tiền mặt:
-                </Label>
-                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalCash ? 0 : item.totalCash.format()}{" VNĐ"}</Text>
-              </Item>
-            </Col>
-            <Col>
-              <Item style={styles.itemPayInfo}>
-                <Label>
-                  Quẹt thẻ:
-                </Label>
-                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.totalPos ? 0 : item.totalPos.format()}{" VNĐ"}</Text>
-              </Item>
-            </Col>
-            <Col>
-              <Item style={styles.itemPayInfo}>
-                <Label>
-                  Tổng tiền:
-                </Label>
-                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!item.total ? 0 : item.total.format()}{" VNĐ"}</Text>
-              </Item>
-            </Col>
-
-          </Row>
-        </Grid>
-
+        <View style={{ width: wd_width * 0.9, minHeight: 50, flexDirection: 'row' }}>
+          <View style={{ flex: 1 }}>
+            <View style={[{ flex: 1, flexDirection: 'row' }, styles.center]} >
+              <View style={[styles.center, { width: 80 }]}><Label>Tiền mặt:</Label></View>
+              <View style={[styles.center, { flex: 1 }]}><Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalCash ? 0 : payInfo.totalCash.format()}</Text></View>
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, flexDirection: 'row', }}>
+              <View style={[styles.center, { width: 80 }]}><Label> Quẹt thẻ:</Label></View>
+              <View style={[styles.center, { flex: 1 }]}>
+                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalPos ? 0 : payInfo.totalPos.format()}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, flexDirection: 'row', }}>
+              <View style={[styles.center, { width: 80 }]}><Label>Tổng tiền:</Label></View>
+              <View style={[styles.center, { flex: 1 }]}>
+                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.total ? 0 : payInfo.total.format()}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
       </View>
     );
   }
@@ -277,7 +301,9 @@ class PayInfoModal extends Component {
 
   loadData(startDate, endDate) {
     const { appAction } = this.props;
+    const { currentPage, pageSize } = this.props.app_Reducer;
     const { user } = this.props.loginReducer;
+    appAction.searchPayInfo({ fromDate: startDate.toISOString(), toDate: endDate.toISOString() }, currentPage, pageSize, user, user);
     appAction.getPayInfo(startDate, endDate, user);
   }
 }
