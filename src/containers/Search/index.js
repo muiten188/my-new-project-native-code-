@@ -264,7 +264,10 @@ class search extends Component {
           position={item.apartmentName}
           phone={item.ownerPhone}
           avatarUrl={item.avatarUrl}
+          item={item}
         />
+        {item.paymentStatus == true ? <Icon style={styles.check} name="check"></Icon> : null}
+
       </TouchableOpacity>
     );
   }

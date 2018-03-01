@@ -86,7 +86,7 @@ class billDetail extends Component {
     I18n.defaultLocale = "vi";
     I18n.locale = "vi";
     I18n.currentLocale();
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -193,31 +193,38 @@ class billDetail extends Component {
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
-        <Item style={styles.borderBottomNone}>
-          <Icon
-            name="motorcycle"
-            style={[styles.icon, bikeEmpty ? styles.label_row_empty : {}]}
-          />
-          <Label style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-            {I18n.t("bikeCost", {
-              locale: locale ? locale : "vn"
-            })}
-          </Label>
-        </Item>
+        <View style={{ alignItems: 'center' }}>
+          <Item style={styles.borderBottomNone}>
+            <Icon
+              name="motorcycle"
+              style={[styles.icon, bikeEmpty ? styles.label_row_empty : {}]}
+            />
+            <Label style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
+              {I18n.t("bikeCost", {
+                locale: locale ? locale : "vn"
+              })}
+            </Label>
+          </Item>
+          <Label>{item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}</Label>
+        </View>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
-        <Item style={styles.borderBottomNone}>
-          <Icon
-            name="car"
-            style={[styles.icon, carEmpty ? styles.label_row_empty : {}]}
-          />
-          <Label style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-            {I18n.t("carCost", {
-              locale: locale ? locale : "vn"
-            })}
-          </Label>
-        </Item>
+        <View style={{ alignItems: 'center' }}>
+          <Item style={styles.borderBottomNone}>
+            <Icon
+              name="car"
+              style={[styles.icon, carEmpty ? styles.label_row_empty : {}]}
+            />
+            <Label style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
+              {I18n.t("carCost", {
+                locale: locale ? locale : "vn"
+              })}
+            </Label>
+
+          </Item>
+          <Label>{item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}</Label>
+        </View>
       );
     } else {
       return (
@@ -246,7 +253,7 @@ class billDetail extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -254,30 +261,30 @@ class billDetail extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else {
       return (
-        <Text style={styles.text}>{item.earlyPeriod.format() + " VNĐ"}</Text>
+        <Text style={styles.text}>{item.earlyPeriod.format() + " "}</Text>
       );
     }
   }
@@ -296,7 +303,7 @@ class billDetail extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -304,30 +311,30 @@ class billDetail extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else {
       return (
-        <Text style={styles.text}>{item.arisingPeriod.format() + " VNĐ"}</Text>
+        <Text style={styles.text}>{item.arisingPeriod.format() + " "}</Text>
       );
     }
   }
@@ -345,7 +352,7 @@ class billDetail extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -353,31 +360,31 @@ class billDetail extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else {
       return (
         <Text style={styles.text}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     }
@@ -402,7 +409,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -414,7 +421,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
@@ -426,7 +433,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
@@ -438,7 +445,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
@@ -450,13 +457,13 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else {
       return (
         <Text style={styles.text}>
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     }
@@ -490,34 +497,34 @@ class billDetail extends Component {
             (temp2["creditPay" + item.invoiceDetailId] = false);
           state["cashPay" + item.invoiceDetailId] == true
             ? this.setState({
-                ...temp,
-                creditAll: false,
-                cashAll: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return i.invoiceDetailId != item.invoiceDetailId;
-                })
+              ...temp,
+              creditAll: false,
+              cashAll: false,
+              totalPay: state.totalPay - item.invoiceDetailAmount,
+              totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
+              paymentItemList: state.paymentItemList.filter((i, index) => {
+                return i.invoiceDetailId != item.invoiceDetailId;
               })
+            })
             : this.setState({
-                ...temp,
-                ...temp2,
-                creditAll: false,
-                cashAll: false,
-                totalPay:
-                  state["creditPay" + item.invoiceDetailId] != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
-                totalCreditPay:
-                  state["creditPay" + item.invoiceDetailId] != true
-                    ? state.totalCreditPay
-                    : state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
+              ...temp,
+              ...temp2,
+              creditAll: false,
+              cashAll: false,
+              totalPay:
+                state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay,
+              totalCashPay: state.totalCashPay + item.invoiceDetailAmount,
+              totalCreditPay:
+                state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalCreditPay
+                  : state.totalCreditPay - item.invoiceDetailAmount,
+              paymentItemList:
+                state.paymentItemList.indexOf(item) == -1
+                  ? [...state.paymentItemList, item]
+                  : state.paymentItemList
+            });
         }}
       />
     );
@@ -551,34 +558,34 @@ class billDetail extends Component {
             (temp2["cashPay" + item.invoiceDetailId] = false);
           state["creditPay" + item.invoiceDetailId] == true
             ? this.setState({
-                ...temp,
-                creditAll: false,
-                cashAll: false,
-                totalPay: state.totalPay - item.invoiceDetailAmount,
-                totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
-                paymentItemList: state.paymentItemList.filter((i, index) => {
-                  return i.invoiceDetailId != item.invoiceDetailId;
-                })
+              ...temp,
+              creditAll: false,
+              cashAll: false,
+              totalPay: state.totalPay - item.invoiceDetailAmount,
+              totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
+              paymentItemList: state.paymentItemList.filter((i, index) => {
+                return i.invoiceDetailId != item.invoiceDetailId;
               })
+            })
             : this.setState({
-                ...temp,
-                ...temp2,
-                creditAll: false,
-                cashAll: false,
-                totalPay:
-                  state["cashPay" + item.invoiceDetailId] != true
-                    ? state.totalPay + item.invoiceDetailAmount
-                    : state.totalPay,
-                totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
-                totalCashPay:
-                  state["cashPay" + item.invoiceDetailId] != true
-                    ? state.totalCashPay
-                    : state.totalCashPay - item.invoiceDetailAmount,
-                paymentItemList:
-                  state.paymentItemList.indexOf(item) == -1
-                    ? [...state.paymentItemList, item]
-                    : state.paymentItemList
-              });
+              ...temp,
+              ...temp2,
+              creditAll: false,
+              cashAll: false,
+              totalPay:
+                state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay,
+              totalCreditPay: state.totalCreditPay + item.invoiceDetailAmount,
+              totalCashPay:
+                state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalCashPay
+                  : state.totalCashPay - item.invoiceDetailAmount,
+              paymentItemList:
+                state.paymentItemList.indexOf(item) == -1
+                  ? [...state.paymentItemList, item]
+                  : state.paymentItemList
+            });
         }}
       />
     );
@@ -913,8 +920,8 @@ class billDetail extends Component {
                       ]}
                     >
                       {state.totalPay <= 0
-                        ? "0 VNĐ"
-                        : state.totalPay.format() + " VNĐ"}
+                        ? "0 "
+                        : state.totalPay.format() + " "}
                     </H1>
                   </Item>
 
@@ -928,25 +935,26 @@ class billDetail extends Component {
                       <Item style={[styles.pay_item, styles.borderBottomNone]}>
                         <Icon name="money" style={styles.icon} />
                         <Text>
-                          {state.totalCashPay.format() + " VNĐ"}{" "}
+                          {state.totalCashPay.format() + " "}{" "}
                           {state.payBalance > 0
-                            ? " - " + state.payBalance.format() + " VNĐ"
+                            ? " - " + state.payBalance.format() + " "
                             : ""}
                         </Text>
                       </Item>
                       <Item style={[styles.pay_item, styles.borderBottomNone]}>
                         <Icon name="credit-card-alt" style={styles.icon} />
-                        <Text>{state.totalCreditPay.format() + " VNĐ"}</Text>
+                        <Text>{state.totalCreditPay.format() + " "}</Text>
                       </Item>
                       <Button
                         full
                         disabled={
-                          state.paymentItemList &&
-                          state.paymentItemList.length <= 0
+                          bill.invoiceStatus == "COMPLETE" || (
+                            state.paymentItemList &&
+                            state.paymentItemList.length <= 0)
                         }
                         style={
                           state.paymentItemList &&
-                          state.paymentItemList.length <= 0
+                            state.paymentItemList.length <= 0
                             ? styles.buttomPay_disabled
                             : styles.buttomPay
                         }
@@ -979,7 +987,7 @@ class billDetail extends Component {
                       type={"money"}
                       options={{
                         unit: "",
-                        suffixUnit: "VNĐ",
+                        suffixUnit: "",
                         precision: 0,
                         separator: " ",
                         zeroCents: true
@@ -1012,7 +1020,7 @@ class billDetail extends Component {
                           style={{ width: "100%", fontSize: 20, marginTop: 6 }}
                         >
                           {this.state.totalReturn.format()}
-                          {" VNĐ"}
+                          {" "}
                         </Text>
                       </Item>
                     </View>
@@ -1078,7 +1086,7 @@ class billDetail extends Component {
           }
         })
         .catch(() => {
-          
+
           RNXprinter.pickPrinter();
         });
       RNXprinter.pushText("text center", 0, 1);
@@ -1093,7 +1101,7 @@ class billDetail extends Component {
       // RNXprinter.pushCutPaper();
       RNXprinter.print();
     } catch (e) {
-      
+
       Alert.alert(
         "Thông báo",
         "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"

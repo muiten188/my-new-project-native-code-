@@ -120,7 +120,6 @@ export function loadPayInfoMore(values, currentPage, pageSize, user) {
   let data = [];
   let dataPost = values || {};
   dataPost = { ...dataPost, currentPage: currentPage + 1, pageSize: pageSize };
-  debugger;
   return dispatch => {
     // dispatch(_searching());
     fetch(`${AppConfig.API_HOST}tablet/pagingPaymentReport?${getQueryString(dataPost)}`, {

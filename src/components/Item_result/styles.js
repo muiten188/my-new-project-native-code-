@@ -17,8 +17,6 @@ export default {
     minHeight: 145,
     backgroundColor: "#fff",
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#b5b5b5",
     justifyContent: "center",
     alignItems: "flex-start",
     paddingLeft: 20,

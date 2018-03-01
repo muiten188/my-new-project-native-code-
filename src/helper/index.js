@@ -322,7 +322,7 @@ function _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemLis
   );
 }
 
-function formatDate(date) {
+export function formatDate(date) {
   // var monthNames = [
   //   "January", "February", "March",
   //   "April", "May", "June", "July",

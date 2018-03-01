@@ -12,6 +12,15 @@ export default {
   grid_col: {
     height: "100%"
   },
+  check:{
+    position:'absolute',
+    bottom:25,
+    right:50,
+    color:'#28a745',
+    height:40,
+    width:40,
+    fontSize:33
+  },  
   col_form: {
     backgroundColor: "#fff",
     shadowColor: "#000",

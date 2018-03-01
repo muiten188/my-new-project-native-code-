@@ -135,12 +135,12 @@ export default class extends Component {
           {listInvoiceDetail.map((item, index) => {
             return (
               <View key={index} style={{ flexDirection: 'row' }}>
-                <View style={[styles.center,{ flex: 1, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
-                <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text></View>
+                <View style={[styles.center, { flex: 1, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
+                <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text>{item.invoiceDetailAmount.format() + " "}</Text></View>
                 <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.primary}>
                   {item.invoiceDetailPaid != null &&
                     item.invoiceDetailPaid > 0
-                    ? item.invoiceDetailPaid.format() + " VNĐ"
+                    ? item.invoiceDetailPaid.format() + " "
                     : ""}
                 </Text>
                 </View>
@@ -167,12 +167,12 @@ export default class extends Component {
                     onTotal(total);
                   }}
                 >
-                  <H3 style={styles.textPadding}>{total.format() + " VNĐ"}</H3>
+                  <H3 style={styles.textPadding}>{total.format() + " "}</H3>
                 </Item>
               </Col>
               <Col style={[styles.center, { width: 160 }]}>
                 <H3 style={[styles.primary, styles.textPadding]}>
-                  {totalPaid.format() + " VNĐ"}
+                  {totalPaid.format() + " "}
                 </H3>
               </Col>
             </Row>
@@ -257,6 +257,7 @@ export default class extends Component {
             {I18n.t("motobike", {
               locale: locale ? locale : "vn"
             })}
+            {item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}
           </Label>
         </Item>
       );
@@ -268,6 +269,7 @@ export default class extends Component {
             {I18n.t("car", {
               locale: locale ? locale : "vn"
             })}
+            {item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}
           </Label>
         </Item>
       );

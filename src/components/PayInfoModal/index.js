@@ -20,6 +20,7 @@ import DatePicker from "../../components/DatePicker";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import * as appAction from "../../store/actions/app_action";
 import Loading from "../../components/Loading";
+import { formatDate } from "../../helper";
 const dateNow = new Date()
 const blockAction = false;
 const blockLoadMoreAction = false;
@@ -52,19 +53,19 @@ class PayInfoModal extends Component {
     appAction.resetState();
   }
 
-  formatDate(date) {
-    // var monthNames = [
-    //   "January", "February", "March",
-    //   "April", "May", "June", "July",
-    //   "August", "September", "October",
-    //   "November", "December"
-    // ];
+  // formatDate(date) {
+  //   // var monthNames = [
+  //   //   "January", "February", "March",
+  //   //   "April", "May", "June", "July",
+  //   //   "August", "September", "October",
+  //   //   "November", "December"
+  //   // ];
 
-    var day = date.getDate();
-    var monthIndex = date.getMonth() + 1;
-    var year = date.getFullYear();
-    return day + "-" + monthIndex + "-" + year;
-  }
+  //   var day = date.getDate();
+  //   var monthIndex = date.getMonth() + 1;
+  //   var year = date.getFullYear();
+  //   return day + "-" + monthIndex + "-" + year;
+  // }
 
   render() {
     const { show, onClose, transactionCode, onOk, onClearError } = this.props;
@@ -159,13 +160,22 @@ class PayInfoModal extends Component {
               <Row style={{ height: 35 }}>
                 <View style={{ width: wd_width * 0.9, flexDirection: 'row' }}>
                   <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
-                    <Label>Tiền mặt:</Label>
+                    <Label>Tên căn hộ</Label>
                   </View>
                   <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
-                    <Label>Tiền đất:</Label>
+                    <Label>Chuyển khoản</Label>
                   </View>
                   <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
-                    <Label>Tiền quýt:</Label>
+                    <Label>Tiền mặt</Label>
+                  </View>
+                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+                    <Label>Quẹt thẻ</Label>
+                  </View>
+                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+                    <Label>Mã hóa đơn</Label>
+                  </View>
+                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+                    <Label>Ngày thanh toán</Label>
                   </View>
                 </View>
               </Row>
@@ -194,14 +204,14 @@ class PayInfoModal extends Component {
 
                         blockLoadMoreAction = true;
                         this.smallLoading.show();
-                          setTimeout(() => {
-                            appAction.loadPayInfoMore(
-                              { startDate: this.state.payStartDate.toISOString(), endDate: this.state.payEndDate.toISOString() },
-                              currentPage,
-                              pageSize,
-                              user
-                            )
-                          }, 0);
+                        setTimeout(() => {
+                          appAction.loadPayInfoMore(
+                            { fromDate: this.state.payStartDate.toISOString(), toDate: this.state.payEndDate.toISOString() },
+                            currentPage,
+                            pageSize,
+                            user
+                          )
+                        }, 0);
 
                         setTimeout(() => {
                           if (loadEnd != true) {
@@ -268,27 +278,23 @@ class PayInfoModal extends Component {
     return (
       <View key={dataItem.index}>
         <View style={{ width: wd_width * 0.9, minHeight: 50, flexDirection: 'row' }}>
-          <View style={{ flex: 1 }}>
-            <View style={[{ flex: 1, flexDirection: 'row' }, styles.center]} >
-              <View style={[styles.center, { width: 80 }]}><Label>Tiền mặt:</Label></View>
-              <View style={[styles.center, { flex: 1 }]}><Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalCash ? 0 : payInfo.totalCash.format()}</Text></View>
-            </View>
+          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+            <Label>{item.apartmentName}</Label>
           </View>
-          <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, flexDirection: 'row', }}>
-              <View style={[styles.center, { width: 80 }]}><Label> Quẹt thẻ:</Label></View>
-              <View style={[styles.center, { flex: 1 }]}>
-                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.totalPos ? 0 : payInfo.totalPos.format()}</Text>
-              </View>
-            </View>
+          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+            <Label>{item.bankTransfer ? item.bankTransfer.format() : 0}</Label>
           </View>
-          <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, flexDirection: 'row', }}>
-              <View style={[styles.center, { width: 80 }]}><Label>Tổng tiền:</Label></View>
-              <View style={[styles.center, { flex: 1 }]}>
-                <Text style={{ marginRight: 6, marginLeft: 6, fontSize: 18 }}>{!payInfo.total ? 0 : payInfo.total.format()}</Text>
-              </View>
-            </View>
+          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+            <Label>{item.cash ? item.cash.format() : 0}</Label>
+          </View>
+          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+            <Label>{item.pos ? item.pos.format() : 0}</Label>
+          </View>
+          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+            <Label>{item.reportPaymentId}</Label>
+          </View>
+          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
+            <Label>{item.paymentDate ? formatDate(new Date(item.paymentDate)) : "-"}</Label>
           </View>
         </View>
       </View>

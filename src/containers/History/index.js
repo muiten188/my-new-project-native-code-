@@ -105,6 +105,7 @@ class history extends Component {
     const { historyAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
     const state = this.state;
+    const {arrCheck}=this.state;
     const { apartment } = this.props.navigation.state.params;
     const { listResult, isLoading, historyError } = this.props.historyReducer;
     if (historyError == true) {
@@ -248,19 +249,19 @@ class history extends Component {
                         ]}
                       >
                         {state.totalPay <= 0
-                          ? "0 VNĐ"
-                          : state.totalPay.format() + " VNĐ"}
+                          ? "0 "
+                          : state.totalPay.format() + " "}
                       </H1>
                     </Item>
                     <Button
                       full
                       disabled={
-                        listResult &&
-                        listResult.length <= 0
+                        arrCheck &&
+                        arrCheck.length <= 0
                       }
                       style={
-                        listResult &&
-                          listResult.length <= 0
+                        arrCheck &&
+                          arrCheck.length <= 0
                           ? styles.buttomPay_disabled
                           : styles.buttomPay
                       }
@@ -428,7 +429,7 @@ class history extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {" VNĐ"}
+          {" "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -436,30 +437,30 @@ class history extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {" VNĐ"}
+          {" "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {" VNĐ"}
+          {" "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {" VNĐ"}
+          {" "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {" VNĐ"}
+          {" "}
         </Text>
       );
     } else {
       return (
-        <Text style={styles.text}>{" VNĐ"}</Text>
+        <Text style={styles.text}>{" "}</Text>
       );
     }
   }
@@ -477,7 +478,7 @@ class history extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.paymentAmount.format() + " VNĐ"}
+          {item.paymentAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -485,31 +486,31 @@ class history extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.paymentAmount.format() + " VNĐ"}
+          {item.paymentAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.paymentAmount.format() + " VNĐ"}
+          {item.paymentAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.paymentAmount.format() + " VNĐ"}
+          {item.paymentAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.paymentAmount.format() + " VNĐ"}
+          {item.paymentAmount.format() + " "}
         </Text>
       );
     } else {
       return (
         <Text style={styles.text}>
-          {item.paymentAmount.format() + " VNĐ"}
+          {item.paymentAmount.format() + " "}
         </Text>
       );
     }
@@ -576,7 +577,7 @@ class history extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -588,7 +589,7 @@ class history extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
@@ -600,7 +601,7 @@ class history extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
@@ -612,7 +613,7 @@ class history extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
@@ -624,13 +625,13 @@ class history extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else {
       return (
         <Text style={styles.text}>
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     }
@@ -654,7 +655,7 @@ class history extends Component {
           tranCode={item.paymentCode}
           date={item.paymentDate}
           isCash={item.paymentMethod == "CASH"}
-          totalMoney={item.paymentAmount.format() + " VNĐ"}
+          totalMoney={item.paymentAmount.format() + " "}
           content={"TTHD " + item.invoiceMonth}
         />
       </TouchableOpacity>

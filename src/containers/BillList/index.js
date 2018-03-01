@@ -253,7 +253,7 @@ class billList extends Component {
                         })}
                       </Label>
                       <Text style={styles.textRemainMoney}>
-                        {balance + " VNĐ"}
+                        {balance + " "}
                       </Text>
                     </Item>
                     <Item style={styles.item}>
@@ -263,7 +263,7 @@ class billList extends Component {
                         })}
                       </Label>
                       <Text style={styles.textRemainMoney}>
-                        {totalDebit + " VNĐ"}
+                        {totalDebit + " "}
                       </Text>
                     </Item> */}
                       </View>
@@ -318,7 +318,7 @@ class billList extends Component {
                         type={"money"}
                         options={{
                           unit: "",
-                          suffixUnit: " VNĐ",
+                          suffixUnit: " ",
                           precision: 0,
                           separator: " ",
                           zeroCents: true
@@ -364,7 +364,7 @@ class billList extends Component {
                           type={"money"}
                           options={{
                             unit: "",
-                            suffixUnit: " VNĐ",
+                            suffixUnit: " ",
                             precision: 0,
                             separator: " ",
                             zeroCents: true
@@ -391,7 +391,7 @@ class billList extends Component {
                           style={{ width: "100%", fontSize: 20, marginTop: 6 }}
                         >
                           {this.state.totalReturn.format()}
-                          {" VNĐ"}
+                          {" "}
                         </Text>
                       </Item>
                     </View>
@@ -572,7 +572,7 @@ class billList extends Component {
         onPress={() => {
           if (!blockAction) {
             blockAction = true;
-            if (item.invoiceStatus == "INCOMPLETE") {
+            //if (item.invoiceStatus == "INCOMPLETE") {
               dispatch.push({
                 id: "BillDetail",
                 bill: item,
@@ -580,7 +580,7 @@ class billList extends Component {
                 totalDebit: totalDebit,
                 apartment: apartment
               });
-            }
+            //}
             setTimeout(() => {
               blockAction = false;
             }, 1200);
