@@ -11,4 +11,4 @@
 export const API_HOST='http://hapulico.easylink.vn/hapulico-api/'
 //sy
 
-// export const API_HOST='http://172.28.42.90:8090/';
+//export const API_HOST = 'http://172.28.42.99:8090/';

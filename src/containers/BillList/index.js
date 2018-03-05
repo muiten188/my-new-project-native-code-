@@ -116,7 +116,9 @@ class billList extends Component {
   payChange(value) {
     const { state } = this;
     let _value = this.refs["InputPay"].getRawValue();
+    debugger;
     if (this.isNumeric(_value)) {
+
       this.setState({
         totalCustomerPay: _value,
         totalReturn: _value - state.totalPay
@@ -318,7 +320,7 @@ class billList extends Component {
                         type={"money"}
                         options={{
                           unit: "",
-                          suffixUnit: " ",
+                          suffixUnit: "",
                           precision: 0,
                           separator: " ",
                           zeroCents: true
@@ -573,13 +575,13 @@ class billList extends Component {
           if (!blockAction) {
             blockAction = true;
             //if (item.invoiceStatus == "INCOMPLETE") {
-              dispatch.push({
-                id: "BillDetail",
-                bill: item,
-                balance: balance,
-                totalDebit: totalDebit,
-                apartment: apartment
-              });
+            dispatch.push({
+              id: "BillDetail",
+              bill: item,
+              balance: balance,
+              totalDebit: totalDebit,
+              apartment: apartment
+            });
             //}
             setTimeout(() => {
               blockAction = false;

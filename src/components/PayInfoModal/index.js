@@ -163,9 +163,6 @@ class PayInfoModal extends Component {
                     <Label>Tên căn hộ</Label>
                   </View>
                   <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
-                    <Label>Chuyển khoản</Label>
-                  </View>
-                  <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
                     <Label>Tiền mặt</Label>
                   </View>
                   <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
@@ -282,9 +279,6 @@ class PayInfoModal extends Component {
             <Label>{item.apartmentName}</Label>
           </View>
           <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
-            <Label>{item.bankTransfer ? item.bankTransfer.format() : 0}</Label>
-          </View>
-          <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
             <Label>{item.cash ? item.cash.format() : 0}</Label>
           </View>
           <View style={[styles.center, { flex: 1, borderWidth: 0.5, borderColor: '#cecece' }]}>
@@ -307,10 +301,13 @@ class PayInfoModal extends Component {
 
   loadData(startDate, endDate) {
     const { appAction } = this.props;
-    const { currentPage, pageSize } = this.props.app_Reducer;
+    const { currentPage, pageSize, listResult } = this.props.app_Reducer;
     const { user } = this.props.loginReducer;
     appAction.searchPayInfo({ fromDate: startDate.toISOString(), toDate: endDate.toISOString() }, currentPage, pageSize, user, user);
     appAction.getPayInfo(startDate, endDate, user);
+    if (listResult.length > 0) {
+      this.list.scrollToIndex({ index: 0 });
+    }
   }
 }
 function mapStateToProps(state, props) {

@@ -15,7 +15,7 @@ export default {
   check:{
     position:'absolute',
     bottom:25,
-    right:50,
+    right:'15%',
     color:'#28a745',
     height:40,
     width:40,
