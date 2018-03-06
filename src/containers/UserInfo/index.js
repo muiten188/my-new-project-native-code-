@@ -6,7 +6,8 @@ import {
   AsyncStorage,
   TextInput,
   Keyboard,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import {
   Container,
@@ -36,6 +37,7 @@ import * as userInfoAction from "../../store/actions/containers/userInfo_action"
 import * as AppConfig from "../../config/app_config";
 const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
+const user = {};
 const blockAction = false;
 const validate = values => {
   const error = {};
@@ -56,13 +58,19 @@ const validate = values => {
     rePassword = "";
   }
   if (password.length == 0 || password == "") {
-    error.password = "empty";
+    error.password = "trống";
   }
   if (newPassword.length == 0 || newPassword == "") {
-    error.newPassword = "empty";
+    error.newPassword = "trống";
   }
   if (rePassword.length == 0 || rePassword == "") {
-    error.rePassword = "empty";
+    error.rePassword = "trống";
+  }
+  if (newPassword.length > 0 && newPassword.length < 6) {
+    error.newPassword = "ít nhất 6 ký tự";
+  }
+  if (rePassword.length > 0 && rePassword.length < 6) {
+    error.rePassword = "ít nhất 6 ký tự";
   }
   if (!(rePassword.length == 0 || rePassword == "") && rePassword != newPassword) {
     error.rePassword = "Không khớp";
@@ -129,7 +137,6 @@ class userInfo extends Component {
 
   getUser() {
     try {
-      const user = {};
       const { userInfoAction } = this.props;
       const hadUser = AsyncStorage.getItem("@user")
         .then(value => {
@@ -163,8 +170,33 @@ class userInfo extends Component {
    */
   render() {
     const locale = "vn";
-    const { handleSubmit } = this.props;
+    const { handleSubmit, userInfoAction } = this.props;
+    const { changePassword } = this.props.userInfoReducer;
     const { state } = this;
+    if (changePassword == false) {
+      Alert.alert(
+        "Thông Báo",
+        "Thay đổi mật khẩu thất bại kiểm tra lại mật khẩu hiện tại đã nhập.", [{
+          text: 'Ok',
+          onPress: (e) => {
+            userInfoAction.resetState();
+          }
+        }],
+        { cancelable: false }
+      );
+    } else if (changePassword == true) {
+      Alert.alert(
+        "Thông Báo",
+        "Thay đổi mật khẩu thành công.", [{
+          text: 'Ok',
+          onPress: (e) => {
+            userInfoAction.resetState();
+            this.setState({ isChangePw: false })
+          }
+        }],
+        { cancelable: false }
+      );
+    }
     return (
       <Container style={styles.container}>
         <Header
@@ -329,7 +361,6 @@ class userInfo extends Component {
                   {!this.state.isChangePw ? <Button
                     full
                     style={styles.button_changepassword}
-                    disabled
                     onPress={() => this.setState({ isChangePw: true })}
                   >
                     <Text>
@@ -341,7 +372,7 @@ class userInfo extends Component {
                       <Button
                         full
                         style={styles.button_changepassword_save}
-                        onPress={handleSubmit((val) => { debugger })}
+                        onPress={handleSubmit((val) => { userInfoAction.changePassword(val, user) })}
                       >
                         <Text>
                           {I18n.t("changePassword", {
@@ -381,8 +412,9 @@ function mapStateToProps(state, props) {
   } catch (error) {
 
   }
-  
+
   return {
+    userInfoReducer: state.userInfoReducer,
     initialValues: state.userInfoReducer.user,
     user: state.userInfoReducer.user
   };

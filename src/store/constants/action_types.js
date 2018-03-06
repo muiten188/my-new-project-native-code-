@@ -39,6 +39,10 @@ export const SEARCH_LOAD_MORE = "SEARCH_LOAD_MORE";
 export const SEARCH_CLEAR_ERROR = "SEARCH_CLEAR_ERROR";
 //user info
 export const USER_INFO = "USER_INFO";
+export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
+export const CHANGE_PASSWORD_FAIL = "CHANGE_PASSWORD_FAIL";
+export const RESET_USER = "RESET_USER";
+
 //bill list
 export const BALANCE = "BALANCE";
 export const BILL_LIST = "BILL_LIST";

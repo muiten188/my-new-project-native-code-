@@ -85,7 +85,6 @@ export function searchPayInfo(values, currentPage, pageSize, user) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
-            debugger;
             dispatch(_searchPayInfo(data, dataPost, responseJson.totalElement));
           } else {
             dispatch(_seachPayInfoError());

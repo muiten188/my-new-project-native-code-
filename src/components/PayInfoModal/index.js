@@ -193,16 +193,11 @@ class PayInfoModal extends Component {
                   onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   numColumns={1}
                   onEndReached={({ distanceFromEnd }) => {
-                    console.log("scroll down:" + distanceFromEnd)
                     if (distanceFromEnd > 0) {
                       // this.onEndReachedCalledDuringMomentum = true;
-                      console.log("load action: " + blockLoadMoreAction)
-                      console.log("list length: " + listResult.length)
-                      console.log("pageSize: " + pageSize)
                       if (
                         !(listResult.length < pageSize)
                       ) {
-                        console.log("scroll downed:" + distanceFromEnd)
                         //blockLoadMoreAction = true;
                         this.smallLoading.show();
                         setTimeout(() => {

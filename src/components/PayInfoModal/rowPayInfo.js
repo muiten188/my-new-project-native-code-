@@ -46,7 +46,7 @@ class RowPayInfo extends PureComponent {
         return (
             <View style={{ width: wd_width * 0.9, minHeight: 50, flexDirection: 'row' }}>
                 <View style={[styles.center, { width: 60, borderWidth: 0.25, borderColor: '#cecece' }]}>
-                    <Label>{index}</Label>
+                    <Label>{index+1}</Label>
                 </View>
                 <View style={[styles.center, { flex: 1, borderWidth: 0.25, borderColor: '#cecece' }]}>
                     <Label>{item.apartmentName}</Label>

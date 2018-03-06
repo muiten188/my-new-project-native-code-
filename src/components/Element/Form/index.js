@@ -38,7 +38,7 @@ export function InputField({
         {...custom}
         style={{ ...styles.input, ...inputStyle }}
       />
-      {touched && error ? <Text style={{ width: 50 }}>{error}</Text> : <Text />}
+      {touched && error ? <Text style={{ minWidth: 50 }}>{error}</Text> : <Text />}
       {active && onClear ? (
         <Button
           transparent
