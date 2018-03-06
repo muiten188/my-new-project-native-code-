@@ -85,7 +85,8 @@ export function searchPayInfo(values, currentPage, pageSize, user) {
         if (responseJson) {
           if (responseJson.data) {
             data = responseJson.data;
-            dispatch(_searchPayInfo(data, dataPost));
+            debugger;
+            dispatch(_searchPayInfo(data, dataPost, responseJson.totalElement));
           } else {
             dispatch(_seachPayInfoError());
           }
@@ -100,12 +101,13 @@ export function searchPayInfo(values, currentPage, pageSize, user) {
   };
 }
 
-function _searchPayInfo(data, valuesForm) {
+function _searchPayInfo(data, valuesForm, totalElement) {
   return {
     type: types.LISTPAYINFO,
     data: data,
     isLoading: false,
-    valuesForm: valuesForm
+    valuesForm: valuesForm,
+    totalElement: totalElement
   };
 }
 

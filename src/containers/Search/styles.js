@@ -12,10 +12,19 @@ export default {
   grid_col: {
     height: "100%"
   },
-  check:{
+  check_half:{
     position:'absolute',
     bottom:25,
     right:'15%',
+    color:'#28a745',
+    height:40,
+    width:40,
+    fontSize:33
+  },  
+  check_full:{
+    position:'absolute',
+    bottom:25,
+    right:'32.5%',
     color:'#28a745',
     height:40,
     width:40,

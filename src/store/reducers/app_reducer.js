@@ -19,7 +19,8 @@ export default function (state = initState, action = {}) {
         isLoading: initState.isLoading,
         currentPage: initState.currentPage,
         searchErorr: initState.searchErorr,
-        loadEnd: initState.loadEnd
+        loadEnd: initState.loadEnd,
+        totalElement: action.totalElement
       };
     case types.SEARCH_PAYINFO_LOAD_MORE:
       return {

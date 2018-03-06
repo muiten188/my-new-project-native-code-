@@ -135,7 +135,7 @@ export default class extends Component {
           {listInvoiceDetail.map((item, index) => {
             return (
               <View key={index} style={{ flexDirection: 'row' }}>
-                <View style={[styles.center, { flex: 1, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
+                <View style={[styles.center, { flex: 1.2, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
                 <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text>{item.invoiceDetailAmount.format() + " "}</Text></View>
                 <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.primary}>
                   {item.invoiceDetailPaid != null &&
@@ -150,14 +150,14 @@ export default class extends Component {
           <Grid>
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
-              <Col style={styles.center}>
+              <Col size={1.2} style={styles.center}>
                 <H3 style={styles.textPadding}>
                   {I18n.t("billTotal", {
                     locale: locale ? locale : "vn"
                   })}
                 </H3>
               </Col>
-              <Col style={styles.center}>
+              <Col size={1} style={styles.center}>
                 <Item
                   style={[
                     styles.itemBorderNone,

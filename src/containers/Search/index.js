@@ -266,7 +266,10 @@ class search extends Component {
           avatarUrl={item.avatarUrl}
           item={item}
         />
-        {item.paymentStatus == true ? <Icon style={styles.check} name="check"></Icon> : null}
+        {item.paymentStatus == true ? <Icon style={listResult && listResult.length >= 2
+          ? styles.check_half
+          : styles.check_full
+        } name="check"></Icon> : null}
 
       </TouchableOpacity>
     );

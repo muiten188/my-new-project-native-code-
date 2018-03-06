@@ -116,7 +116,6 @@ class billList extends Component {
   payChange(value) {
     const { state } = this;
     let _value = this.refs["InputPay"].getRawValue();
-    debugger;
     if (this.isNumeric(_value)) {
 
       this.setState({
@@ -468,10 +467,10 @@ class billList extends Component {
                   onEndReached={({ distanceFromEnd }) => {
                     if (distanceFromEnd > 0) {
                       if (
-                        !blockLoadMoreAction &&
+                        //!blockLoadMoreAction &&
                         !(listResult.length < pageSize)
                       ) {
-                        blockLoadMoreAction = true;
+                        //blockLoadMoreAction = true;
                         this.smallLoading.show();
                         setTimeout(() => {
                           billListAction.loadMore(
@@ -482,9 +481,9 @@ class billList extends Component {
                           );
                         }, 0);
 
-                        setTimeout(() => {
-                          blockLoadMoreAction = false;
-                        }, 600);
+                        // setTimeout(() => {
+                        //   blockLoadMoreAction = false;
+                        // }, 600);
                       }
                     }
                   }}
@@ -567,6 +566,7 @@ class billList extends Component {
     const { dispatch } = this.props.navigation;
     const { balance, totalDebit } = this.props.billListReducer;
     const { apartment } = this.props.navigation.state.params;
+    
     return (
       <TouchableOpacity
         key={item.index}

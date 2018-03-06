@@ -41,7 +41,8 @@ import * as billListAction from "../../store/actions/containers/billList_actions
 import Loading from "../../components/Loading";
 import { printBill } from "../../helper";
 import { TextInputMask } from "react-native-masked-text";
-
+import { cloneObj } from '../../helper';
+let oldListInvoiceDetail = {};
 class billDetail extends Component {
   static navigationOptions = {
     header: null
@@ -52,6 +53,7 @@ class billDetail extends Component {
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
     let tempState = {};
     let checkboxArr = [];
+    oldListInvoiceDetail = JSON.parse(JSON.stringify(bill.listInvoiceDetail));
     for (var i = 0; i < bill.listInvoiceDetail.length; i++) {
       if (bill.listInvoiceDetail[i].invoiceDetailPaid == null) {
         bill.listInvoiceDetail[i].invoiceDetailPaid = 0;
@@ -108,6 +110,8 @@ class billDetail extends Component {
   }
 
   componentWillUnmount() {
+    const { bill } = this.props.navigation.state.params;
+    bill.listInvoiceDetail = oldListInvoiceDetail
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
