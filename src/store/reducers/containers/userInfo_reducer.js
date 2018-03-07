@@ -24,7 +24,9 @@ export default function (state = initState, action = {}) {
       };
     case types.RESET_USER:
       return {
-        ...initState
+        ...state,
+        changePassword: initState.changePassword,
+        isLoading: initState.isLoading
       };
     default:
       return state;
