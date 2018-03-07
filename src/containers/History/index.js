@@ -105,7 +105,7 @@ class history extends Component {
     const { historyAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
     const state = this.state;
-    const {arrCheck}=this.state;
+    const { arrCheck } = this.state;
     const { apartment } = this.props.navigation.state.params;
     const { listResult, isLoading, historyError } = this.props.historyReducer;
     if (historyError == true) {
@@ -140,7 +140,7 @@ class history extends Component {
                 <Row style={styles.row_Header}>
                   <Col style={styles.titleCol}>
                     <H3 style={[{ paddingLeft: 16 }, styles.textPadding]}>
-                      {I18n.t("billCostTitle", {
+                      {I18n.t("service", {
                         locale: locale ? locale : "vn"
                       })}{" "}
                     </H3>
@@ -161,15 +161,24 @@ class history extends Component {
                   </Col>
                   <Col style={styles.col}>
                     <H3 style={styles.textPadding}>
+                      {I18n.t("payDate", {
+                        locale: locale ? locale : "vn"
+                      })}
+                    </H3>
+                  </Col>
+                  <Col style={styles.col}>
+                    <H3 style={styles.textPadding}>
                       {I18n.t("didCheck", {
                         locale: locale ? locale : "vn"
                       })}
                     </H3>
                   </Col>
+
                 </Row>
                 <Content>
                   <Row style={[styles.firstDetailRow]}>
                     <Col style={styles.titleDetailCol} />
+                    <Col style={styles.col_detail} />
                     <Col style={styles.col_detail} />
                     <Col style={styles.col_detail} />
                     <Col style={styles.col_detail}>
@@ -208,6 +217,15 @@ class history extends Component {
                         return (
                           <Row key={index} style={styles.rowDetail_inner}>
                             {this.buildRowBillDetailTotal(item, locale)}
+                          </Row>
+                        );
+                      })}
+                    </Col>
+                    <Col style={styles.col_detail}>
+                      {listResult.map((item, index) => {
+                        return (
+                          <Row key={index} style={styles.rowDetail_inner}>
+                            {this.buildRowBillPayDate(item, locale)}
                           </Row>
                         );
                       })}
@@ -514,6 +532,23 @@ class history extends Component {
         </Text>
       );
     }
+  }
+
+  buildRowBillPayDate(item, locale) {
+    // const {
+    //   buildingEmpty,
+    //   electricEmpty,
+    //   waterEmpty,
+    //   bikeEmpty,
+    //   carEmpty
+    // } = this.state;
+    return (
+      <Text
+        style={[styles.text]}
+      >
+        {item.paymentDate}
+      </Text>
+    );
   }
 
   buildRowBillDetailCheck(item, locale) {

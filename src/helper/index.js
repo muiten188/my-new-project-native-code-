@@ -70,6 +70,7 @@ export async function printBill(
   try {
     let nowDate = new Date();
     RNXprinter.initialize();
+    debugger;
     await AsyncStorage.getItem("@ReactNativeXprinter:default_printer")
       .then(address => {
         if (address && address != "") {
@@ -205,7 +206,7 @@ function _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList) {
   let totalPay = 0;
   for (var i = 0; i < paymentItemList.length; i++) {
     let paymentItem = paymentItemList[i];
-    if (paymentItem.invoiceDetailPaid > 0 || paymentItem.invoiceDetailAmount <= 0) {
+    if (paymentItem.invoiceDetailPaid > paymentItem.invoiceDetailAmount || paymentItem.invoiceDetailAmount <= 0) {
       continue;
     }
     let text = "";
@@ -264,7 +265,7 @@ function _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemLis
   let billPayment = "";
   let total = 0;
   let totalPay = 0;
-  
+
   for (var i = 0; i < paymentItemList.length; i++) {
     let paymentItem = paymentItemList[i];
     if (paymentItem.paymentAmount <= 0) {
@@ -360,7 +361,7 @@ export function cloneObj(obj) {
   if (null == obj || "object" != typeof obj) return obj;
   var copy = obj.constructor();
   for (var attr in obj) {
-      if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
   }
   return copy;
 }

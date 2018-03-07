@@ -10,5 +10,6 @@
 //export const API_HOST='http://113.171.23.144/hapulico-api-tablet/'
 export const API_HOST='http://hapulico.easylink.vn/hapulico-api/'
 //sy
+//export const API_HOST = 'http://172.28.42.81:8090/'
 
 // export const API_HOST = 'http://172.28.42.99:8090/';

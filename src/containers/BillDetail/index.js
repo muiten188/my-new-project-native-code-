@@ -607,7 +607,7 @@ class billDetail extends Component {
       bill.listInvoiceDetail[i].paymentMethod = payMedthod;
       if (payMedthod == "CASH") {
         if (state.cashAll == false) {
-          if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+          if (bill.listInvoiceDetail[i].invoiceDetailPaid < bill.listInvoiceDetail[i].invoiceDetailAmount) {
             paymentItemList.push(bill.listInvoiceDetail[i]);
           }
           totalCreditPay = 0;
@@ -643,7 +643,7 @@ class billDetail extends Component {
         };
       } else if (payMedthod == "POS") {
         if (state.creditAll == false) {
-          if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+          if (bill.listInvoiceDetail[i].invoiceDetailPaid < bill.listInvoiceDetail[i].invoiceDetailAmount) {
             paymentItemList.push(bill.listInvoiceDetail[i]);
           }
           totalCashPay = 0;

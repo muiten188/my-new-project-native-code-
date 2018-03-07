@@ -74,5 +74,7 @@ export default {
     cancel:'Hủy bỏ',
     didPay:"Đã thanh toán",
     printBill:"In hóa đơn",
-    didCheck:"Đã chọn"
+    didCheck:"Đã chọn",
+    payDate:"Ngày thanh toán",
+    service:"Dịch vụ"
   };

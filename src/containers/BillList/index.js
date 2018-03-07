@@ -48,6 +48,7 @@ const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
 const blockAction = false;
 const blockLoadMoreAction = false;
+let listInvoiceDetail = null;
 class billList extends Component {
   static navigationOptions = {
     header: null
@@ -519,8 +520,8 @@ class billList extends Component {
               );
             }, 0);
             await printBill(
-              this.state.listInvoiceDetail,
-              this.state.listInvoiceDetail,
+              listInvoiceDetail,
+              listInvoiceDetail,
               state.params.apartment.ownerName,
               user.fullName,
               transactionCode,
@@ -566,7 +567,6 @@ class billList extends Component {
     const { dispatch } = this.props.navigation;
     const { balance, totalDebit } = this.props.billListReducer;
     const { apartment } = this.props.navigation.state.params;
-    
     return (
       <TouchableOpacity
         key={item.index}
@@ -626,7 +626,8 @@ class billList extends Component {
     }
   }
 
-  _onPay(bill, listInvoiceDetail, payMethod) {
+  _onPay(bill, listInvoiceDetail_State, payMethod) {
+    listInvoiceDetail = bill.listInvoiceDetail;
     const { apartment } = this.props.navigation.state.params;
     const { balance } = this.props.billListReducer;
     const { billDetailAction, billListAction } = this.props;
@@ -636,8 +637,12 @@ class billList extends Component {
       listInvoiceDetail[i].paymentMethod = payMethod;
     }
     listInvoiceDetail = listInvoiceDetail.filter((i, index) => {
-      return i.invoiceDetailPaid <= 0;
+      return i.invoiceDetailPaid < i.invoiceDetailAmount;
     });
+    listInvoiceDetail = JSON.parse(JSON.stringify(listInvoiceDetail));
+    for (var i = 0; i < listInvoiceDetail.length; i++) {
+      listInvoiceDetail[i].invoiceDetailAmount = listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid;
+    }
     billDetailAction.billPay(
       listInvoiceDetail,
       bill,
