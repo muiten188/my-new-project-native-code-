@@ -1,7 +1,7 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
 import { buildHeader, _logout } from "../../../helper";
-
+let _loadBillListMoreCurrentPage = -1;
 function getBalance(apartmentId, dispatch, user) {
   let apartmentIdParam = apartmentId || -1;
   fetch(
@@ -43,6 +43,7 @@ function getBalance(apartmentId, dispatch, user) {
 }
 
 export function getBillList(apartmentId, currentPage, pageSize, user) {
+  _loadBillListMoreCurrentPage = -1;
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     // dispatch(_billListing());
@@ -88,6 +89,7 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
 }
 
 export function refreshBillList(apartmentId, currentPage, pageSize, user) {
+  _loadBillListMoreCurrentPage = -1;
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     dispatch(_billListing());
@@ -222,6 +224,16 @@ export function getBillFromId(aparmentId, invoiceId, user) {
 }
 
 export function loadMore(apartmentId, currentPage, pageSize, user) {
+  if (_loadBillListMoreCurrentPage == currentPage) {
+    //console.log("current page return: " + currentPage)
+    return {
+      type: types.BILLLIST_DUPLICATE,
+    };
+  }
+  else {
+    //console.log("current page continues: " + currentPage)
+    _loadBillListMoreCurrentPage = currentPage;
+  }
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     // dispatch(_billListing());

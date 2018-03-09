@@ -70,7 +70,7 @@ export async function printBill(
   try {
     let nowDate = new Date();
     RNXprinter.initialize();
-    debugger;
+    //debugger;
     await AsyncStorage.getItem("@ReactNativeXprinter:default_printer")
       .then(address => {
         if (address && address != "") {

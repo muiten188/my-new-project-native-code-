@@ -28,6 +28,9 @@ const blockAction = false;
 const blockLoadMoreAction = false;
 const wd_width = Dimensions.get('window').width;
 const wd_height = Dimensions.get('window').height;
+let _payStartDate = dateNow;
+let _payEndDate = dateNow;
+let _payMethod = null;
 class PayInfoModal extends Component {
   constructor(props) {
     super(props);
@@ -48,7 +51,9 @@ class PayInfoModal extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.smallLoading.getState() == true) {
-      this.smallLoading.hide();
+      //setTimeout(() => {
+        this.smallLoading.hide();
+      //}, 120);
     }
   }
   componentWillUnmount() {
@@ -75,6 +80,7 @@ class PayInfoModal extends Component {
     const { user } = this.props.loginReducer;
     const { payInfo, isLoading, listPayError, listResult, pageSize, currentPage, loadEnd, totalElement } = this.props.app_Reducer;
     const { appAction } = this.props;
+    const { payMethod } = this.state;
     const locale = "vn";
     if (listPayError == true) {
       Alert.alert(
@@ -121,8 +127,11 @@ class PayInfoModal extends Component {
                             payStartDate: rawDate,
                             payEndDate: rawDate
                           });
+                          _payStartDate = rawDate;
+                          _payEndDate = rawDate;
                           this.loadData(rawDate, rawDate, this.state.payMethod);
                         } else {
+                          _payStartDate = rawDate;
                           this.setState({
                             payStartDate: rawDate
                           });
@@ -148,8 +157,11 @@ class PayInfoModal extends Component {
                             payStartDate: rawDate,
                             payEndDate: rawDate
                           });
+                          _payStartDate = rawDate;
+                          _payEndDate = rawDate;
                           this.loadData(rawDate, rawDate, this.state.payMethod);
                         } else {
+                          _payEndDate = rawDate
                           this.setState({
                             payEndDate: rawDate
                           });
@@ -165,14 +177,15 @@ class PayInfoModal extends Component {
                     <Picker
                       iosHeader="Select one"
                       mode="dropdown"
-                      style={{width:100}}
+                      style={{ width: 100 }}
                       selectedValue={this.state.payMethod}
                       onValueChange={(value) => {
+                        _payMethod = value;
                         this.setState({ payMethod: value });
                         this.loadData(this.state.payStartDate, this.state.payEndDate, value);
                       }}
                     >
-                      <Item label="Tất cả"/>
+                      <Item label="Tất cả" />
                       <Item label="Tiền mặt" value="CASH" />
                       <Item label="Quẹt thẻ" value="POS" />
                     </Picker>
@@ -214,29 +227,26 @@ class PayInfoModal extends Component {
                   onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   numColumns={1}
                   onEndReached={({ distanceFromEnd }) => {
-                    if (distanceFromEnd > 0) {
-                      // this.onEndReachedCalledDuringMomentum = true;
-                      if (
-                        !(listResult.length < pageSize)
-                      ) {
+                    // if (distanceFromEnd > 0) {
+                      console.log(blockLoadMoreAction);
+                      if (!(listResult.length < pageSize) && listResult.length >= currentPage * pageSize) {
                         //blockLoadMoreAction = true;
                         this.smallLoading.show();
                         setTimeout(() => {
                           appAction.loadPayInfoMore(
-                            { fromDate: this.state.payStartDate.toISOString(), toDate: this.state.payEndDate.toISOString() },
+                            { fromDate: _payStartDate.toISOString(), toDate: _payEndDate.toISOString(), paymentMethod: _payMethod },
                             currentPage,
                             pageSize,
                             user
                           )
                         }, 0);
-
                         // setTimeout(() => {
                         //   if (loadEnd != true) {
                         //     blockLoadMoreAction = false;
                         //   }
                         // }, 300);
                       }
-                    }
+                    // }
                   }}
                   onEndReachedThreshold={1}
                 />
@@ -313,6 +323,7 @@ class PayInfoModal extends Component {
   }
 
   loadData(startDate, endDate, payMethod) {
+    this.smallLoading.show();
     const { appAction } = this.props;
     const { currentPage, pageSize, listResult } = this.props.app_Reducer;
     const { user } = this.props.loginReducer;
@@ -320,7 +331,7 @@ class PayInfoModal extends Component {
       this.list.scrollToIndex({ index: 0 });
     }
     appAction.searchPayInfo({ fromDate: startDate.toISOString(), toDate: endDate.toISOString(), paymentMethod: payMethod }, currentPage, pageSize, user, user);
-    appAction.getPayInfo(startDate, endDate,payMethod, user);
+    appAction.getPayInfo(startDate, endDate, payMethod, user);
   }
 }
 function mapStateToProps(state, props) {

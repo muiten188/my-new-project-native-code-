@@ -43,7 +43,7 @@ class App extends Component {
       try {
         AsyncStorage.setItem("@user", JSON.stringify(loginReducer.user));
       } catch (error) {
-        // console.log("save error");
+        // //console.log("save error");
       }
     }
     if (!loginReducer || !loginReducer.Logged) {

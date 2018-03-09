@@ -13,6 +13,8 @@ const initState = {
 export default function (state = initState, action = {}) {
   switch (action.type) {
     case types.LISTPAYINFO:
+      //console.log("load ")
+      //console.log(action.data)
       return {
         ...state,
         listResult: action.data,
@@ -22,7 +24,14 @@ export default function (state = initState, action = {}) {
         loadEnd: initState.loadEnd,
         totalElement: action.totalElement
       };
+    case types.LISTPAYINFO_DUPLICATE:
+    //console.log("duplicate")
+      return {
+        ...state
+      }
     case types.SEARCH_PAYINFO_LOAD_MORE:
+      //console.log("load more")
+      //console.log(action.data)
       return {
         ...state,
         listResult: [...state.listResult, ...action.data],

@@ -1,7 +1,7 @@
 import * as types from "../constants/action_types";
 import * as AppConfig from "../../config/app_config";
 import { buildHeader, fetchCatch, _logout } from "../../helper";
-
+let _loadPayInfoMoreCurrentPage = -1;
 export function _getUser(user) {
   return {
     type: types.USER_INFO,
@@ -31,7 +31,6 @@ export function getPayInfo(startDate, endDate, paymentMethod, user) {
   }
   return dispatch => {
     // dispatch(_getingPayInfo());
-    debugger;
     fetch(
       `${AppConfig.API_HOST}tablet/sumaryPayment?${getQueryString(dataPost)}`,
       {
@@ -66,6 +65,7 @@ export function getPayInfo(startDate, endDate, paymentMethod, user) {
 }
 
 export function searchPayInfo(values, currentPage, pageSize, user) {
+  _loadPayInfoMoreCurrentPage=-1;
   let data = [];
   let dataPost = values || {};
   if (!dataPost.paymentMethod || dataPost.paymentMethod == "All") {
@@ -126,9 +126,23 @@ function _seachPayInfoError() {
 }
 
 export function loadPayInfoMore(values, currentPage, pageSize, user) {
+  if (_loadPayInfoMoreCurrentPage == currentPage) {
+    //console.log("current page return: " + currentPage)
+    return {
+      type: types.LISTPAYINFO_DUPLICATE,
+    };
+  }
+  else {
+    //console.log("current page continues: " + currentPage)
+    _loadPayInfoMoreCurrentPage = currentPage;
+  }
   let data = [];
   let dataPost = values || {};
+  if (!dataPost.paymentMethod || dataPost.paymentMethod == "All") {
+    delete dataPost.paymentMethod;
+  }
   dataPost = { ...dataPost, currentPage: currentPage + 1, pageSize: pageSize };
+
   return dispatch => {
     // dispatch(_searching());
     fetch(`${AppConfig.API_HOST}tablet/pagingPaymentReport?${getQueryString(dataPost)}`, {

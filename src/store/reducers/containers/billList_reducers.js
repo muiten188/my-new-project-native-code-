@@ -26,6 +26,11 @@ export default function (state = initState, action = {}) {
         isLoading: true,
         billError: initState.billError
       };
+    case types.BILLLIST_DUPLICATE:
+      //console.log(state);
+      return {
+        ...state
+      }
     case types.BALANCE:
       return {
         ...state,
