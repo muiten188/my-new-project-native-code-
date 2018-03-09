@@ -21,14 +21,19 @@ export function showPayInfo() {
   };
 }
 
-export function getPayInfo(startDate, endDate, user) {
+export function getPayInfo(startDate, endDate, paymentMethod, user) {
+  var dataPost = {
+    fromDate: startDate.toISOString(),
+    toDate: endDate.toISOString(),
+  } || {};
+  if (paymentMethod) {
+    dataPost.paymentMethod = paymentMethod;
+  }
   return dispatch => {
     // dispatch(_getingPayInfo());
+    debugger;
     fetch(
-      `${AppConfig.API_HOST}tablet/sumaryPayment?${getQueryString({
-        fromDate: startDate.toISOString(),
-        toDate: endDate.toISOString()
-      })}`,
+      `${AppConfig.API_HOST}tablet/sumaryPayment?${getQueryString(dataPost)}`,
       {
         headers: buildHeader(user),
         method: "GET"
@@ -63,6 +68,9 @@ export function getPayInfo(startDate, endDate, user) {
 export function searchPayInfo(values, currentPage, pageSize, user) {
   let data = [];
   let dataPost = values || {};
+  if (!dataPost.paymentMethod || dataPost.paymentMethod == "All") {
+    delete dataPost.paymentMethod;
+  }
   dataPost = { ...dataPost, currentPage: 1, pageSize: pageSize };
   return dispatch => {
     //dispatch(_searching());

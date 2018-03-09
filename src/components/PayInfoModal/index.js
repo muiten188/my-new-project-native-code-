@@ -11,7 +11,8 @@ import {
   Content,
   Label,
   H1,
-  H3
+  H3,
+  Picker
 } from "native-base";
 import styles from "./styles";
 import Modal from "react-native-modal";
@@ -32,7 +33,8 @@ class PayInfoModal extends Component {
     super(props);
     this.state = {
       payStartDate: dateNow,
-      payEndDate: dateNow
+      payEndDate: dateNow,
+      payMethod: null
     };
     Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
@@ -41,7 +43,7 @@ class PayInfoModal extends Component {
   }
 
   componentDidMount() {
-    this.loadData(dateNow, dateNow)
+    this.loadData(dateNow, dateNow, this.state.payMethod)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -119,12 +121,12 @@ class PayInfoModal extends Component {
                             payStartDate: rawDate,
                             payEndDate: rawDate
                           });
-                          this.loadData(rawDate, rawDate);
+                          this.loadData(rawDate, rawDate, this.state.payMethod);
                         } else {
                           this.setState({
                             payStartDate: rawDate
                           });
-                          this.loadData(rawDate, this.state.payEndDate);
+                          this.loadData(rawDate, this.state.payEndDate, this.state.payMethod);
                         }
                       }}
                     />
@@ -146,15 +148,34 @@ class PayInfoModal extends Component {
                             payStartDate: rawDate,
                             payEndDate: rawDate
                           });
-                          this.loadData(rawDate, rawDate);
+                          this.loadData(rawDate, rawDate, this.state.payMethod);
                         } else {
                           this.setState({
                             payEndDate: rawDate
                           });
-                          this.loadData(this.state.payStartDate, rawDate);
+                          this.loadData(this.state.payStartDate, rawDate, this.state.payMethod);
                         }
                       }}
                     />
+                  </Item>
+                </Col>
+                <Col>
+                  <Item style={{ borderBottomWidth: 0 }}>
+                    <Label>Thanh toán</Label>
+                    <Picker
+                      iosHeader="Select one"
+                      mode="dropdown"
+                      style={{width:100}}
+                      selectedValue={this.state.payMethod}
+                      onValueChange={(value) => {
+                        this.setState({ payMethod: value });
+                        this.loadData(this.state.payStartDate, this.state.payEndDate, value);
+                      }}
+                    >
+                      <Item label="Tất cả"/>
+                      <Item label="Tiền mặt" value="CASH" />
+                      <Item label="Quẹt thẻ" value="POS" />
+                    </Picker>
                   </Item>
                 </Col>
               </Row>
@@ -291,15 +312,15 @@ class PayInfoModal extends Component {
     return index;
   }
 
-  loadData(startDate, endDate) {
+  loadData(startDate, endDate, payMethod) {
     const { appAction } = this.props;
     const { currentPage, pageSize, listResult } = this.props.app_Reducer;
     const { user } = this.props.loginReducer;
     if (listResult.length > 0) {
       this.list.scrollToIndex({ index: 0 });
     }
-    appAction.searchPayInfo({ fromDate: startDate.toISOString(), toDate: endDate.toISOString() }, currentPage, pageSize, user, user);
-    appAction.getPayInfo(startDate, endDate, user);
+    appAction.searchPayInfo({ fromDate: startDate.toISOString(), toDate: endDate.toISOString(), paymentMethod: payMethod }, currentPage, pageSize, user, user);
+    appAction.getPayInfo(startDate, endDate,payMethod, user);
   }
 }
 function mapStateToProps(state, props) {
