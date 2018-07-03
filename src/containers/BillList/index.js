@@ -569,10 +569,10 @@ class billList extends Component {
     const { apartment } = this.props.navigation.state.params;
     return (
       <TouchableOpacity
-        key={item.index}
+        key={dataItem.index}
         style={styles.item_container}
         onPress={() => {
-          if (!blockAction) {
+          if (!blockAction && dataItem.index == 0) {
             blockAction = true;
             //if (item.invoiceStatus == "INCOMPLETE") {
             dispatch.push({
@@ -591,6 +591,7 @@ class billList extends Component {
       >
         <Bill
           bill={item}
+          index={dataItem.index}
           listInvoiceDetail={item.listInvoiceDetail}
           invoiceStatus={item.invoiceStatus}
           invoiceMonth={item.invoiceMonth}

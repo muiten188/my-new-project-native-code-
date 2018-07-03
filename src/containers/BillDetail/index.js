@@ -197,7 +197,7 @@ class billDetail extends Component {
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'flex-start' }}>
           <Item style={styles.borderBottomNone}>
             <Icon
               name="motorcycle"
@@ -214,7 +214,7 @@ class billDetail extends Component {
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'flex-start' }}>
           <Item style={styles.borderBottomNone}>
             <Icon
               name="car"
@@ -809,7 +809,10 @@ class billDetail extends Component {
                     <CheckBox
                       style={[
                         styles.checkBox,
-                        { marginTop: 6, marginBottom: 6 }
+                        {
+                          marginTop: 6, marginBottom: 6,
+                          marginLeft: -20
+                        }
                       ]}
                       disabled={bill.listInvoiceDetail <= 0}
                       color={
@@ -821,7 +824,7 @@ class billDetail extends Component {
                   </Col>
                   <Col style={styles.col_detail}>
                     <CheckBox
-                      style={styles.checkBox}
+                      style={[styles.checkBox,{marginLeft: -20}]}
                       disabled={bill.listInvoiceDetail <= 0}
                       color={
                         bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
@@ -835,7 +838,7 @@ class billDetail extends Component {
                   <Col style={styles.titleDetailCol}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
-                        <Row key={index} style={styles.rowDetail_inner}>
+                        <Row key={index} style={styles.rowDetail_inner_title}>
                           {this.buildRowBillDetail(item, locale)}
                         </Row>
                       );
@@ -880,7 +883,7 @@ class billDetail extends Component {
                   <Col style={styles.col_detail}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
-                        <Row key={index} style={styles.rowDetail_inner}>
+                        <Row key={index} style={styles.rowDetail_inner_checkBox}>
                           {this.buildRowBillDetailCash(item, locale)}
                         </Row>
                       );
@@ -889,7 +892,7 @@ class billDetail extends Component {
                   <Col style={styles.col_detail}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
-                        <Row key={index} style={styles.rowDetail_inner}>
+                        <Row key={index} style={styles.rowDetail_inner_checkBox}>
                           {this.buildRowBillDetailCredit(item, locale)}
                         </Row>
                       );

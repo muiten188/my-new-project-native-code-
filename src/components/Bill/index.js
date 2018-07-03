@@ -65,6 +65,7 @@ export default class extends Component {
   render() {
     const locale = "vn";
     const {
+      index,
       bill,
       listInvoiceDetail,
       invoiceStatus,
@@ -134,7 +135,7 @@ export default class extends Component {
           </Grid>
         </View>
         <View style={styles.billContent}>
-          <View style={{ flexDirection: 'row', borderBottomWidth: 1,borderBottomColor:'#cecece' }}>
+          <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#cecece' }}>
             <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}><Text style={styles.textHeader}>{I18n.t("service", {
               locale: locale ? locale : "vn"
             })}</Text></View>
@@ -195,7 +196,7 @@ export default class extends Component {
             {invoiceStatus == "INCOMPLETE" ? (
               <Row style={[styles.itemTotalPay]}>
                 <Col size={1.5} style={styles.center}>
-                  <Text style={[styles.textPadding,styles.textPay]}>
+                  <Text style={[styles.textPadding, styles.textPay]}>
                     {I18n.t("billPay", {
                       locale: locale ? locale : "vn"
                     })}
@@ -211,7 +212,7 @@ export default class extends Component {
                       onTotal(total);
                     }}
                   >
-                    <Text style={[styles.textPadding,,styles.textPay]}>{totalPay.format() + " "}</Text>
+                    <Text style={[styles.textPadding, , styles.textPay]}>{totalPay.format() + " "}</Text>
                   </Item>
                 </Col>
                 <Col style={[styles.center, { width: 160 }]}>
@@ -219,7 +220,7 @@ export default class extends Component {
                 </Col>
               </Row>) : null
             }
-            {invoiceStatus == "INCOMPLETE" ? (
+            {invoiceStatus == "INCOMPLETE" && index == 0 ? (
 
               <Row style={[styles.itemPay]}>
                 <Col />
