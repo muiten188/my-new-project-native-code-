@@ -20,8 +20,9 @@ export default {
     alignItems: "center"
   },
   center: {
+    marginLeft:10,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "flex-start"
   },
   right: {
     position: "absolute",
@@ -41,6 +42,13 @@ export default {
     marginTop: 10
   },
   itemTotal: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderTopWidth: 1,
+    borderColor: "#cecece",
+    borderStyle: "dashed"
+  },
+  itemTotalPay: {
     paddingTop: 0,
     paddingBottom: 0,
     borderTopWidth: 1,
@@ -89,5 +97,14 @@ export default {
   },
   buttonPay: {
     backgroundColor: "#054f9a"
+  },
+  textTotal:{
+    fontSize:19
+  },
+  textHeader:{
+    fontSize:18
+  },
+  textPay:{
+    fontSize:24
   }
 };

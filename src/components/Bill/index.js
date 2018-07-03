@@ -9,6 +9,7 @@ import {
   Button,
   Title,
   Text,
+  H5,
   H3,
   H2,
   H1,
@@ -75,6 +76,7 @@ export default class extends Component {
     const { state } = this;
     let total = 0;
     let totalPaid = 0;
+    let totalPay = 0;
     for (var i = 0; i < listInvoiceDetail.length; i++) {
       total =
         total +
@@ -87,6 +89,7 @@ export default class extends Component {
           ? 0
           : listInvoiceDetail[i].invoiceDetailPaid);
     }
+    totalPay = ((total - totalPaid) < 0) ? 0 : (total - totalPaid);
     return (
       <View style={styles.itemList}>
         <View
@@ -131,11 +134,24 @@ export default class extends Component {
           </Grid>
         </View>
         <View style={styles.billContent}>
-
+          <View style={{ flexDirection: 'row', borderBottomWidth: 1,borderBottomColor:'#cecece' }}>
+            <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}><Text style={styles.textHeader}>{I18n.t("service", {
+              locale: locale ? locale : "vn"
+            })}</Text></View>
+            <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.textHeader}>{I18n.t("arising", {
+              locale: locale ? locale : "vn"
+            })}</Text></View>
+            <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.textHeader}>
+              {I18n.t("didPayed", {
+                locale: locale ? locale : "vn"
+              })}
+            </Text>
+            </View>
+          </View>
           {listInvoiceDetail.map((item, index) => {
             return (
               <View key={index} style={{ flexDirection: 'row' }}>
-                <View style={[styles.center, { flex: 1.2, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
+                <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
                 <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text>{item.invoiceDetailAmount.format() + " "}</Text></View>
                 <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.primary}>
                   {item.invoiceDetailPaid != null &&
@@ -150,33 +166,61 @@ export default class extends Component {
           <Grid>
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
-              <Col size={1.2} style={styles.center}>
-                <H3 style={styles.textPadding}>
+              <Col size={1.5} style={styles.center}>
+                <Text style={[styles.textPadding, styles.textTotal]}>
                   {I18n.t("billTotal", {
                     locale: locale ? locale : "vn"
                   })}
-                </H3>
+                </Text>
               </Col>
               <Col size={1} style={styles.center}>
                 <Item
                   style={[
                     styles.itemBorderNone,
-                    { height: 50 }
+                    { height: 45 }
                   ]}
                   onPress={() => {
                     onTotal(total);
                   }}
                 >
-                  <H3 style={styles.textPadding}>{total.format() + " "}</H3>
+                  <Text style={[styles.textPadding, styles.textTotal]}>{total.format() + " "}</Text>
                 </Item>
               </Col>
               <Col style={[styles.center, { width: 160 }]}>
-                <H3 style={[styles.primary, styles.textPadding]}>
+                <Text style={[styles.primary, styles.textPadding, styles.textTotal]}>
                   {totalPaid.format() + " "}
-                </H3>
+                </Text>
               </Col>
             </Row>
             {invoiceStatus == "INCOMPLETE" ? (
+              <Row style={[styles.itemTotalPay]}>
+                <Col size={1.5} style={styles.center}>
+                  <Text style={[styles.textPadding,styles.textPay]}>
+                    {I18n.t("billPay", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </Text>
+                </Col>
+                <Col size={1} style={styles.center}>
+                  <Item
+                    style={[
+                      styles.itemBorderNone,
+                      { height: 50 }
+                    ]}
+                    onPress={() => {
+                      onTotal(total);
+                    }}
+                  >
+                    <Text style={[styles.textPadding,,styles.textPay]}>{totalPay.format() + " "}</Text>
+                  </Item>
+                </Col>
+                <Col style={[styles.center, { width: 160 }]}>
+
+                </Col>
+              </Row>) : null
+            }
+            {invoiceStatus == "INCOMPLETE" ? (
+
               <Row style={[styles.itemPay]}>
                 <Col />
                 <Col>

@@ -27,7 +27,7 @@ export default {
     billElectric:"Hóa đơn điện: ",
     billWater:"Hóa đơn nước: ",
     billServices:"Hóa dịch vụ: ",
-    billTotal:"Tổng hóa đơn: ",
+    billTotal:"Tổng: ", 
     rentMonth:"Nợ tháng: ",
     billDetail:"Chi tiết hóa đơn (VNĐ) tháng ",
     totalMoney:"Tổng tiền",
@@ -76,5 +76,8 @@ export default {
     printBill:"In hóa đơn",
     didCheck:"Đã chọn",
     payDate:"Ngày thanh toán",
-    service:"Dịch vụ"
+    service:"Dịch vụ",
+    billPay:'Số tiền phải đóng:',
+    didPayed:'Đã thanh toán',
+    arising:'Phát sinh'
   };
