@@ -139,10 +139,16 @@ export default class extends Component {
             <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}><Text style={styles.textHeader}>{I18n.t("service", {
               locale: locale ? locale : "vn"
             })}</Text></View>
-            <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.textHeader}>{I18n.t("arising", {
+            <View style={{
+              flex: 1, minHeight: 35, marginLeft: 10,
+              justifyContent: "center",
+              alignItems: "flex-end"
+            }}><Text style={styles.textHeader}>{I18n.t("arising", {
               locale: locale ? locale : "vn"
             })}</Text></View>
-            <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.textHeader}>
+            <View style={{ flex: 1, minHeight: 35, marginLeft: 10,
+              justifyContent: "center",
+              alignItems: "flex-end" }}><Text style={styles.textHeader}>
               {I18n.t("didPayed", {
                 locale: locale ? locale : "vn"
               })}
@@ -153,8 +159,8 @@ export default class extends Component {
             return (
               <View key={index} style={{ flexDirection: 'row' }}>
                 <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
-                <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text>{item.invoiceDetailAmount.format() + " "}</Text></View>
-                <View style={[styles.center, { flex: 1, minHeight: 35 }]}><Text style={styles.primary}>
+                <View style={[styles.center, { flex: 1, minHeight: 35, alignItems: 'flex-end' }]}><Text>{item.invoiceDetailAmount.format() + " "}</Text></View>
+                <View style={[styles.center, { flex: 1, minHeight: 35, alignItems: 'flex-end' }]}><Text style={styles.primary}>
                   {item.invoiceDetailPaid != null &&
                     item.invoiceDetailPaid > 0
                     ? item.invoiceDetailPaid.format() + " "
@@ -174,7 +180,7 @@ export default class extends Component {
                   })}
                 </Text>
               </Col>
-              <Col size={1} style={styles.center}>
+              <Col size={1} style={[styles.center, { alignItems: 'flex-end' }]}>
                 <Item
                   style={[
                     styles.itemBorderNone,
@@ -187,7 +193,7 @@ export default class extends Component {
                   <Text style={[styles.textPadding, styles.textTotal]}>{total.format() + " "}</Text>
                 </Item>
               </Col>
-              <Col style={[styles.center, { width: 160 }]}>
+              <Col style={[styles.center, { width: 160, alignItems: 'flex-end' }]}>
                 <Text style={[styles.primary, styles.textPadding, styles.textTotal]}>
                   {totalPaid.format() + " "}
                 </Text>
@@ -202,7 +208,7 @@ export default class extends Component {
                     })}
                   </Text>
                 </Col>
-                <Col size={1} style={styles.center}>
+                <Col size={1} style={[styles.center, { alignItems: 'flex-end' }]}>
                   <Item
                     style={[
                       styles.itemBorderNone,

@@ -100,6 +100,7 @@ export default {
   },
   textTotal:{
     fontSize:19
+   
   },
   textHeader:{
     fontSize:18
