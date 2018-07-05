@@ -89,8 +89,9 @@ export default class extends Component {
         (listInvoiceDetail[i].invoiceDetailPaid == null
           ? 0
           : listInvoiceDetail[i].invoiceDetailPaid);
+      var sTotalPay = (listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid);
+      totalPay = totalPay + ((sTotalPay < 0) ? 0 : sTotalPay);
     }
-    totalPay = ((total - totalPaid) < 0) ? 0 : (total - totalPaid);
     return (
       <View style={styles.itemList}>
         <View
@@ -146,13 +147,15 @@ export default class extends Component {
             }}><Text style={styles.textHeader}>{I18n.t("arising", {
               locale: locale ? locale : "vn"
             })}</Text></View>
-            <View style={{ flex: 1, minHeight: 35, marginLeft: 10,
+            <View style={{
+              flex: 1, minHeight: 35, marginLeft: 10,
               justifyContent: "center",
-              alignItems: "flex-end" }}><Text style={styles.textHeader}>
-              {I18n.t("didPayed", {
-                locale: locale ? locale : "vn"
-              })}
-            </Text>
+              alignItems: "flex-end"
+            }}><Text style={styles.textHeader}>
+                {I18n.t("didPayed", {
+                  locale: locale ? locale : "vn"
+                })}
+              </Text>
             </View>
           </View>
           {listInvoiceDetail.map((item, index) => {
