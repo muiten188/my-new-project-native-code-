@@ -190,7 +190,7 @@ export default class extends Component {
                     { height: 45 }
                   ]}
                   onPress={() => {
-                    onTotal(total);
+                    onTotal(totalPay);
                   }}
                 >
                   <Text style={[styles.textPadding, styles.textTotal]}>{total.format() + " "}</Text>
@@ -218,7 +218,7 @@ export default class extends Component {
                       { height: 50 }
                     ]}
                     onPress={() => {
-                      onTotal(total);
+                      onTotal(totalPay);
                     }}
                   >
                     <Text style={[styles.textPadding, , styles.textPay]}>{totalPay.format() + " "}</Text>

@@ -707,6 +707,22 @@ class billDetail extends Component {
       totalPay: totalPay
     });
   }
+
+  checkHave1Pay(listInvoiceDetail) {
+    try {
+      for (var i = 0; i < listInvoiceDetail.length; i++) {
+        var item = listInvoiceDetail[i];
+        if (item.invoiceDetailAmount <= 0) {
+          return true;
+          break;
+        }
+      }
+      return false;
+    } catch (e) {
+      return true;
+    }
+  }
+
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
@@ -747,6 +763,7 @@ class billDetail extends Component {
       );
     }
 
+    var isCheckAll = this.checkHave1Pay(bill.listInvoiceDetail);
     return (
       <Container style={styles.container}>
         <Header
@@ -833,9 +850,9 @@ class billDetail extends Component {
                           marginLeft: -20
                         }
                       ]}
-                      disabled={bill.listInvoiceDetail <= 0}
+                      disabled={bill.listInvoiceDetail <= 0 || isCheckAll}
                       color={
-                        bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
+                        bill.listInvoiceDetail <= 0 || isCheckAll ? "#cecece" : "#054f9a"
                       }
                       checked={state.cashAll}
                       onPress={this.checkAll.bind(this, "CASH")}
@@ -844,9 +861,9 @@ class billDetail extends Component {
                   <Col style={styles.col_detail}>
                     <CheckBox
                       style={[styles.checkBox, { marginLeft: -20 }]}
-                      disabled={bill.listInvoiceDetail <= 0}
+                      disabled={bill.listInvoiceDetail <= 0 || isCheckAll}
                       color={
-                        bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
+                        bill.listInvoiceDetail <= 0 || isCheckAll ? "#cecece" : "#054f9a"
                       }
                       checked={state.creditAll}
                       onPress={this.checkAll.bind(this, "POS")}
