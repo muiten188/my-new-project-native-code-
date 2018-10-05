@@ -504,6 +504,8 @@ class billDetail extends Component {
               ...temp,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state.totalPay - item.invoiceDetailAmount) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state.totalPay - item.invoiceDetailAmount),
               totalPay: state.totalPay - item.invoiceDetailAmount,
               totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
               paymentItemList: state.paymentItemList.filter((i, index) => {
@@ -515,6 +517,12 @@ class billDetail extends Component {
               ...temp2,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state["creditPay" + item.invoiceDetailId] != true
+                ? state.totalPay + item.invoiceDetailAmount
+                : state.totalPay) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay),
               totalPay:
                 state["creditPay" + item.invoiceDetailId] != true
                   ? state.totalPay + item.invoiceDetailAmount
@@ -529,6 +537,7 @@ class billDetail extends Component {
                   ? [...state.paymentItemList, item]
                   : state.paymentItemList
             });
+
         }}
       />
     );
@@ -565,6 +574,8 @@ class billDetail extends Component {
               ...temp,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state.totalPay - item.invoiceDetailAmount) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state.totalPay - item.invoiceDetailAmount),
               totalPay: state.totalPay - item.invoiceDetailAmount,
               totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
               paymentItemList: state.paymentItemList.filter((i, index) => {
@@ -576,6 +587,12 @@ class billDetail extends Component {
               ...temp2,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state["cashPay" + item.invoiceDetailId] != true
+                ? state.totalPay + item.invoiceDetailAmount
+                : state.totalPay) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay),
               totalPay:
                 state["cashPay" + item.invoiceDetailId] != true
                   ? state.totalPay + item.invoiceDetailAmount
@@ -682,6 +699,8 @@ class billDetail extends Component {
     this.setState({
       ...checkObj,
       ...checkedObj,
+      totalCustomerPay: this.refs["InputPay"].getRawValue(),
+      totalReturn: totalPay == 0 ? 0 : (this.refs["InputPay"].getRawValue() - (totalPay ? totalPay : 0)),
       paymentItemList: paymentItemList,
       totalCashPay: totalCashPay,
       totalCreditPay: totalCreditPay,
@@ -824,7 +843,7 @@ class billDetail extends Component {
                   </Col>
                   <Col style={styles.col_detail}>
                     <CheckBox
-                      style={[styles.checkBox,{marginLeft: -20}]}
+                      style={[styles.checkBox, { marginLeft: -20 }]}
                       disabled={bill.listInvoiceDetail <= 0}
                       color={
                         bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
