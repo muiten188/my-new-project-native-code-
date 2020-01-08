@@ -58,9 +58,9 @@ class billDetail extends Component {
       if (bill.listInvoiceDetail[i].invoiceDetailPaid == null) {
         bill.listInvoiceDetail[i].invoiceDetailPaid = 0;
       }
-      bill.listInvoiceDetail[i].invoiceDetailAmount =
-        bill.listInvoiceDetail[i].invoiceDetailAmount -
-        bill.listInvoiceDetail[i].invoiceDetailPaid;
+      // bill.listInvoiceDetail[i].invoiceDetailAmount =
+      //   bill.listInvoiceDetail[i].invoiceDetailAmount -
+      //   bill.listInvoiceDetail[i].invoiceDetailPaid;
       if (bill.listInvoiceDetail[i].invoiceDetailAmount < 0) {
         bill.listInvoiceDetail[i].invoiceDetailAmount = 0;
       }
