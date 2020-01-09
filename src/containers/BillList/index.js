@@ -641,9 +641,9 @@ class billList extends Component {
       return i.invoiceDetailPaid < i.invoiceDetailAmount;
     });
     listInvoiceDetail = JSON.parse(JSON.stringify(listInvoiceDetail));
-    for (var i = 0; i < listInvoiceDetail.length; i++) {
-      listInvoiceDetail[i].invoiceDetailAmount = listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid;
-    }
+    // for (var i = 0; i < listInvoiceDetail.length; i++) {
+    //   listInvoiceDetail[i].invoiceDetailAmount = listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid;
+    // }
     billDetailAction.billPay(
       listInvoiceDetail,
       bill,

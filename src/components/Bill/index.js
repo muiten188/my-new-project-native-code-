@@ -89,7 +89,8 @@ export default class extends Component {
         (listInvoiceDetail[i].invoiceDetailPaid == null
           ? 0
           : listInvoiceDetail[i].invoiceDetailPaid);
-      var sTotalPay = (listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid);
+      // var sTotalPay = (listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid);
+      var sTotalPay = listInvoiceDetail[i].invoiceDetailAmount;
       totalPay = totalPay + ((sTotalPay < 0) ? 0 : sTotalPay);
     }
     return (
