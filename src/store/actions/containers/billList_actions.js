@@ -1,7 +1,7 @@
 import * as types from "../../constants/action_types";
 import * as AppConfig from "../../../config/app_config";
 import { buildHeader, _logout } from "../../../helper";
-
+let _loadBillListMoreCurrentPage = -1;
 function getBalance(apartmentId, dispatch, user) {
   let apartmentIdParam = apartmentId || -1;
   fetch(
@@ -33,6 +33,9 @@ function getBalance(apartmentId, dispatch, user) {
           dispatch(_billError());
         }
       }
+      else {
+        dispatch(_billError());
+      }
     })
     .catch(function (error) {
       dispatch(_billError());
@@ -40,6 +43,53 @@ function getBalance(apartmentId, dispatch, user) {
 }
 
 export function getBillList(apartmentId, currentPage, pageSize, user) {
+  _loadBillListMoreCurrentPage = -1;
+  let apartmentIdParam = apartmentId || -1;
+  return dispatch => {
+    // dispatch(_billListing());
+    getBalance(apartmentIdParam, dispatch, user);
+    fetch(
+      `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
+        aparmentId: apartmentIdParam,
+        currentPage: 1,
+        pageSize: pageSize
+      })}`,
+      {
+        headers: buildHeader(user),
+        method: "GET"
+      }
+    )
+      .then(function (response) {
+        if (response.status == 401) {
+          dispatch(_logout());
+        }
+        if (response.status != 200) {
+          dispatch(_billError());
+        } else {
+          return response.json();
+        }
+      })
+      .then(function (responseJson) {
+        if (responseJson) {
+          let billList = responseJson.data;
+          if (billList) {
+            dispatch(_billList(billList));
+          } else {
+            dispatch(_billError());
+          }
+        }
+        else {
+          dispatch(_billError());
+        }
+      })
+      .catch(function (error) {
+        dispatch(_billError());
+      });
+  };
+}
+
+export function refreshBillList(apartmentId, currentPage, pageSize, user) {
+  _loadBillListMoreCurrentPage = -1;
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
     dispatch(_billListing());
@@ -73,6 +123,9 @@ export function getBillList(apartmentId, currentPage, pageSize, user) {
           } else {
             dispatch(_billError());
           }
+        }
+        else {
+          dispatch(_billError());
         }
       })
       .catch(function (error) {
@@ -160,6 +213,9 @@ export function getBillFromId(aparmentId, invoiceId, user) {
             dispatch(_billError());
           }
         }
+        else {
+          dispatch(_billError());
+        }
       })
       .catch(function (error) {
         dispatch(_billError());
@@ -168,9 +224,19 @@ export function getBillFromId(aparmentId, invoiceId, user) {
 }
 
 export function loadMore(apartmentId, currentPage, pageSize, user) {
+  if (_loadBillListMoreCurrentPage == currentPage) {
+    //console.log("current page return: " + currentPage)
+    return {
+      type: types.BILLLIST_DUPLICATE,
+    };
+  }
+  else {
+    //console.log("current page continues: " + currentPage)
+    _loadBillListMoreCurrentPage = currentPage;
+  }
   let apartmentIdParam = apartmentId || -1;
   return dispatch => {
-    dispatch(_billListing());
+    // dispatch(_billListing());
     fetch(
       `${AppConfig.API_HOST}tablet/invoice/?${getQueryString({
         aparmentId: apartmentIdParam,
@@ -200,6 +266,9 @@ export function loadMore(apartmentId, currentPage, pageSize, user) {
           } else {
             dispatch(_billError());
           }
+        }
+        else {
+          dispatch(_billError());
         }
       })
       .catch(function (error) {

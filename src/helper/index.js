@@ -63,16 +63,19 @@ export async function printBill(
   customerName,
   cashier,
   transactionCode,
-  month
+  month,
+  apartmentName,
+  isRePrint
 ) {
   try {
     let nowDate = new Date();
     RNXprinter.initialize();
+    //debugger;
     await AsyncStorage.getItem("@ReactNativeXprinter:default_printer")
       .then(address => {
         if (address && address != "") {
           RNXprinter.selectDevice(address)
-            .then(value => {})
+            .then(value => { })
             .catch(e => {
               Alert.alert(
                 "Thông báo",
@@ -103,13 +106,20 @@ export async function printBill(
             46
           );
 
-          RNXprinter.pushText(`HOA DON THANG ${month}\n`, 0, 1, 45);
+          RNXprinter.pushText(`HOA DON THANG ${month}`, 0, 1, 45);
+          RNXprinter.pushText(
+            `Can ho: ${apartmentName}\n`,
+            0,
+            1,
+            46
+          );
           RNXprinter.pushText(
             _buildColBill("Khach hang:", customerName),
             0,
             1,
             46
           );
+
           RNXprinter.pushText(_buildColBill("NV Thu ngan:", cashier), 0, 1, 46);
           RNXprinter.pushText(
             _buildColBill("Hoa don so:", transactionCode),
@@ -129,12 +139,13 @@ export async function printBill(
             1,
             45
           );
-          RNXprinter.pushText(
-            _buildPaymentList(allPaymentItemList, paymentItemList),
-            0,
-            1,
-            46
-          );
+          if (isRePrint) {
+            _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemList);
+          }
+          else {
+            _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList);
+          }
+
           RNXprinter.pushText("", 0, 1, 46);
           // RNXprinter.pushText(_buildColBill("", "NV Thu ngan  "), 0, 1, 46);
           // RNXprinter.pushText("\n\n",0,1,46);
@@ -143,7 +154,7 @@ export async function printBill(
           RNXprinter.pushText("Xin cam on!", 0, 1, 46);
           RNXprinter.pushCutPaper();
           RNXprinter.print()
-            .then((value, mes) => {})
+            .then((value, mes) => { })
             .catch(e => {
               Alert.alert(
                 "Thông báo",
@@ -189,12 +200,15 @@ function _buildColBill(title, value) {
   return text;
 }
 
-function _buildPaymentList(allPaymentItemList, paymentItemList) {
+function _buildPaymentList(RNXprinter, allPaymentItemList, paymentItemList) {
   let billPayment = "";
   let total = 0;
   let totalPay = 0;
-  for (var i = 0; i < allPaymentItemList.length; i++) {
-    let paymentItem = allPaymentItemList[i];
+  for (var i = 0; i < paymentItemList.length; i++) {
+    let paymentItem = paymentItemList[i];
+    if (paymentItem.invoiceDetailPaid > paymentItem.invoiceDetailAmount || paymentItem.invoiceDetailAmount <= 0) {
+      continue;
+    }
     let text = "";
     let title = "";
     let value = "";
@@ -224,20 +238,92 @@ function _buildPaymentList(allPaymentItemList, paymentItemList) {
     total = total + paymentItem.invoiceDetailAmount;
     text = _buildColBill(title, value);
     billPayment = billPayment + text + "\n";
-  }
-  for (var i = 0; i < paymentItemList.length; i++) {
-    let paymentItem = paymentItemList[i];
     totalPay = totalPay + paymentItem.invoiceDetailAmount;
   }
-  billPayment = billPayment + "                 ---------------" + "\n";
-  billPayment =
-    billPayment + _buildColBill("Tong cong:", total.format() + " VND");
-  billPayment =
-    billPayment + _buildColBill("Da thanh toan:", totalPay.format() + " VND");
-  return billPayment;
+  billPayment = billPayment + "                 ---------------";
+  RNXprinter.pushText(
+    billPayment,
+    0,
+    1,
+    46
+  );
+  RNXprinter.pushText(
+    _buildColBill("Tong cong:", total.format() + " VND"),
+    0,
+    1,
+    45
+  );
+  RNXprinter.pushText(
+    _buildColBill("Da thanh toan:", totalPay.format() + " VND"),
+    0,
+    1,
+    46
+  );
 }
 
-function formatDate(date) {
+function _buildPaymentListRePrint(RNXprinter, allPaymentItemList, paymentItemList) {
+  let billPayment = "";
+  let total = 0;
+  let totalPay = 0;
+
+  for (var i = 0; i < paymentItemList.length; i++) {
+    let paymentItem = paymentItemList[i];
+    if (paymentItem.paymentAmount <= 0) {
+      continue;
+    }
+    let text = "";
+    let title = "";
+    let value = "";
+    switch (paymentItem.serviceName) {
+      case "BUILDING_SERVICE":
+        title = "DV Toa nha:";
+        break;
+      case "CAR":
+        title = "Oto:";
+        break;
+      case "MOTORBIKE":
+        title = "Xe may:";
+        break;
+      case "ELECTRIC":
+        title = "Dien:";
+        break;
+      case "WATER":
+        title = "Nuoc:";
+        break;
+      case "OTHERS":
+        title = "DV Khac";
+      default:
+        title = "DV Khac";
+        break;
+    }
+    value = paymentItem.paymentAmount.format() + " VND";
+    total = total + paymentItem.paymentAmount;
+    text = _buildColBill(title, value);
+    billPayment = billPayment + text + "\n";
+    totalPay = totalPay + paymentItem.paymentAmount;
+  }
+  billPayment = billPayment + "                 ---------------";
+  RNXprinter.pushText(
+    billPayment,
+    0,
+    1,
+    46
+  );
+  RNXprinter.pushText(
+    _buildColBill("Tong cong:", total.format() + " VND"),
+    0,
+    1,
+    45
+  );
+  RNXprinter.pushText(
+    _buildColBill("Da thanh toan:", totalPay.format() + " VND"),
+    0,
+    1,
+    46
+  );
+}
+
+export function formatDate(date) {
   // var monthNames = [
   //   "January", "February", "March",
   //   "April", "May", "June", "July",
@@ -245,11 +331,11 @@ function formatDate(date) {
   //   "November", "December"
   // ];
   var hour = date.getHours();
-  var second = date.getSeconds();
+  var minutes = date.getMinutes();
   var day = date.getDate();
-  var monthIndex = date.getMonth();
+  var monthIndex = date.getMonth() + 1;
   var year = date.getFullYear();
-  return hour + ":" + second + " - " + day + "/" + monthIndex + 1 + "/" + year;
+  return hour + ":" + minutes + " - " + day + "/" + monthIndex + "/" + year;
 }
 
 function change_alias(alias) {
@@ -269,4 +355,13 @@ function change_alias(alias) {
   str = str.replace(/ + /g, " ");
   str = str.trim();
   return str;
+}
+
+export function cloneObj(obj) {
+  if (null == obj || "object" != typeof obj) return obj;
+  var copy = obj.constructor();
+  for (var attr in obj) {
+    if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+  }
+  return copy;
 }

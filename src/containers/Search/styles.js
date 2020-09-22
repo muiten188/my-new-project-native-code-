@@ -12,6 +12,24 @@ export default {
   grid_col: {
     height: "100%"
   },
+  check_half:{
+    position:'absolute',
+    bottom:25,
+    right:'15%',
+    color:'#28a745',
+    height:40,
+    width:40,
+    fontSize:33
+  },  
+  check_full:{
+    position:'absolute',
+    bottom:25,
+    right:'32.5%',
+    color:'#28a745',
+    height:40,
+    width:40,
+    fontSize:33
+  },  
   col_form: {
     backgroundColor: "#fff",
     shadowColor: "#000",
@@ -78,14 +96,10 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
-  conButtonSearch:{
+  buttomSearch: {
     marginLeft: 50,
     marginRight: 50,
     backgroundColor:'#054f9a',
-    borderRadius:5,
-  },
-  buttomSearch: {
-    backgroundColor:'transparent',
     borderRadius:5,
     borderWidth:0
   },

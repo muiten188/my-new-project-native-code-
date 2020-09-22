@@ -12,19 +12,23 @@ export default {
     justifyContent: "center",
     alignItems: "center"
   },
+  center: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
   container_info_inter: {
     width: 400,
-    marginTop: -50,
+    // marginTop: -50,
     height: "100%",
     justifyContent: "center",
     alignItems: "center"
   },
   thumbnail_avatar: {
-    marginTop:6,
+    marginTop: 6,
     width: 105,
     height: 105,
     borderRadius: 100,
-    marginLeft: 150,
+    marginLeft: 100,
     borderWidth: 1,
     borderColor: "#cecece"
   },
@@ -39,11 +43,11 @@ export default {
     borderColor: "#d6d5d5"
   },
   item_margin: {
-    marginBottom: 20
+    marginBottom: 10
   },
   itemAvatar: {
     borderBottomWidth: 0,
-    width: "100%"
+    width: 300
   },
   borderBottomNone: {
     borderBottomWidth: 0
@@ -51,6 +55,18 @@ export default {
   button_changepassword: {
     marginLeft: 70,
     marginRight: 30,
+    backgroundColor: "#054f9a",
+    borderRadius: 5
+  },
+  button_changepassword_save: {
+    marginLeft: 20,
+    marginRight: 20,
+    backgroundColor: "#054f9a",
+    borderRadius: 5
+  },
+  button_cancel: {
+    marginLeft: 15,
+    marginRight: 0,
     backgroundColor: "#054f9a",
     borderRadius: 5
   },

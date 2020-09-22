@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent, Component } from "react";
 import {
   Container,
   Content,
@@ -9,6 +9,7 @@ import {
   Button,
   Title,
   Text,
+  H5,
   H3,
   H2,
   H1,
@@ -33,7 +34,7 @@ export default class extends Component {
     this.state = {
       total: 0
     };
-    Number.prototype.format = function(n, x) {
+    Number.prototype.format = function (n, x) {
       var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
       return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
     };
@@ -64,6 +65,7 @@ export default class extends Component {
   render() {
     const locale = "vn";
     const {
+      index,
       bill,
       listInvoiceDetail,
       invoiceStatus,
@@ -75,10 +77,11 @@ export default class extends Component {
     const { state } = this;
     let total = 0;
     let totalPaid = 0;
+    let totalPay = 0;
     for (var i = 0; i < listInvoiceDetail.length; i++) {
       total =
         total +
-        (listInvoiceDetail[i].invoiceDetailAmount == null
+        (listInvoiceDetail[i].invoiceDetailAmount == null || listInvoiceDetail[i].invoiceDetailAmount < 0
           ? 0
           : listInvoiceDetail[i].invoiceDetailAmount);
       totalPaid =
@@ -86,6 +89,9 @@ export default class extends Component {
         (listInvoiceDetail[i].invoiceDetailPaid == null
           ? 0
           : listInvoiceDetail[i].invoiceDetailPaid);
+      // var sTotalPay = (listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid);
+      var sTotalPay = listInvoiceDetail[i].invoiceDetailAmount;
+      totalPay = totalPay + ((sTotalPay < 0) ? 0 : sTotalPay);
     }
     return (
       <View style={styles.itemList}>
@@ -131,51 +137,101 @@ export default class extends Component {
           </Grid>
         </View>
         <View style={styles.billContent}>
+          <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#cecece' }}>
+            <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}><Text style={styles.textHeader}>{I18n.t("service", {
+              locale: locale ? locale : "vn"
+            })}</Text></View>
+            <View style={{
+              flex: 1, minHeight: 35, marginLeft: 10,
+              justifyContent: "center",
+              alignItems: "flex-end"
+            }}><Text style={styles.textHeader}>{I18n.t("arising", {
+              locale: locale ? locale : "vn"
+            })}</Text></View>
+            <View style={{
+              flex: 1, minHeight: 35, marginLeft: 10,
+              justifyContent: "center",
+              alignItems: "flex-end"
+            }}><Text style={styles.textHeader}>
+                {I18n.t("didPayed", {
+                  locale: locale ? locale : "vn"
+                })}
+              </Text>
+            </View>
+          </View>
+          {listInvoiceDetail.map((item, index) => {
+            return (
+              <View key={index} style={{ flexDirection: 'row' }}>
+                <View style={[styles.center, { flex: 1.5, minHeight: 35 }]}>{this.buildRowBillDetail(item, locale)}</View>
+                <View style={[styles.center, { flex: 1, minHeight: 35, alignItems: 'flex-end' }]}><Text>{item.invoiceDetailAmount.format() + " "}</Text></View>
+                <View style={[styles.center, { flex: 1, minHeight: 35, alignItems: 'flex-end' }]}><Text style={styles.primary}>
+                  {item.invoiceDetailPaid != null &&
+                    item.invoiceDetailPaid > 0
+                    ? item.invoiceDetailPaid.format() + " "
+                    : ""}
+                </Text>
+                </View>
+              </View>
+            );
+          })}
           <Grid>
-            {listInvoiceDetail.map((item, index) => {
-              return (
-                <Row key={index} style={{ marginTop: 5, marginBottom: 5 }}>
-                  <Col>{this.buildRowBillDetail(item, locale)}</Col>
-                  <Col style={styles.center}>
-                    <Text>{item.invoiceDetailAmount.format() + " VNĐ"}</Text>
-                  </Col>
-                  <Col style={{ width: 160 }}>
-                    <Text style={styles.primary}>
-                      {item.invoiceDetailPaid != null &&
-                      item.invoiceDetailPaid > 0
-                        ? item.invoiceDetailPaid.format() + " VNĐ"
-                        : ""}
-                    </Text>
-                  </Col>
-                </Row>
-              );
-            })}
             {/* tổng tiền */}
             <Row style={[styles.itemTotal]}>
-              <Col>
-                <H3 style={styles.textPadding}>
+              <Col size={1.5} style={styles.center}>
+                <Text style={[styles.textPadding, styles.textTotal]}>
                   {I18n.t("billTotal", {
                     locale: locale ? locale : "vn"
                   })}
-                </H3>
+                </Text>
               </Col>
-              <Col style={styles.center}>
+              <Col size={1} style={[styles.center, { alignItems: 'flex-end' }]}>
                 <Item
-                  style={styles.itemBorderNone}
+                  style={[
+                    styles.itemBorderNone,
+                    { height: 45 }
+                  ]}
                   onPress={() => {
-                    onTotal(total);
+                    onTotal(totalPay);
                   }}
                 >
-                  <H3 style={styles.textPadding}>{total.format() + " VNĐ"}</H3>
+                  <Text style={[styles.textPadding, styles.textTotal]}>{total.format() + " "}</Text>
                 </Item>
               </Col>
-              <Col style={{ width: 160 }}>
-                <H3 style={[styles.primary, styles.textPadding]}>
-                  {totalPaid.format() + " VNĐ"}
-                </H3>
+              <Col style={[styles.center, { width: 160, alignItems: 'flex-end' }]}>
+                <Text style={[styles.primary, styles.textPadding, styles.textTotal]}>
+                  {totalPaid.format() + " "}
+                </Text>
               </Col>
             </Row>
             {invoiceStatus == "INCOMPLETE" ? (
+              <Row style={[styles.itemTotalPay]}>
+                <Col size={1.5} style={styles.center}>
+                  <Text style={[styles.textPadding, styles.textPay]}>
+                    {I18n.t("billPay", {
+                      locale: locale ? locale : "vn"
+                    })}
+                  </Text>
+                </Col>
+                <Col size={1} style={[styles.center, { alignItems: 'flex-end' }]}>
+                  <Item
+                    style={[
+                      styles.itemBorderNone,
+                      { height: 50 }
+                    ]}
+                    onPress={() => {
+                      onTotal(totalPay);
+                    }}
+                  >
+                    <Text style={[styles.textPadding, , styles.textPay]}>{totalPay.format() + " "}</Text>
+                  </Item>
+                </Col>
+                <Col style={[styles.center, { width: 160 }]}>
+
+                </Col>
+              </Row>) : null
+            }
+            {invoiceStatus == "INCOMPLETE" && index == 0 ? (
+
               <Row style={[styles.itemPay]}>
                 <Col />
                 <Col>
@@ -218,7 +274,7 @@ export default class extends Component {
     if (item.serviceName.indexOf("BUILDING") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="building" />
+          <Icon style={{ marginRight: 4 }} name="building" />
           <Label>
             {I18n.t("buildingCost", {
               locale: locale ? locale : "vn"
@@ -229,7 +285,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="plug" />
+          <Icon style={{ marginRight: 4 }} name="plug" />
           <Label>
             {I18n.t("billElectric", {
               locale: locale ? locale : "vn"
@@ -240,7 +296,7 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="tint" />
+          <Icon style={{ marginRight: 4 }} name="tint" />
           <Label>
             {I18n.t("billWater", {
               locale: locale ? locale : "vn"
@@ -251,22 +307,24 @@ export default class extends Component {
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="motorcycle" />
+          <Icon style={{ marginRight: 4 }} name="motorcycle" />
           <Label>
             {I18n.t("motobike", {
               locale: locale ? locale : "vn"
             })}
+            {item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}
           </Label>
         </Item>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Item disabled style={styles.itemBorderNone}>
-          <Icon name="car" />
+          <Icon style={{ marginRight: 4 }} name="car" />
           <Label>
             {I18n.t("car", {
               locale: locale ? locale : "vn"
             })}
+            {item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}
           </Label>
         </Item>
       );

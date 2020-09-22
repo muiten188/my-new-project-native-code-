@@ -38,13 +38,14 @@ export function InputField({
         {...custom}
         style={{ ...styles.input, ...inputStyle }}
       />
-      {touched && error ? <Text style={{ width: 50 }}>{error}</Text> : <Text />}
+      {touched && error ? <Text style={{ minWidth: 50 }}>{error}</Text> : <Text />}
       {active && onClear ? (
         <Button
           transparent
+          style={{width:24,marginRight:-10}}
           onPress={onClear ? onClear : () => { }}
         >
-          <Icon name="times" />
+          <Icon name="times" style={{paddingLeft:5}} />
         </Button>
       ) : (
           <Button />

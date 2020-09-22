@@ -154,11 +154,11 @@ class login extends Component {
                 source={require("../../../resources/assets/us_flag.svg")}
               />
             ) : (
-              <Thumbnail
-                small
-                source={require("../../../resources/assets/vn_flag.svg")}
-              />
-            )}
+                <Thumbnail
+                  small
+                  source={require("../../../resources/assets/vn_flag.svg")}
+                />
+              )}
           </Col>
           <Col>
             <Picker
@@ -237,18 +237,18 @@ class login extends Component {
                     </Button>
                   </Form>
                   <Grid>
-                    <Col style={styles.col_footer}>
+                    {/* <Col style={styles.col_footer}>
                       <Text style={[styles.text_footer, { textAlign: "left" }]}>
                         Hotline: 0243 333 888
                       </Text>
-                    </Col>
-                    <Col style={styles.col_footer}>
+                    </Col> */}
+                    <Row style={styles.col_footer}>
                       <Text
                         style={[styles.text_footer, { textAlign: "right" }]}
                       >
                         www.hapulico.com
                       </Text>
-                    </Col>
+                    </Row>
                   </Grid>
                 </View>
               </View>
@@ -266,9 +266,9 @@ function mapStateToProps(state, props) {
     initialValues: state.loginReducer.userForm
       ? state.loginReducer.userForm
       : {
-          username: "",
-          password: ""
-        }
+        username: "",
+        password: ""
+      }
   };
 }
 function mapToDispatch(dispatch) {

@@ -68,7 +68,7 @@ export default {
     borderRightWidth: 0.8,
     borderColor: "#d8d8d8",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   totalCol: {
     width: 170
@@ -134,13 +134,16 @@ export default {
   rowDetail_inner_title: {
     height: 30,
     marginTop: 0,
+    height: 55,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "flex-start",
+    width:'100%'
   },
   rowDetail_inner: {
     height: 55,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    width:'100%'
   },
   rowDetail_inner_checkBox: {
     height: 55,

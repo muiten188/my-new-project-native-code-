@@ -45,7 +45,9 @@ export default {
   },
   col_footer: {
     height: 50,
-    paddingTop: 10
+    paddingTop: 10,
+    justifyContent:'center',
+    alignItems:'center'
   },
   text_footer: {
     color: "#fff"

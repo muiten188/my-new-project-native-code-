@@ -48,6 +48,7 @@ const resolveAssetSource = require("resolveAssetSource");
 const userAvar = require("../../resources/assets/user.jpg");
 const blockAction = false;
 const blockLoadMoreAction = false;
+let listInvoiceDetail = null;
 class billList extends Component {
   static navigationOptions = {
     header: null
@@ -73,6 +74,7 @@ class billList extends Component {
     const { user } = this.props.loginReducer;
     const { currentPage, pageSize } = this.props.billListReducer;
     setTimeout(() => {
+      this.loading.show();
       billListAction.getBillList(
         navigation.state.params.apartment.apartmentId,
         currentPage,
@@ -116,10 +118,21 @@ class billList extends Component {
     const { state } = this;
     let _value = this.refs["InputPay"].getRawValue();
     if (this.isNumeric(_value)) {
+
       this.setState({
         totalCustomerPay: _value,
         totalReturn: _value - state.totalPay
       });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+    if (this.loading.getState() == true) {
+      this.loading.hide();
+    }
+    if (this.smallLoading.getState() == true) {
+      this.smallLoading.hide();
     }
   }
 
@@ -242,7 +255,7 @@ class billList extends Component {
                         })}
                       </Label>
                       <Text style={styles.textRemainMoney}>
-                        {balance + " VNĐ"}
+                        {balance + " "}
                       </Text>
                     </Item>
                     <Item style={styles.item}>
@@ -252,7 +265,7 @@ class billList extends Component {
                         })}
                       </Label>
                       <Text style={styles.textRemainMoney}>
-                        {totalDebit + " VNĐ"}
+                        {totalDebit + " "}
                       </Text>
                     </Item> */}
                       </View>
@@ -307,7 +320,7 @@ class billList extends Component {
                         type={"money"}
                         options={{
                           unit: "",
-                          suffixUnit: " VNĐ",
+                          suffixUnit: "",
                           precision: 0,
                           separator: " ",
                           zeroCents: true
@@ -353,7 +366,7 @@ class billList extends Component {
                           type={"money"}
                           options={{
                             unit: "",
-                            suffixUnit: " VNĐ",
+                            suffixUnit: " ",
                             precision: 0,
                             separator: " ",
                             zeroCents: true
@@ -380,13 +393,18 @@ class billList extends Component {
                           style={{ width: "100%", fontSize: 20, marginTop: 6 }}
                         >
                           {this.state.totalReturn.format()}
-                          {" VNĐ"}
+                          {" "}
                         </Text>
                       </Item>
                     </View>
                   ) : null}
                 </View>
               </Content>
+              <View style={{ position: 'absolute', bottom: 4, left: 4, width: 34, height: 34 }}>
+                <Loading ref={ref => {
+                  this.smallLoading = ref;
+                }} />
+              </View>
             </Col>
             <Col size={65} style={[styles.grid_col, styles.col_content]}>
               <HeaderContent
@@ -397,7 +415,7 @@ class billList extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading isShow={isLoading} />
+
                 {/* <Item
                   style={{
                     width: "100%",
@@ -427,13 +445,18 @@ class billList extends Component {
                     <RefreshControl
                       colors={["#9Bd35A", "#689F38"]}
                       refreshing={isLoading}
-                      onRefresh={() =>
-                        billListAction.getBillList(
-                          navigation.state.params.apartment.apartmentId,
-                          currentPage,
-                          pageSize,
-                          user
-                        )
+                      onRefresh={() => {
+                        this.loading.show();
+                        setTimeout(() => {
+                          billListAction.refreshBillList(
+                            navigation.state.params.apartment.apartmentId,
+                            currentPage,
+                            pageSize,
+                            user
+                          )
+                        }, 0);
+
+                      }
                       }
                     />
                   }
@@ -445,24 +468,31 @@ class billList extends Component {
                   onEndReached={({ distanceFromEnd }) => {
                     if (distanceFromEnd > 0) {
                       if (
-                        !blockLoadMoreAction &&
+                        //!blockLoadMoreAction &&
                         !(listResult.length < pageSize)
                       ) {
-                        blockLoadMoreAction = true;
-                        billListAction.loadMore(
-                          navigation.state.params.apartment.apartmentId,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
+                        //blockLoadMoreAction = true;
+                        this.smallLoading.show();
                         setTimeout(() => {
-                          blockLoadMoreAction = false;
-                        }, 350);
+                          billListAction.loadMore(
+                            navigation.state.params.apartment.apartmentId,
+                            currentPage,
+                            pageSize,
+                            user
+                          );
+                        }, 0);
+
+                        // setTimeout(() => {
+                        //   blockLoadMoreAction = false;
+                        // }, 600);
                       }
                     }
                   }}
-                  onEndReachedThreshold={0.5}
+                  onEndReachedThreshold={0.7}
                 />
+                <Loading ref={ref => {
+                  this.loading = ref;
+                }} isShow={isLoading} />
               </Container>
             </Col>
           </Grid>
@@ -481,7 +511,7 @@ class billList extends Component {
             }, 0);
           }}
           onPay={async () => {
-            this.setState({ isModalVisible: false });
+            //this.setState({ isModalVisible: false });
             setTimeout(() => {
               billListAction.getBillFromId(
                 this.state.bill.apartmentId,
@@ -490,12 +520,13 @@ class billList extends Component {
               );
             }, 0);
             await printBill(
-              this.state.listInvoiceDetail,
-              this.state.listInvoiceDetail,
+              listInvoiceDetail,
+              listInvoiceDetail,
               state.params.apartment.ownerName,
               user.fullName,
               transactionCode,
-              this.state.bill.invoiceMonth
+              this.state.bill.invoiceMonth,
+              state.params.apartment.apartmentName
             );
           }}
         />
@@ -520,6 +551,7 @@ class billList extends Component {
     const { billListAction, navigation } = this.props;
     const { user } = this.props.loginReducer;
     const { currentPage, pageSize } = this.props.billListReducer;
+    this.loading.show();
     setTimeout(() => {
       billListAction.getBillList(
         navigation.state.params.apartment.apartmentId,
@@ -537,28 +569,29 @@ class billList extends Component {
     const { apartment } = this.props.navigation.state.params;
     return (
       <TouchableOpacity
-        key={item.index}
+        key={dataItem.index}
         style={styles.item_container}
         onPress={() => {
-          if (!blockAction) {
+          if (!blockAction && dataItem.index == 0) {
             blockAction = true;
-            if (item.invoiceStatus == "INCOMPLETE") {
-              dispatch.push({
-                id: "BillDetail",
-                bill: item,
-                balance: balance,
-                totalDebit: totalDebit,
-                apartment: apartment
-              });
-            }
+            //if (item.invoiceStatus == "INCOMPLETE") {
+            dispatch.push({
+              id: "BillDetail",
+              bill: item,
+              balance: balance,
+              totalDebit: totalDebit,
+              apartment: apartment
+            });
+            //}
             setTimeout(() => {
               blockAction = false;
-            }, 1000);
+            }, 1200);
           }
         }}
       >
         <Bill
           bill={item}
+          index={dataItem.index}
           listInvoiceDetail={item.listInvoiceDetail}
           invoiceStatus={item.invoiceStatus}
           invoiceMonth={item.invoiceMonth}
@@ -594,7 +627,8 @@ class billList extends Component {
     }
   }
 
-  _onPay(bill, listInvoiceDetail, payMethod) {
+  _onPay(bill, listInvoiceDetail_State, payMethod) {
+    listInvoiceDetail = bill.listInvoiceDetail;
     const { apartment } = this.props.navigation.state.params;
     const { balance } = this.props.billListReducer;
     const { billDetailAction, billListAction } = this.props;
@@ -604,8 +638,12 @@ class billList extends Component {
       listInvoiceDetail[i].paymentMethod = payMethod;
     }
     listInvoiceDetail = listInvoiceDetail.filter((i, index) => {
-      return i.invoiceDetailPaid <= 0;
+      return i.invoiceDetailPaid < i.invoiceDetailAmount;
     });
+    listInvoiceDetail = JSON.parse(JSON.stringify(listInvoiceDetail));
+    // for (var i = 0; i < listInvoiceDetail.length; i++) {
+    //   listInvoiceDetail[i].invoiceDetailAmount = listInvoiceDetail[i].invoiceDetailAmount - listInvoiceDetail[i].invoiceDetailPaid;
+    // }
     billDetailAction.billPay(
       listInvoiceDetail,
       bill,

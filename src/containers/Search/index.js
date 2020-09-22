@@ -34,6 +34,7 @@ import { DateField } from "../../components/Element/Form";
 import ItemResult from "../../components/Item_result";
 import * as searchAction from "../../store/actions/containers/search_action";
 import Loading from "../../components/Loading";
+import FormSearch from "./form_search";
 const blockAction = false;
 const blockLoadMoreAction = false;
 
@@ -68,18 +69,27 @@ class search extends Component {
     //   }, 500)
     // }
   }
-
   componentDidUpdate(prevProps, prevState) {
     const { dispatch } = this.props.navigation;
     const { isLoading, listResult } = this.props.searchReducer;
+    if (this.loading.getState() == true) {
+      this.loading.hide();
+    }
+    if (this.smallLoading.getState() == true) {
+      this.smallLoading.hide();
+    }
     if (
       listResult.length == 1 &&
-      !isLoading &&
       listResult[0].apartmentId != this.currentApartment.apartmentId
     ) {
-      console.log("did push");
-      this.currentApartment = listResult[0];
-      dispatch.push({ id: "BillList", apartment: listResult[0] });
+      if (!blockAction) {
+        blockAction = true;
+        this.currentApartment = listResult[0];
+        dispatch.push({ id: "BillList", apartment: listResult[0] });
+        setTimeout(() => {
+          blockAction = false;
+        }, 700);
+      }
     }
   }
 
@@ -92,18 +102,26 @@ class search extends Component {
       searchErorr,
       valuesForm,
       currentPage,
-      pageSize
+      pageSize,
+      loadEnd
     } = this.props.searchReducer;
-    const { searchAction, handleSubmit } = this.props;
+    blockLoadMoreAction = loadEnd;
+    const { searchAction } = this.props;
     const { user } = this.props.loginReducer;
     if (searchErorr == true) {
-      Alert.alert("Thông báo", "Tìm kiếm lỗi kiểm tra lại đường truyền.", [{
-        text: 'Ok',
-        onPress: (e) => {
-          searchAction.clearError();
-        }
-      }],
-        { cancelable: false });
+      Alert.alert(
+        "Thông báo",
+        "Tìm kiếm lỗi kiểm tra lại đường truyền.",
+        [
+          {
+            text: "Ok",
+            onPress: e => {
+              searchAction.clearError();
+            }
+          }
+        ],
+        { cancelable: false }
+      );
     }
     return (
       <Container style={styles.container}>
@@ -130,242 +148,29 @@ class search extends Component {
                 })}
               />
               <Content>
-                <Form style={styles.formContainer}>
-                  <Grid>
-                    <Row style={styles.x3Row}>
-                      <Col style={styles.icon_col}>
-                        <Icon style={styles.icon} name="map-marker" />
-                      </Col>
-                      <Col style={styles.border}>
-                        <Row style={[styles.border, styles.fieldForm]}>
-                          <Field
-                            name="buildingCode"
-                            placeholder={I18n.t("building", {
-                              locale: locale ? locale : "vi"
-                            })}
-                            component={InputField}
-                            onClear={() => {
-                              this.props.change("buildingCode", "");
-                            }}
-                            onFocus={() => {
-                              this.props.change("buildingCode", "");
-                            }}
-                            onSubmitEditing={handleSubmit(values => {
-                              if (!blockAction) {
-                                blockAction = true;
-                                setTimeout(() => {
-                                  if (listResult.length > 0) {
-                                    this.list.scrollToIndex({ index: 0 });
-                                  }
-                                }, 0);
-                                searchAction.search(
-                                  values,
-                                  currentPage,
-                                  pageSize,
-                                  user
-                                );
-                                setTimeout(() => {
-                                  blockAction = false;
-                                }, 700);
-                              }
-                            })}
-                          />
-                        </Row>
-                        <Row style={[styles.border, styles.fieldForm]}>
-                          <Field
-                            name="floorCode"
-                            placeholder={I18n.t("floor", {
-                              locale: locale ? locale : "vi"
-                            })}
-                            component={InputField}
-                            onClear={() => {
-                              this.props.change("floorCode", "");
-                            }}
-                            onFocus={() => {
-                              this.props.change("floorCode", "");
-                            }}
-                            onSubmitEditing={handleSubmit(values => {
-                              if (!blockAction) {
-                                blockAction = true;
-                                setTimeout(() => {
-                                  if (listResult.length > 0) {
-                                    this.list.scrollToIndex({ index: 0 });
-                                  }
-                                }, 0);
-                                searchAction.search(
-                                  values,
-                                  currentPage,
-                                  pageSize,
-                                  user
-                                );
-                                setTimeout(() => {
-                                  blockAction = false;
-                                }, 700);
-                              }
-                            })}
-                          />
-                        </Row>
-                        <Row style={[styles.border, styles.fieldForm]}>
-                          <Field
-                            name="aparmentName"
-                            placeholder={I18n.t("apartmentNo", {
-                              locale: locale ? locale : "vi"
-                            })}
-                            component={InputField}
-                            onClear={() => {
-                              this.props.change("aparmentName", "");
-                            }}
-                            onFocus={() => {
-                              this.props.change("aparmentName", "");
-                            }}
-                            onSubmitEditing={handleSubmit(values => {
-                              if (!blockAction) {
-                                blockAction = true;
-                                setTimeout(() => {
-                                  if (listResult.length > 0) {
-                                    this.list.scrollToIndex({ index: 0 });
-                                  }
-                                }, 0);
-                                searchAction.search(
-                                  values,
-                                  currentPage,
-                                  pageSize,
-                                  user
-                                );
-                                setTimeout(() => {
-                                  blockAction = false;
-                                }, 700);
-                              }
-                            })}
-                          />
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row style={styles.normalRow}>
-                      <Col style={styles.icon_col}>
-                        <Icon style={styles.icon} name="user-circle-o" />
-                      </Col>
-                      <Col style={[styles.border, styles.fieldForm]}>
-                        <Field
-                          name="fullName"
-                          placeholder={I18n.t("homeName", {
-                            locale: locale ? locale : "vi"
-                          })}
-                          component={InputField}
-                          onClear={() => {
-                            this.props.change("fullName", "");
-                          }}
-                          onFocus={() => {
-                            this.props.change("fullName", "");
-                          }}
-                          onSubmitEditing={handleSubmit(values => {
-                            if (!blockAction) {
-                              blockAction = true;
-                              setTimeout(() => {
-                                if (listResult.length > 0) {
-                                  this.list.scrollToIndex({ index: 0 });
-                                }
-                              }, 0);
-                              searchAction.search(
-                                values,
-                                currentPage,
-                                pageSize,
-                                user
-                              );
-                              setTimeout(() => {
-                                blockAction = false;
-                              }, 700);
-                            }
-                          })}
-                        />
-                      </Col>
-                    </Row>
-                    <Row style={styles.normalRow}>
-                      <Col style={styles.icon_col}>
-                        <Icon style={styles.icon} name="phone" />
-                      </Col>
-                      <Col style={[styles.border, styles.fieldForm]}>
-                        <Field
-                          name="phoneNumber"
-                          placeholder={I18n.t("mobile", {
-                            locale: locale ? locale : "vi"
-                          })}
-                          component={InputField}
-                          onClear={() => {
-                            this.props.change("phoneNumber", "");
-                          }}
-                          onFocus={() => {
-                            this.props.change("phoneNumber", "");
-                          }}
-                          onSubmitEditing={handleSubmit(values => {
-                            if (!blockAction) {
-                              blockAction = true;
-                              setTimeout(() => {
-                                if (listResult.length > 0) {
-                                  this.list.scrollToIndex({ index: 0 });
-                                }
-                              }, 0);
-                              searchAction.search(
-                                values,
-                                currentPage,
-                                pageSize,
-                                user
-                              );
-                              setTimeout(() => {
-                                blockAction = false;
-                              }, 700);
-                            }
-                          })}
-                        />
-                      </Col>
-                    </Row>
-                  </Grid>
-                  <View
-                    ref={ref => {
-                      this.btSearch = ref;
-                    }}
-                    style={
-                      isLoading
-                        ? styles.buttomSearchDisabled
-                        : styles.conButtonSearch
+                <FormSearch
+                  searchAction={values => {
+                    this.loading.show();
+                    searchAction.search(values, currentPage, pageSize, user);
+                    //this.setState({ a: 1 }, () => this.loading.hide());
+                  }}
+                  temshow={() => { }}
+                  scrollUp={() => {
+                    if (listResult.length > 0) {
+                      this.list.scrollToIndex({ index: 0 });
                     }
-                  >
-                    <Button
-                      full
-                      disabled={isLoading}
-                      style={styles.buttomSearch}
-                      onPress={handleSubmit(values => {
-                        if (!blockAction) {
-                          blockAction = true;
-                          setTimeout(() => {
-                            if (listResult.length > 0) {
-                              this.list.scrollToIndex({ index: 0 });
-                            }
-                          }, 0);
-                          this.btSearch.setNativeProps({
-                            style: styles.buttomSearchDisabled
-                          });
-                          searchAction.search(
-                            values,
-                            currentPage,
-                            pageSize,
-                            user
-                          );
-                          setTimeout(() => {
-                            blockAction = false;
-                          }, 500);
-                        }
-                      })}
-                    >
-                      <Text>
-                        {I18n.t("search", {
-                          locale: locale ? locale : "vi"
-                        })}
-                      </Text>
-                    </Button>
-                  </View>
-                </Form>
+                  }}
+                // user={user}
+                />
+
+
+
               </Content>
+              <View style={{ position: 'absolute', bottom: 4, left: 4, width: 34, height: 34 }}>
+                <Loading ref={ref => {
+                  this.smallLoading = ref;
+                }} />
+              </View>
             </Col>
             <Col size={68} style={[styles.grid_col, styles.col_content]}>
               <HeaderContent
@@ -378,7 +183,6 @@ class search extends Component {
                 })}
               />
               <Container style={styles.listResult_container}>
-                <Loading isShow={isLoading} />
                 <FlatList
                   ref={ref => {
                     this.list = ref;
@@ -388,26 +192,41 @@ class search extends Component {
                   keyExtractor={this._keyExtractor}
                   renderItem={this.renderFlatListItem.bind(this)}
                   numColumns={2}
+                  onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}
                   onEndReached={({ distanceFromEnd }) => {
                     if (distanceFromEnd > 0) {
+                      // this.onEndReachedCalledDuringMomentum = true;
                       if (
                         !blockLoadMoreAction &&
                         !(listResult.length < pageSize)
                       ) {
+
                         blockLoadMoreAction = true;
-                        searchAction.loadMore(
-                          valuesForm,
-                          currentPage,
-                          pageSize,
-                          user
-                        );
+                        this.smallLoading.show(),
+                          setTimeout(() => {
+                            searchAction.loadMore(
+                              valuesForm,
+                              currentPage,
+                              pageSize,
+                              user
+                            )
+                          }, 0);
+
                         setTimeout(() => {
-                          blockLoadMoreAction = false;
-                        }, 350);
+                          if (loadEnd != true) {
+                            blockLoadMoreAction = false;
+                          }
+                        }, 700);
                       }
                     }
                   }}
-                  onEndReachedThreshold={0.5}
+                  onEndReachedThreshold={0.7}
+                />
+                <Loading
+                  ref={ref => {
+                    this.loading = ref;
+                  }}
+                  isShow={isLoading}
                 />
               </Container>
             </Col>
@@ -445,7 +264,13 @@ class search extends Component {
           position={item.apartmentName}
           phone={item.ownerPhone}
           avatarUrl={item.avatarUrl}
+          item={item}
         />
+        {item.paymentStatus == true ? <Icon style={listResult && listResult.length >= 2
+          ? styles.check_half
+          : styles.check_full
+        } name="check"></Icon> : null}
+
       </TouchableOpacity>
     );
   }
@@ -468,9 +293,9 @@ function mapToDispatch(dispatch) {
 //   form: "search"
 // })(connect(mapStateToProps, mapToDispatch)(search));
 
-search = reduxForm({
-  form: "search"
-  // enableReinitialize: true
-})(search);
+// search = reduxForm({
+//   form: "search"
+//   // enableReinitialize: true
+// })(search);
 search = connect(mapStateToProps, mapToDispatch)(search);
 export default search;

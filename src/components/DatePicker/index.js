@@ -153,7 +153,7 @@ class DatePicker extends Component {
 
   datePicked() {
     if (typeof this.props.onDateChange === "function") {
-      // console.log(this.getDateStr(this.state.date, false))
+      // //console.log(this.getDateStr(this.state.date, false))
       this.props.onDateChange(
         this.getDateStr(this.state.date, false),
         this.state.date

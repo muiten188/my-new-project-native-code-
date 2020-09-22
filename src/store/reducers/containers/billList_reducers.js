@@ -6,7 +6,7 @@ const initState = {
   billError: false,
   listResult: [],
   currentPage: 1,
-  pageSize: 5,
+  pageSize: 4,
   billPayError: false
 };
 
@@ -26,6 +26,11 @@ export default function (state = initState, action = {}) {
         isLoading: true,
         billError: initState.billError
       };
+    case types.BILLLIST_DUPLICATE:
+      //console.log(state);
+      return {
+        ...state
+      }
     case types.BALANCE:
       return {
         ...state,

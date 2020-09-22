@@ -7,9 +7,10 @@ const initState = {
   valuesForm: {},
   currentPage: 1,
   pageSize: 10,
+  loadEnd: false
 };
 
-export default function (state = initState, action = {}) {
+export default function(state = initState, action = {}) {
   switch (action.type) {
     case types.LIST_RESULT:
       return {
@@ -18,7 +19,8 @@ export default function (state = initState, action = {}) {
         isLoading: initState.isLoading,
         currentPage: initState.currentPage,
         searchErorr: initState.searchErorr,
-        valuesForm: action.valuesForm
+        valuesForm: action.valuesForm,
+        loadEnd: initState.loadEnd
       };
     case types.SEARCHING:
       return {
@@ -47,9 +49,13 @@ export default function (state = initState, action = {}) {
       return {
         ...state,
         listResult: [...state.listResult, ...action.data],
+        loadEnd:
+          action.data && action.data.length == initState.pageSize
+            ? initState.loadEnd
+            : true,
         isLoading: initState.isLoading,
         searchErorr: initState.searchErorr,
-        currentPage: state.currentPage + 1,
+        currentPage: state.currentPage + 1
       };
     case types.SEARCH_CLEAR_ERROR:
       return {

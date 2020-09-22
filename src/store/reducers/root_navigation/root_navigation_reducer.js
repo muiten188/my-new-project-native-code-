@@ -56,7 +56,7 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
                 bill: action.route.bill,
                 balance: action.route.balance,
                 totalDebit: action.route.totalDebit,
-                apartment:action.route.apartment
+                apartment: action.route.apartment
               },
               action: NavigationActions.navigate({ routeName: action.route.id })
             }),
@@ -67,7 +67,7 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
           nextState = RootNavigationContainer.router.getStateForAction(
             NavigationActions.navigate({
               routeName: action.route.id,
-              params: {  apartment: action.route.apartment },
+              params: { apartment: action.route.apartment },
               action: NavigationActions.navigate({ routeName: action.route.id })
             }),
             state
@@ -84,6 +84,15 @@ function navigationReducer(state = initialNavState || {}, action = {}) {
     case action_types.POP_ROUTE:
       nextState = RootNavigationContainer.router.getStateForAction(
         NavigationActions.back(),
+        state
+      );
+      break;
+    case action_types.RESET_ROUTE:
+      nextState = RootNavigationContainer.router.getStateForAction(
+        NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: action.routeName })]
+        }),
         state
       );
       break;

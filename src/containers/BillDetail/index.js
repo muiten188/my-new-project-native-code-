@@ -41,7 +41,8 @@ import * as billListAction from "../../store/actions/containers/billList_actions
 import Loading from "../../components/Loading";
 import { printBill } from "../../helper";
 import { TextInputMask } from "react-native-masked-text";
-
+import { cloneObj } from '../../helper';
+let oldListInvoiceDetail = {};
 class billDetail extends Component {
   static navigationOptions = {
     header: null
@@ -52,13 +53,14 @@ class billDetail extends Component {
     const { bill, balance, totalDebit } = this.props.navigation.state.params;
     let tempState = {};
     let checkboxArr = [];
+    oldListInvoiceDetail = JSON.parse(JSON.stringify(bill.listInvoiceDetail));
     for (var i = 0; i < bill.listInvoiceDetail.length; i++) {
       if (bill.listInvoiceDetail[i].invoiceDetailPaid == null) {
         bill.listInvoiceDetail[i].invoiceDetailPaid = 0;
       }
-      bill.listInvoiceDetail[i].invoiceDetailAmount =
-        bill.listInvoiceDetail[i].invoiceDetailAmount -
-        bill.listInvoiceDetail[i].invoiceDetailPaid;
+      // bill.listInvoiceDetail[i].invoiceDetailAmount =
+      //   bill.listInvoiceDetail[i].invoiceDetailAmount -
+      //   bill.listInvoiceDetail[i].invoiceDetailPaid;
       if (bill.listInvoiceDetail[i].invoiceDetailAmount < 0) {
         bill.listInvoiceDetail[i].invoiceDetailAmount = 0;
       }
@@ -108,6 +110,8 @@ class billDetail extends Component {
   }
 
   componentWillUnmount() {
+    const { bill } = this.props.navigation.state.params;
+    bill.listInvoiceDetail = oldListInvoiceDetail
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
@@ -193,31 +197,38 @@ class billDetail extends Component {
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
-        <Item style={styles.borderBottomNone}>
-          <Icon
-            name="motorcycle"
-            style={[styles.icon, bikeEmpty ? styles.label_row_empty : {}]}
-          />
-          <Label style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-            {I18n.t("bikeCost", {
-              locale: locale ? locale : "vn"
-            })}
-          </Label>
-        </Item>
+        <View style={{ alignItems: 'flex-start' }}>
+          <Item style={styles.borderBottomNone}>
+            <Icon
+              name="motorcycle"
+              style={[styles.icon, bikeEmpty ? styles.label_row_empty : {}]}
+            />
+            <Label style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
+              {I18n.t("bikeCost", {
+                locale: locale ? locale : "vn"
+              })}
+            </Label>
+          </Item>
+          <Label>{item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}</Label>
+        </View>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
-        <Item style={styles.borderBottomNone}>
-          <Icon
-            name="car"
-            style={[styles.icon, carEmpty ? styles.label_row_empty : {}]}
-          />
-          <Label style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-            {I18n.t("carCost", {
-              locale: locale ? locale : "vn"
-            })}
-          </Label>
-        </Item>
+        <View style={{ alignItems: 'flex-start' }}>
+          <Item style={styles.borderBottomNone}>
+            <Icon
+              name="car"
+              style={[styles.icon, carEmpty ? styles.label_row_empty : {}]}
+            />
+            <Label style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
+              {I18n.t("carCost", {
+                locale: locale ? locale : "vn"
+              })}
+            </Label>
+
+          </Item>
+          <Label>{item.vehiclePlate ? " (" + item.vehiclePlate + ")" : ""}</Label>
+        </View>
       );
     } else {
       return (
@@ -246,7 +257,7 @@ class billDetail extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -254,30 +265,30 @@ class billDetail extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.earlyPeriod.format() + " VNĐ"}
+          {item.earlyPeriod.format() + " "}
         </Text>
       );
     } else {
       return (
-        <Text style={styles.text}>{item.earlyPeriod.format() + " VNĐ"}</Text>
+        <Text style={styles.text}>{item.earlyPeriod.format() + " "}</Text>
       );
     }
   }
@@ -296,7 +307,7 @@ class billDetail extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -304,30 +315,30 @@ class billDetail extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.arisingPeriod.format() + " VNĐ"}
+          {item.arisingPeriod.format() + " "}
         </Text>
       );
     } else {
       return (
-        <Text style={styles.text}>{item.arisingPeriod.format() + " VNĐ"}</Text>
+        <Text style={styles.text}>{item.arisingPeriod.format() + " "}</Text>
       );
     }
   }
@@ -345,7 +356,7 @@ class billDetail extends Component {
         <Text
           style={[styles.text, buildingEmpty ? styles.label_row_empty : {}]}
         >
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -353,31 +364,31 @@ class billDetail extends Component {
         <Text
           style={[styles.text, electricEmpty ? styles.label_row_empty : {}]}
         >
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
       return (
         <Text style={[styles.text, waterEmpty ? styles.label_row_empty : {}]}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
       return (
         <Text style={[styles.text, bikeEmpty ? styles.label_row_empty : {}]}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
       return (
         <Text style={[styles.text, carEmpty ? styles.label_row_empty : {}]}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     } else {
       return (
         <Text style={styles.text}>
-          {item.invoiceDetailAmount.format() + " VNĐ"}
+          {item.invoiceDetailAmount.format() + " "}
         </Text>
       );
     }
@@ -402,7 +413,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("ELECTRIC") > -1) {
@@ -414,7 +425,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("WATER") > -1) {
@@ -426,7 +437,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("MOTORBIKE") > -1) {
@@ -438,7 +449,7 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else if (item.serviceName.indexOf("CAR") > -1) {
@@ -450,13 +461,13 @@ class billDetail extends Component {
             styles.primary
           ]}
         >
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     } else {
       return (
         <Text style={styles.text}>
-          {item.invoiceDetailPaid.format() + " VNĐ"}
+          {item.invoiceDetailPaid.format() + " "}
         </Text>
       );
     }
@@ -493,6 +504,8 @@ class billDetail extends Component {
               ...temp,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state.totalPay - item.invoiceDetailAmount) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state.totalPay - item.invoiceDetailAmount),
               totalPay: state.totalPay - item.invoiceDetailAmount,
               totalCashPay: state.totalCashPay - item.invoiceDetailAmount,
               paymentItemList: state.paymentItemList.filter((i, index) => {
@@ -504,6 +517,12 @@ class billDetail extends Component {
               ...temp2,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state["creditPay" + item.invoiceDetailId] != true
+                ? state.totalPay + item.invoiceDetailAmount
+                : state.totalPay) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state["creditPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay),
               totalPay:
                 state["creditPay" + item.invoiceDetailId] != true
                   ? state.totalPay + item.invoiceDetailAmount
@@ -518,6 +537,7 @@ class billDetail extends Component {
                   ? [...state.paymentItemList, item]
                   : state.paymentItemList
             });
+
         }}
       />
     );
@@ -554,6 +574,8 @@ class billDetail extends Component {
               ...temp,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state.totalPay - item.invoiceDetailAmount) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state.totalPay - item.invoiceDetailAmount),
               totalPay: state.totalPay - item.invoiceDetailAmount,
               totalCreditPay: state.totalCreditPay - item.invoiceDetailAmount,
               paymentItemList: state.paymentItemList.filter((i, index) => {
@@ -565,6 +587,12 @@ class billDetail extends Component {
               ...temp2,
               creditAll: false,
               cashAll: false,
+              totalCustomerPay: this.refs["InputPay"].getRawValue(),
+              totalReturn: (state["cashPay" + item.invoiceDetailId] != true
+                ? state.totalPay + item.invoiceDetailAmount
+                : state.totalPay) == 0 ? 0 : this.refs["InputPay"].getRawValue() - (state["cashPay" + item.invoiceDetailId] != true
+                  ? state.totalPay + item.invoiceDetailAmount
+                  : state.totalPay),
               totalPay:
                 state["cashPay" + item.invoiceDetailId] != true
                   ? state.totalPay + item.invoiceDetailAmount
@@ -596,7 +624,7 @@ class billDetail extends Component {
       bill.listInvoiceDetail[i].paymentMethod = payMedthod;
       if (payMedthod == "CASH") {
         if (state.cashAll == false) {
-          if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+          if (bill.listInvoiceDetail[i].invoiceDetailPaid < bill.listInvoiceDetail[i].invoiceDetailAmount) {
             paymentItemList.push(bill.listInvoiceDetail[i]);
           }
           totalCreditPay = 0;
@@ -632,7 +660,7 @@ class billDetail extends Component {
         };
       } else if (payMedthod == "POS") {
         if (state.creditAll == false) {
-          if (bill.listInvoiceDetail[i].invoiceDetailPaid <= 0) {
+          if (bill.listInvoiceDetail[i].invoiceDetailPaid < bill.listInvoiceDetail[i].invoiceDetailAmount) {
             paymentItemList.push(bill.listInvoiceDetail[i]);
           }
           totalCashPay = 0;
@@ -671,12 +699,30 @@ class billDetail extends Component {
     this.setState({
       ...checkObj,
       ...checkedObj,
+      totalCustomerPay: this.refs["InputPay"].getRawValue(),
+      totalReturn: totalPay == 0 ? 0 : (this.refs["InputPay"].getRawValue() - (totalPay ? totalPay : 0)),
       paymentItemList: paymentItemList,
       totalCashPay: totalCashPay,
       totalCreditPay: totalCreditPay,
       totalPay: totalPay
     });
   }
+
+  checkHave1Pay(listInvoiceDetail) {
+    try {
+      for (var i = 0; i < listInvoiceDetail.length; i++) {
+        var item = listInvoiceDetail[i];
+        if (item.invoiceDetailAmount <= 0) {
+          return true;
+          break;
+        }
+      }
+      return false;
+    } catch (e) {
+      return true;
+    }
+  }
+
   render() {
     const locale = "vn";
     const { dispatch } = this.props.navigation;
@@ -704,16 +750,20 @@ class billDetail extends Component {
     if (billPayError == true) {
       Alert.alert(
         "Thông Báo",
-        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền.", [{
-          text: 'Ok',
-          onPress: (e) => {
-            billDetailAction.clearError();
+        "Thanh toán hóa đơn lỗi kiểm tra lại đường truyền.",
+        [
+          {
+            text: "Ok",
+            onPress: e => {
+              billDetailAction.clearError();
+            }
           }
-        }],
+        ],
         { cancelable: false }
       );
     }
 
+    var isCheckAll = this.checkHave1Pay(bill.listInvoiceDetail);
     return (
       <Container style={styles.container}>
         <Header
@@ -795,11 +845,14 @@ class billDetail extends Component {
                     <CheckBox
                       style={[
                         styles.checkBox,
-                        { marginTop: 6, marginBottom: 6 }
+                        {
+                          marginTop: 6, marginBottom: 6,
+                          marginLeft: -20
+                        }
                       ]}
-                      disabled={bill.listInvoiceDetail <= 0}
+                      disabled={bill.listInvoiceDetail <= 0 || isCheckAll}
                       color={
-                        bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
+                        bill.listInvoiceDetail <= 0 || isCheckAll ? "#cecece" : "#054f9a"
                       }
                       checked={state.cashAll}
                       onPress={this.checkAll.bind(this, "CASH")}
@@ -807,10 +860,10 @@ class billDetail extends Component {
                   </Col>
                   <Col style={styles.col_detail}>
                     <CheckBox
-                      style={styles.checkBox}
-                      disabled={bill.listInvoiceDetail <= 0}
+                      style={[styles.checkBox, { marginLeft: -20 }]}
+                      disabled={bill.listInvoiceDetail <= 0 || isCheckAll}
                       color={
-                        bill.listInvoiceDetail <= 0 ? "#cecece" : "#054f9a"
+                        bill.listInvoiceDetail <= 0 || isCheckAll ? "#cecece" : "#054f9a"
                       }
                       checked={state.creditAll}
                       onPress={this.checkAll.bind(this, "POS")}
@@ -821,7 +874,7 @@ class billDetail extends Component {
                   <Col style={styles.titleDetailCol}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
-                        <Row key={index} style={styles.rowDetail_inner}>
+                        <Row key={index} style={styles.rowDetail_inner_title}>
                           {this.buildRowBillDetail(item, locale)}
                         </Row>
                       );
@@ -866,7 +919,7 @@ class billDetail extends Component {
                   <Col style={styles.col_detail}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
-                        <Row key={index} style={styles.rowDetail_inner}>
+                        <Row key={index} style={styles.rowDetail_inner_checkBox}>
                           {this.buildRowBillDetailCash(item, locale)}
                         </Row>
                       );
@@ -875,7 +928,7 @@ class billDetail extends Component {
                   <Col style={styles.col_detail}>
                     {bill.listInvoiceDetail.map((item, index) => {
                       return (
-                        <Row key={index} style={styles.rowDetail_inner}>
+                        <Row key={index} style={styles.rowDetail_inner_checkBox}>
                           {this.buildRowBillDetailCredit(item, locale)}
                         </Row>
                       );
@@ -894,17 +947,27 @@ class billDetail extends Component {
               </Row>
               <Row style={[styles.border, styles.center]}>
                 <View style={[{ flex: 1 }, styles.center]}>
-                  <H1
+                  <Item
                     style={[
-                      styles.pay_item,
-                      styles.totalPay,
-                      styles.textPadding
+                      styles.center,
+                      styles.borderBottomNone,
+                      { width: "100%" }
                     ]}
+                    onPress={() => this.payChange()}
                   >
-                    {state.totalPay <= 0
-                      ? "0 VNĐ"
-                      : state.totalPay.format() + " VNĐ"}
-                  </H1>
+                    <H1
+                      style={[
+                        styles.pay_item,
+                        styles.totalPay,
+                        styles.textPadding
+                      ]}
+                    >
+                      {state.totalPay <= 0
+                        ? "0 "
+                        : state.totalPay.format() + " "}
+                    </H1>
+                  </Item>
+
                   {!state.keyBoardShow ? (
                     <View>
                       <Text style={styles.pay_item}>
@@ -915,21 +978,22 @@ class billDetail extends Component {
                       <Item style={[styles.pay_item, styles.borderBottomNone]}>
                         <Icon name="money" style={styles.icon} />
                         <Text>
-                          {state.totalCashPay.format() + " VNĐ"}{" "}
+                          {state.totalCashPay.format() + " "}{" "}
                           {state.payBalance > 0
-                            ? " - " + state.payBalance.format() + " VNĐ"
+                            ? " - " + state.payBalance.format() + " "
                             : ""}
                         </Text>
                       </Item>
                       <Item style={[styles.pay_item, styles.borderBottomNone]}>
                         <Icon name="credit-card-alt" style={styles.icon} />
-                        <Text>{state.totalCreditPay.format() + " VNĐ"}</Text>
+                        <Text>{state.totalCreditPay.format() + " "}</Text>
                       </Item>
                       <Button
                         full
                         disabled={
-                          state.paymentItemList &&
-                          state.paymentItemList.length <= 0
+                          bill.invoiceStatus == "COMPLETE" || (
+                            state.paymentItemList &&
+                            state.paymentItemList.length <= 0)
                         }
                         style={
                           state.paymentItemList &&
@@ -966,7 +1030,7 @@ class billDetail extends Component {
                       type={"money"}
                       options={{
                         unit: "",
-                        suffixUnit: " VNĐ",
+                        suffixUnit: "",
                         precision: 0,
                         separator: " ",
                         zeroCents: true
@@ -975,6 +1039,7 @@ class billDetail extends Component {
                     {state.keyBoardShow ? (
                       <Button
                         transparent
+                        style={{ width: 10 }}
                         onPress={() => {
                           this.setState({
                             totalCustomerPay: 0,
@@ -998,7 +1063,7 @@ class billDetail extends Component {
                           style={{ width: "100%", fontSize: 20, marginTop: 6 }}
                         >
                           {this.state.totalReturn.format()}
-                          {" VNĐ"}
+                          {" "}
                         </Text>
                       </Item>
                     </View>
@@ -1031,7 +1096,8 @@ class billDetail extends Component {
               apartment.ownerName,
               user.fullName,
               transactionCode,
-              bill.invoiceMonth
+              bill.invoiceMonth,
+              apartment.apartmentName
             );
           }}
         />
@@ -1063,7 +1129,7 @@ class billDetail extends Component {
           }
         })
         .catch(() => {
-          debugger;
+
           RNXprinter.pickPrinter();
         });
       RNXprinter.pushText("text center", 0, 1);
@@ -1078,7 +1144,7 @@ class billDetail extends Component {
       // RNXprinter.pushCutPaper();
       RNXprinter.print();
     } catch (e) {
-      debugger;
+
       Alert.alert(
         "Thông báo",
         "In hóa đơn thất bại, kiểm tra lại kết nối máy in !"

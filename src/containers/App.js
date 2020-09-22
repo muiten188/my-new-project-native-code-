@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   render() {
-    let { loginReducer } = this.props;
+    let { loginReducer, appAction } = this.props;
     let { showPayInfo } = this.props.app_Reducer;
     if (loginReducer.Logout == true) {
       AsyncStorage.setItem("@user", "");
@@ -43,7 +43,7 @@ class App extends Component {
       try {
         AsyncStorage.setItem("@user", JSON.stringify(loginReducer.user));
       } catch (error) {
-        console.log("save error");
+        // //console.log("save error");
       }
     }
     if (!loginReducer || !loginReducer.Logged) {
@@ -53,7 +53,7 @@ class App extends Component {
       <Container>
         <RootNavigaion />
         {showPayInfo ? (
-          <PayInfoModal show={true} onOk={this._closePayInfo.bind(this)} />
+          <PayInfoModal show={true} onOk={this._closePayInfo.bind(this)} onClearError={this._clearPayListError.bind(this)} />
         ) : null}
       </Container>
     );
@@ -61,6 +61,10 @@ class App extends Component {
   _closePayInfo() {
     const { appAction } = this.props;
     appAction.closePayInfo();
+  }
+  _clearPayListError() {
+    const { appAction } = this.props;
+    appAction.clearPayListError();
   }
 }
 

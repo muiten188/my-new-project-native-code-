@@ -25,6 +25,7 @@ export default function (state = initState, action = {}) {
       return {
         ...state,
         isLoading: false,
+        transactionCode: action.transactionCode,
         billPayError: true
       };
     case types.FETCH_CATCH:
